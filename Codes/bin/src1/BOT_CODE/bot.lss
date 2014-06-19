@@ -1,0 +1,2294 @@
+
+src/BOT_CODE/bot.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .data         00000004  00800200  00000a9e  00000b32  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  1 .text         00000a9e  00000000  00000000  00000094  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  2 .bss          00000018  00800204  00800204  00000b36  2**0
+                  ALLOC
+  3 .stab         00002ea4  00000000  00000000  00000b38  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  4 .stabstr      00000dea  00000000  00000000  000039dc  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0c 94 72 00 	jmp	0xe4	; 0xe4 <__ctors_end>
+   4:	0c 94 93 00 	jmp	0x126	; 0x126 <__bad_interrupt>
+   8:	0c 94 93 00 	jmp	0x126	; 0x126 <__bad_interrupt>
+   c:	0c 94 93 00 	jmp	0x126	; 0x126 <__bad_interrupt>
+  10:	0c 94 93 00 	jmp	0x126	; 0x126 <__bad_interrupt>
+  14:	0c 94 f3 01 	jmp	0x3e6	; 0x3e6 <__vector_5>
+  18:	0c 94 04 02 	jmp	0x408	; 0x408 <__vector_6>
+  1c:	0c 94 93 00 	jmp	0x126	; 0x126 <__bad_interrupt>
+  20:	0c 94 93 00 	jmp	0x126	; 0x126 <__bad_interrupt>
+  24:	0c 94 93 00 	jmp	0x126	; 0x126 <__bad_interrupt>
+  28:	0c 94 93 00 	jmp	0x126	; 0x126 <__bad_interrupt>
+  2c:	0c 94 93 00 	jmp	0x126	; 0x126 <__bad_interrupt>
+  30:	0c 94 93 00 	jmp	0x126	; 0x126 <__bad_interrupt>
+  34:	0c 94 93 00 	jmp	0x126	; 0x126 <__bad_interrupt>
+  38:	0c 94 93 00 	jmp	0x126	; 0x126 <__bad_interrupt>
+  3c:	0c 94 93 00 	jmp	0x126	; 0x126 <__bad_interrupt>
+  40:	0c 94 93 00 	jmp	0x126	; 0x126 <__bad_interrupt>
+  44:	0c 94 93 00 	jmp	0x126	; 0x126 <__bad_interrupt>
+  48:	0c 94 93 00 	jmp	0x126	; 0x126 <__bad_interrupt>
+  4c:	0c 94 93 00 	jmp	0x126	; 0x126 <__bad_interrupt>
+  50:	0c 94 93 00 	jmp	0x126	; 0x126 <__bad_interrupt>
+  54:	0c 94 93 00 	jmp	0x126	; 0x126 <__bad_interrupt>
+  58:	0c 94 93 00 	jmp	0x126	; 0x126 <__bad_interrupt>
+  5c:	0c 94 93 00 	jmp	0x126	; 0x126 <__bad_interrupt>
+  60:	0c 94 93 00 	jmp	0x126	; 0x126 <__bad_interrupt>
+  64:	0c 94 73 04 	jmp	0x8e6	; 0x8e6 <__vector_25>
+  68:	0c 94 93 00 	jmp	0x126	; 0x126 <__bad_interrupt>
+  6c:	0c 94 93 00 	jmp	0x126	; 0x126 <__bad_interrupt>
+  70:	0c 94 93 00 	jmp	0x126	; 0x126 <__bad_interrupt>
+  74:	0c 94 93 00 	jmp	0x126	; 0x126 <__bad_interrupt>
+  78:	0c 94 93 00 	jmp	0x126	; 0x126 <__bad_interrupt>
+  7c:	0c 94 93 00 	jmp	0x126	; 0x126 <__bad_interrupt>
+  80:	0c 94 93 00 	jmp	0x126	; 0x126 <__bad_interrupt>
+  84:	0c 94 93 00 	jmp	0x126	; 0x126 <__bad_interrupt>
+  88:	0c 94 93 00 	jmp	0x126	; 0x126 <__bad_interrupt>
+  8c:	0c 94 93 00 	jmp	0x126	; 0x126 <__bad_interrupt>
+  90:	0c 94 93 00 	jmp	0x126	; 0x126 <__bad_interrupt>
+  94:	0c 94 93 00 	jmp	0x126	; 0x126 <__bad_interrupt>
+  98:	0c 94 93 00 	jmp	0x126	; 0x126 <__bad_interrupt>
+  9c:	0c 94 93 00 	jmp	0x126	; 0x126 <__bad_interrupt>
+  a0:	0c 94 93 00 	jmp	0x126	; 0x126 <__bad_interrupt>
+  a4:	0c 94 93 00 	jmp	0x126	; 0x126 <__bad_interrupt>
+  a8:	0c 94 93 00 	jmp	0x126	; 0x126 <__bad_interrupt>
+  ac:	0c 94 93 00 	jmp	0x126	; 0x126 <__bad_interrupt>
+  b0:	0c 94 93 00 	jmp	0x126	; 0x126 <__bad_interrupt>
+  b4:	0c 94 93 00 	jmp	0x126	; 0x126 <__bad_interrupt>
+  b8:	0c 94 93 00 	jmp	0x126	; 0x126 <__bad_interrupt>
+  bc:	0c 94 93 00 	jmp	0x126	; 0x126 <__bad_interrupt>
+  c0:	0c 94 93 00 	jmp	0x126	; 0x126 <__bad_interrupt>
+  c4:	0c 94 93 00 	jmp	0x126	; 0x126 <__bad_interrupt>
+  c8:	0c 94 93 00 	jmp	0x126	; 0x126 <__bad_interrupt>
+  cc:	0c 94 93 00 	jmp	0x126	; 0x126 <__bad_interrupt>
+  d0:	0c 94 93 00 	jmp	0x126	; 0x126 <__bad_interrupt>
+  d4:	0c 94 93 00 	jmp	0x126	; 0x126 <__bad_interrupt>
+  d8:	0c 94 93 00 	jmp	0x126	; 0x126 <__bad_interrupt>
+  dc:	0c 94 93 00 	jmp	0x126	; 0x126 <__bad_interrupt>
+  e0:	0c 94 93 00 	jmp	0x126	; 0x126 <__bad_interrupt>
+
+000000e4 <__ctors_end>:
+  e4:	11 24       	eor	r1, r1
+  e6:	1f be       	out	0x3f, r1	; 63
+  e8:	cf ef       	ldi	r28, 0xFF	; 255
+  ea:	d1 e2       	ldi	r29, 0x21	; 33
+  ec:	de bf       	out	0x3e, r29	; 62
+  ee:	cd bf       	out	0x3d, r28	; 61
+  f0:	00 e0       	ldi	r16, 0x00	; 0
+  f2:	0c bf       	out	0x3c, r16	; 60
+
+000000f4 <__do_copy_data>:
+  f4:	12 e0       	ldi	r17, 0x02	; 2
+  f6:	a0 e0       	ldi	r26, 0x00	; 0
+  f8:	b2 e0       	ldi	r27, 0x02	; 2
+  fa:	ee e9       	ldi	r30, 0x9E	; 158
+  fc:	fa e0       	ldi	r31, 0x0A	; 10
+  fe:	00 e0       	ldi	r16, 0x00	; 0
+ 100:	0b bf       	out	0x3b, r16	; 59
+ 102:	02 c0       	rjmp	.+4      	; 0x108 <__do_copy_data+0x14>
+ 104:	07 90       	elpm	r0, Z+
+ 106:	0d 92       	st	X+, r0
+ 108:	a4 30       	cpi	r26, 0x04	; 4
+ 10a:	b1 07       	cpc	r27, r17
+ 10c:	d9 f7       	brne	.-10     	; 0x104 <__do_copy_data+0x10>
+
+0000010e <__do_clear_bss>:
+ 10e:	12 e0       	ldi	r17, 0x02	; 2
+ 110:	a4 e0       	ldi	r26, 0x04	; 4
+ 112:	b2 e0       	ldi	r27, 0x02	; 2
+ 114:	01 c0       	rjmp	.+2      	; 0x118 <.do_clear_bss_start>
+
+00000116 <.do_clear_bss_loop>:
+ 116:	1d 92       	st	X+, r1
+
+00000118 <.do_clear_bss_start>:
+ 118:	ac 31       	cpi	r26, 0x1C	; 28
+ 11a:	b1 07       	cpc	r27, r17
+ 11c:	e1 f7       	brne	.-8      	; 0x116 <.do_clear_bss_loop>
+ 11e:	0e 94 dd 04 	call	0x9ba	; 0x9ba <main>
+ 122:	0c 94 4d 05 	jmp	0xa9a	; 0xa9a <_exit>
+
+00000126 <__bad_interrupt>:
+ 126:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
+
+0000012a <lcd_set_4bit>:
+    milliseconds can be achieved.
+ */
+void
+_delay_loop_2(uint16_t __count)
+{
+	__asm__ volatile (
+ 12a:	8c ec       	ldi	r24, 0xCC	; 204
+ 12c:	9a e0       	ldi	r25, 0x0A	; 10
+ 12e:	fc 01       	movw	r30, r24
+ 130:	31 97       	sbiw	r30, 0x01	; 1
+ 132:	f1 f7       	brne	.-4      	; 0x130 <lcd_set_4bit+0x6>
+/*****Function to Reset LCD*****/
+void lcd_set_4bit()
+{
+	_delay_ms(1);
+
+	cbit(lcd_port,RS);				//RS=0 --- Command Input
+ 134:	40 98       	cbi	0x08, 0	; 8
+	cbit(lcd_port,RW);				//RW=0 --- Writing to LCD
+ 136:	41 98       	cbi	0x08, 1	; 8
+	lcd_port = 0x30;				//Sending 3
+ 138:	40 e3       	ldi	r20, 0x30	; 48
+ 13a:	48 b9       	out	0x08, r20	; 8
+	sbit(lcd_port,EN);				//Set Enable Pin
+ 13c:	42 9a       	sbi	0x08, 2	; 8
+ 13e:	20 e0       	ldi	r18, 0x00	; 0
+ 140:	36 e3       	ldi	r19, 0x36	; 54
+ 142:	f9 01       	movw	r30, r18
+ 144:	31 97       	sbiw	r30, 0x01	; 1
+ 146:	f1 f7       	brne	.-4      	; 0x144 <lcd_set_4bit+0x1a>
+	_delay_ms(5);					//Delay
+	cbit(lcd_port,EN);				//Clear Enable Pin
+ 148:	42 98       	cbi	0x08, 2	; 8
+ 14a:	fc 01       	movw	r30, r24
+ 14c:	31 97       	sbiw	r30, 0x01	; 1
+ 14e:	f1 f7       	brne	.-4      	; 0x14c <lcd_set_4bit+0x22>
+
+	_delay_ms(1);
+
+	cbit(lcd_port,RS);				//RS=0 --- Command Input
+ 150:	40 98       	cbi	0x08, 0	; 8
+	cbit(lcd_port,RW);				//RW=0 --- Writing to LCD
+ 152:	41 98       	cbi	0x08, 1	; 8
+	lcd_port = 0x30;				//Sending 3
+ 154:	48 b9       	out	0x08, r20	; 8
+	sbit(lcd_port,EN);				//Set Enable Pin
+ 156:	42 9a       	sbi	0x08, 2	; 8
+ 158:	f9 01       	movw	r30, r18
+ 15a:	31 97       	sbiw	r30, 0x01	; 1
+ 15c:	f1 f7       	brne	.-4      	; 0x15a <lcd_set_4bit+0x30>
+	_delay_ms(5);					//Delay
+	cbit(lcd_port,EN);				//Clear Enable Pin
+ 15e:	42 98       	cbi	0x08, 2	; 8
+ 160:	fc 01       	movw	r30, r24
+ 162:	31 97       	sbiw	r30, 0x01	; 1
+ 164:	f1 f7       	brne	.-4      	; 0x162 <lcd_set_4bit+0x38>
+
+	_delay_ms(1);
+
+	cbit(lcd_port,RS);				//RS=0 --- Command Input
+ 166:	40 98       	cbi	0x08, 0	; 8
+	cbit(lcd_port,RW);				//RW=0 --- Writing to LCD
+ 168:	41 98       	cbi	0x08, 1	; 8
+	lcd_port = 0x30;				//Sending 3
+ 16a:	48 b9       	out	0x08, r20	; 8
+	sbit(lcd_port,EN);				//Set Enable Pin
+ 16c:	42 9a       	sbi	0x08, 2	; 8
+ 16e:	f9 01       	movw	r30, r18
+ 170:	31 97       	sbiw	r30, 0x01	; 1
+ 172:	f1 f7       	brne	.-4      	; 0x170 <lcd_set_4bit+0x46>
+	_delay_ms(5);					//Delay
+	cbit(lcd_port,EN);				//Clear Enable Pin
+ 174:	42 98       	cbi	0x08, 2	; 8
+ 176:	01 97       	sbiw	r24, 0x01	; 1
+ 178:	f1 f7       	brne	.-4      	; 0x176 <lcd_set_4bit+0x4c>
+
+	_delay_ms(1);
+
+	cbit(lcd_port,RS);				//RS=0 --- Command Input
+ 17a:	40 98       	cbi	0x08, 0	; 8
+	cbit(lcd_port,RW);				//RW=0 --- Writing to LCD
+ 17c:	41 98       	cbi	0x08, 1	; 8
+	lcd_port = 0x20;				//Sending 2 to initialise LCD 4-bit mode
+ 17e:	80 e2       	ldi	r24, 0x20	; 32
+ 180:	88 b9       	out	0x08, r24	; 8
+	sbit(lcd_port,EN);				//Set Enable Pin
+ 182:	42 9a       	sbi	0x08, 2	; 8
+ 184:	c9 01       	movw	r24, r18
+ 186:	01 97       	sbiw	r24, 0x01	; 1
+ 188:	f1 f7       	brne	.-4      	; 0x186 <lcd_set_4bit+0x5c>
+	_delay_ms(5);					//Delay
+	cbit(lcd_port,EN);				//Clear Enable Pin
+ 18a:	42 98       	cbi	0x08, 2	; 8
+
+	
+}
+ 18c:	08 95       	ret
+
+0000018e <lcd_wr_command>:
+void lcd_wr_command(unsigned char cmd)
+{
+	unsigned char temp;
+	temp = cmd;
+	temp = temp & 0xF0;
+	lcd_port &= 0x0F;
+ 18e:	98 b1       	in	r25, 0x08	; 8
+ 190:	9f 70       	andi	r25, 0x0F	; 15
+ 192:	98 b9       	out	0x08, r25	; 8
+	lcd_port |= temp;
+ 194:	28 b1       	in	r18, 0x08	; 8
+ 196:	98 2f       	mov	r25, r24
+ 198:	90 7f       	andi	r25, 0xF0	; 240
+ 19a:	92 2b       	or	r25, r18
+ 19c:	98 b9       	out	0x08, r25	; 8
+	cbit(lcd_port,RS);
+ 19e:	40 98       	cbi	0x08, 0	; 8
+	cbit(lcd_port,RW);
+ 1a0:	41 98       	cbi	0x08, 1	; 8
+	sbit(lcd_port,EN);
+ 1a2:	42 9a       	sbi	0x08, 2	; 8
+ 1a4:	20 e0       	ldi	r18, 0x00	; 0
+ 1a6:	36 e3       	ldi	r19, 0x36	; 54
+ 1a8:	f9 01       	movw	r30, r18
+ 1aa:	31 97       	sbiw	r30, 0x01	; 1
+ 1ac:	f1 f7       	brne	.-4      	; 0x1aa <lcd_wr_command+0x1c>
+	_delay_ms(5);
+	cbit(lcd_port,EN);
+ 1ae:	42 98       	cbi	0x08, 2	; 8
+	
+	cmd = cmd & 0x0F;
+	cmd = cmd<<4;
+	lcd_port &= 0x0F;
+ 1b0:	98 b1       	in	r25, 0x08	; 8
+ 1b2:	9f 70       	andi	r25, 0x0F	; 15
+ 1b4:	98 b9       	out	0x08, r25	; 8
+	lcd_port |= cmd;
+ 1b6:	98 b1       	in	r25, 0x08	; 8
+ 1b8:	82 95       	swap	r24
+ 1ba:	80 7f       	andi	r24, 0xF0	; 240
+ 1bc:	98 2b       	or	r25, r24
+ 1be:	98 b9       	out	0x08, r25	; 8
+	cbit(lcd_port,RS);
+ 1c0:	40 98       	cbi	0x08, 0	; 8
+	cbit(lcd_port,RW);
+ 1c2:	41 98       	cbi	0x08, 1	; 8
+	sbit(lcd_port,EN);
+ 1c4:	42 9a       	sbi	0x08, 2	; 8
+ 1c6:	c9 01       	movw	r24, r18
+ 1c8:	01 97       	sbiw	r24, 0x01	; 1
+ 1ca:	f1 f7       	brne	.-4      	; 0x1c8 <lcd_wr_command+0x3a>
+	_delay_ms(5);
+	cbit(lcd_port,EN);
+ 1cc:	42 98       	cbi	0x08, 2	; 8
+}
+ 1ce:	08 95       	ret
+
+000001d0 <lcd_init>:
+ 1d0:	8c ec       	ldi	r24, 0xCC	; 204
+ 1d2:	9a e0       	ldi	r25, 0x0A	; 10
+ 1d4:	01 97       	sbiw	r24, 0x01	; 1
+ 1d6:	f1 f7       	brne	.-4      	; 0x1d4 <lcd_init+0x4>
+/*****Function to Initialize LCD*****/
+void lcd_init()
+{
+	_delay_ms(1);
+
+	lcd_wr_command(0x28);			//LCD 4-bit mode and 2 lines.
+ 1d8:	88 e2       	ldi	r24, 0x28	; 40
+ 1da:	0e 94 c7 00 	call	0x18e	; 0x18e <lcd_wr_command>
+	lcd_wr_command(0x01);
+ 1de:	81 e0       	ldi	r24, 0x01	; 1
+ 1e0:	0e 94 c7 00 	call	0x18e	; 0x18e <lcd_wr_command>
+	lcd_wr_command(0x06);
+ 1e4:	86 e0       	ldi	r24, 0x06	; 6
+ 1e6:	0e 94 c7 00 	call	0x18e	; 0x18e <lcd_wr_command>
+	lcd_wr_command(0x0E);
+ 1ea:	8e e0       	ldi	r24, 0x0E	; 14
+ 1ec:	0e 94 c7 00 	call	0x18e	; 0x18e <lcd_wr_command>
+	lcd_wr_command(0x80);
+ 1f0:	80 e8       	ldi	r24, 0x80	; 128
+ 1f2:	0e 94 c7 00 	call	0x18e	; 0x18e <lcd_wr_command>
+		
+}
+ 1f6:	08 95       	ret
+
+000001f8 <lcd_wr_char>:
+void lcd_wr_char(char letter)
+{
+	char temp;
+	temp = letter;
+	temp = (temp & 0xF0);
+	lcd_port &= 0x0F;
+ 1f8:	98 b1       	in	r25, 0x08	; 8
+ 1fa:	9f 70       	andi	r25, 0x0F	; 15
+ 1fc:	98 b9       	out	0x08, r25	; 8
+	lcd_port |= temp;
+ 1fe:	28 b1       	in	r18, 0x08	; 8
+ 200:	98 2f       	mov	r25, r24
+ 202:	90 7f       	andi	r25, 0xF0	; 240
+ 204:	92 2b       	or	r25, r18
+ 206:	98 b9       	out	0x08, r25	; 8
+	sbit(lcd_port,RS);
+ 208:	40 9a       	sbi	0x08, 0	; 8
+	cbit(lcd_port,RW);
+ 20a:	41 98       	cbi	0x08, 1	; 8
+	sbit(lcd_port,EN);
+ 20c:	42 9a       	sbi	0x08, 2	; 8
+ 20e:	20 e0       	ldi	r18, 0x00	; 0
+ 210:	36 e3       	ldi	r19, 0x36	; 54
+ 212:	f9 01       	movw	r30, r18
+ 214:	31 97       	sbiw	r30, 0x01	; 1
+ 216:	f1 f7       	brne	.-4      	; 0x214 <lcd_wr_char+0x1c>
+	_delay_ms(5);
+	cbit(lcd_port,EN);
+ 218:	42 98       	cbi	0x08, 2	; 8
+
+	letter = letter & 0x0F;
+	letter = letter<<4;
+	lcd_port &= 0x0F;
+ 21a:	98 b1       	in	r25, 0x08	; 8
+ 21c:	9f 70       	andi	r25, 0x0F	; 15
+ 21e:	98 b9       	out	0x08, r25	; 8
+	lcd_port |= letter;
+ 220:	98 b1       	in	r25, 0x08	; 8
+ 222:	82 95       	swap	r24
+ 224:	80 7f       	andi	r24, 0xF0	; 240
+ 226:	98 2b       	or	r25, r24
+ 228:	98 b9       	out	0x08, r25	; 8
+	sbit(lcd_port,RS);
+ 22a:	40 9a       	sbi	0x08, 0	; 8
+	cbit(lcd_port,RW);
+ 22c:	41 98       	cbi	0x08, 1	; 8
+	sbit(lcd_port,EN);
+ 22e:	42 9a       	sbi	0x08, 2	; 8
+ 230:	c9 01       	movw	r24, r18
+ 232:	01 97       	sbiw	r24, 0x01	; 1
+ 234:	f1 f7       	brne	.-4      	; 0x232 <lcd_wr_char+0x3a>
+	_delay_ms(5);
+	cbit(lcd_port,EN);
+ 236:	42 98       	cbi	0x08, 2	; 8
+}
+ 238:	08 95       	ret
+
+0000023a <lcd_home>:
+
+
+void lcd_home()
+{
+	lcd_wr_command(0x80);
+ 23a:	80 e8       	ldi	r24, 0x80	; 128
+ 23c:	0e 94 c7 00 	call	0x18e	; 0x18e <lcd_wr_command>
+}
+ 240:	08 95       	ret
+
+00000242 <lcd_string>:
+
+
+/*****Function to Print String on LCD*****/
+void lcd_string(char *str)
+{
+ 242:	cf 93       	push	r28
+ 244:	df 93       	push	r29
+ 246:	ec 01       	movw	r28, r24
+ 248:	03 c0       	rjmp	.+6      	; 0x250 <lcd_string+0xe>
+	while(*str != '\0')
+	{
+		lcd_wr_char(*str);
+ 24a:	0e 94 fc 00 	call	0x1f8	; 0x1f8 <lcd_wr_char>
+		str++;
+ 24e:	21 96       	adiw	r28, 0x01	; 1
+
+
+/*****Function to Print String on LCD*****/
+void lcd_string(char *str)
+{
+	while(*str != '\0')
+ 250:	88 81       	ld	r24, Y
+ 252:	88 23       	and	r24, r24
+ 254:	d1 f7       	brne	.-12     	; 0x24a <lcd_string+0x8>
+	{
+		lcd_wr_char(*str);
+		str++;
+	}
+}
+ 256:	df 91       	pop	r29
+ 258:	cf 91       	pop	r28
+ 25a:	08 95       	ret
+
+0000025c <lcd_cursor>:
+
+/*** Position the LCD cursor at "row", "column". ***/
+
+void lcd_cursor (char row, char column)
+{
+	switch (row) {
+ 25c:	82 30       	cpi	r24, 0x02	; 2
+ 25e:	69 f0       	breq	.+26     	; 0x27a <lcd_cursor+0x1e>
+ 260:	83 30       	cpi	r24, 0x03	; 3
+ 262:	18 f4       	brcc	.+6      	; 0x26a <lcd_cursor+0xe>
+ 264:	81 30       	cpi	r24, 0x01	; 1
+ 266:	a9 f4       	brne	.+42     	; 0x292 <lcd_cursor+0x36>
+ 268:	05 c0       	rjmp	.+10     	; 0x274 <lcd_cursor+0x18>
+ 26a:	83 30       	cpi	r24, 0x03	; 3
+ 26c:	49 f0       	breq	.+18     	; 0x280 <lcd_cursor+0x24>
+ 26e:	84 30       	cpi	r24, 0x04	; 4
+ 270:	81 f4       	brne	.+32     	; 0x292 <lcd_cursor+0x36>
+ 272:	0b c0       	rjmp	.+22     	; 0x28a <lcd_cursor+0x2e>
+		case 1: lcd_wr_command (0x80 + column - 1); break;
+ 274:	86 2f       	mov	r24, r22
+ 276:	81 58       	subi	r24, 0x81	; 129
+ 278:	05 c0       	rjmp	.+10     	; 0x284 <lcd_cursor+0x28>
+		case 2: lcd_wr_command (0xc0 + column - 1); break;
+ 27a:	86 2f       	mov	r24, r22
+ 27c:	81 54       	subi	r24, 0x41	; 65
+ 27e:	02 c0       	rjmp	.+4      	; 0x284 <lcd_cursor+0x28>
+		case 3: lcd_wr_command (0x94 + column - 1); break;
+ 280:	86 2f       	mov	r24, r22
+ 282:	8d 56       	subi	r24, 0x6D	; 109
+ 284:	0e 94 c7 00 	call	0x18e	; 0x18e <lcd_wr_command>
+ 288:	08 95       	ret
+		case 4: lcd_wr_command (0xd4 + column - 1); break;
+ 28a:	86 2f       	mov	r24, r22
+ 28c:	8d 52       	subi	r24, 0x2D	; 45
+ 28e:	0e 94 c7 00 	call	0x18e	; 0x18e <lcd_wr_command>
+ 292:	08 95       	ret
+
+00000294 <lcd_print>:
+	}
+}
+
+/***** Function To Print Any input value upto the desired digit on LCD *****/
+void lcd_print (char row, char coloumn, unsigned int value, int digits)
+{
+ 294:	0f 93       	push	r16
+ 296:	1f 93       	push	r17
+ 298:	cf 93       	push	r28
+ 29a:	df 93       	push	r29
+ 29c:	8a 01       	movw	r16, r20
+ 29e:	e9 01       	movw	r28, r18
+	unsigned char flag=0;
+	if(row==0||coloumn==0)
+ 2a0:	88 23       	and	r24, r24
+ 2a2:	11 f0       	breq	.+4      	; 0x2a8 <lcd_print+0x14>
+ 2a4:	66 23       	and	r22, r22
+ 2a6:	19 f4       	brne	.+6      	; 0x2ae <lcd_print+0x1a>
+	{
+		lcd_home();
+ 2a8:	0e 94 1d 01 	call	0x23a	; 0x23a <lcd_home>
+ 2ac:	02 c0       	rjmp	.+4      	; 0x2b2 <lcd_print+0x1e>
+	}
+	else
+	{
+		lcd_cursor(row,coloumn);
+ 2ae:	0e 94 2e 01 	call	0x25c	; 0x25c <lcd_cursor>
+	}
+	if(digits==5 || flag==1)
+ 2b2:	c5 30       	cpi	r28, 0x05	; 5
+ 2b4:	d1 05       	cpc	r29, r1
+ 2b6:	71 f4       	brne	.+28     	; 0x2d4 <lcd_print+0x40>
+	{
+		million=value/10000+48;
+ 2b8:	c8 01       	movw	r24, r16
+ 2ba:	60 e1       	ldi	r22, 0x10	; 16
+ 2bc:	77 e2       	ldi	r23, 0x27	; 39
+ 2be:	0e 94 39 05 	call	0xa72	; 0xa72 <__udivmodhi4>
+ 2c2:	cb 01       	movw	r24, r22
+ 2c4:	c0 96       	adiw	r24, 0x30	; 48
+ 2c6:	90 93 0e 02 	sts	0x020E, r25
+ 2ca:	80 93 0d 02 	sts	0x020D, r24
+		lcd_wr_char(million);
+ 2ce:	0e 94 fc 00 	call	0x1f8	; 0x1f8 <lcd_wr_char>
+ 2d2:	05 c0       	rjmp	.+10     	; 0x2de <lcd_print+0x4a>
+		flag=1;
+	}
+	if(digits==4 || flag==1)
+ 2d4:	c4 30       	cpi	r28, 0x04	; 4
+ 2d6:	d1 05       	cpc	r29, r1
+ 2d8:	11 f0       	breq	.+4      	; 0x2de <lcd_print+0x4a>
+ 2da:	80 e0       	ldi	r24, 0x00	; 0
+ 2dc:	16 c0       	rjmp	.+44     	; 0x30a <lcd_print+0x76>
+	{
+		temp = value/1000;
+ 2de:	c8 01       	movw	r24, r16
+ 2e0:	68 ee       	ldi	r22, 0xE8	; 232
+ 2e2:	73 e0       	ldi	r23, 0x03	; 3
+ 2e4:	0e 94 39 05 	call	0xa72	; 0xa72 <__udivmodhi4>
+ 2e8:	cb 01       	movw	r24, r22
+ 2ea:	60 93 0f 02 	sts	0x020F, r22
+ 2ee:	90 93 10 02 	sts	0x0210, r25
+		thousand = temp%10 + 48;
+ 2f2:	6a e0       	ldi	r22, 0x0A	; 10
+ 2f4:	70 e0       	ldi	r23, 0x00	; 0
+ 2f6:	0e 94 39 05 	call	0xa72	; 0xa72 <__udivmodhi4>
+ 2fa:	c0 96       	adiw	r24, 0x30	; 48
+ 2fc:	90 93 1b 02 	sts	0x021B, r25
+ 300:	80 93 1a 02 	sts	0x021A, r24
+		lcd_wr_char(thousand);
+ 304:	0e 94 fc 00 	call	0x1f8	; 0x1f8 <lcd_wr_char>
+ 308:	81 e0       	ldi	r24, 0x01	; 1
+		flag=1;
+	}
+	if(digits==3 || flag==1)
+ 30a:	c3 30       	cpi	r28, 0x03	; 3
+ 30c:	d1 05       	cpc	r29, r1
+ 30e:	21 f0       	breq	.+8      	; 0x318 <lcd_print+0x84>
+ 310:	81 30       	cpi	r24, 0x01	; 1
+ 312:	11 f0       	breq	.+4      	; 0x318 <lcd_print+0x84>
+ 314:	80 e0       	ldi	r24, 0x00	; 0
+ 316:	16 c0       	rjmp	.+44     	; 0x344 <lcd_print+0xb0>
+	{
+		temp = value/100;
+ 318:	c8 01       	movw	r24, r16
+ 31a:	64 e6       	ldi	r22, 0x64	; 100
+ 31c:	70 e0       	ldi	r23, 0x00	; 0
+ 31e:	0e 94 39 05 	call	0xa72	; 0xa72 <__udivmodhi4>
+ 322:	cb 01       	movw	r24, r22
+ 324:	60 93 0f 02 	sts	0x020F, r22
+ 328:	90 93 10 02 	sts	0x0210, r25
+		hundred = temp%10 + 48;
+ 32c:	6a e0       	ldi	r22, 0x0A	; 10
+ 32e:	70 e0       	ldi	r23, 0x00	; 0
+ 330:	0e 94 39 05 	call	0xa72	; 0xa72 <__udivmodhi4>
+ 334:	c0 96       	adiw	r24, 0x30	; 48
+ 336:	90 93 17 02 	sts	0x0217, r25
+ 33a:	80 93 16 02 	sts	0x0216, r24
+		lcd_wr_char(hundred);
+ 33e:	0e 94 fc 00 	call	0x1f8	; 0x1f8 <lcd_wr_char>
+ 342:	81 e0       	ldi	r24, 0x01	; 1
+		flag=1;
+	}
+	if(digits==2 || flag==1)
+ 344:	c2 30       	cpi	r28, 0x02	; 2
+ 346:	d1 05       	cpc	r29, r1
+ 348:	21 f0       	breq	.+8      	; 0x352 <lcd_print+0xbe>
+ 34a:	81 30       	cpi	r24, 0x01	; 1
+ 34c:	11 f0       	breq	.+4      	; 0x352 <lcd_print+0xbe>
+ 34e:	80 e0       	ldi	r24, 0x00	; 0
+ 350:	16 c0       	rjmp	.+44     	; 0x37e <lcd_print+0xea>
+	{
+		temp = value/10;
+ 352:	c8 01       	movw	r24, r16
+ 354:	6a e0       	ldi	r22, 0x0A	; 10
+ 356:	70 e0       	ldi	r23, 0x00	; 0
+ 358:	0e 94 39 05 	call	0xa72	; 0xa72 <__udivmodhi4>
+ 35c:	cb 01       	movw	r24, r22
+ 35e:	60 93 0f 02 	sts	0x020F, r22
+ 362:	90 93 10 02 	sts	0x0210, r25
+		tens = temp%10 + 48;
+ 366:	6a e0       	ldi	r22, 0x0A	; 10
+ 368:	70 e0       	ldi	r23, 0x00	; 0
+ 36a:	0e 94 39 05 	call	0xa72	; 0xa72 <__udivmodhi4>
+ 36e:	c0 96       	adiw	r24, 0x30	; 48
+ 370:	90 93 15 02 	sts	0x0215, r25
+ 374:	80 93 14 02 	sts	0x0214, r24
+		lcd_wr_char(tens);
+ 378:	0e 94 fc 00 	call	0x1f8	; 0x1f8 <lcd_wr_char>
+ 37c:	81 e0       	ldi	r24, 0x01	; 1
+		flag=1;
+	}
+	if(digits==1 || flag==1)
+ 37e:	c1 30       	cpi	r28, 0x01	; 1
+ 380:	d1 05       	cpc	r29, r1
+ 382:	11 f0       	breq	.+4      	; 0x388 <lcd_print+0xf4>
+ 384:	81 30       	cpi	r24, 0x01	; 1
+ 386:	61 f4       	brne	.+24     	; 0x3a0 <lcd_print+0x10c>
+	{
+		unit = value%10 + 48;
+ 388:	c8 01       	movw	r24, r16
+ 38a:	6a e0       	ldi	r22, 0x0A	; 10
+ 38c:	70 e0       	ldi	r23, 0x00	; 0
+ 38e:	0e 94 39 05 	call	0xa72	; 0xa72 <__udivmodhi4>
+ 392:	c0 96       	adiw	r24, 0x30	; 48
+ 394:	90 93 19 02 	sts	0x0219, r25
+ 398:	80 93 18 02 	sts	0x0218, r24
+		lcd_wr_char(unit);
+ 39c:	0e 94 fc 00 	call	0x1f8	; 0x1f8 <lcd_wr_char>
+	}
+	if(digits>5)
+ 3a0:	26 97       	sbiw	r28, 0x06	; 6
+ 3a2:	1c f0       	brlt	.+6      	; 0x3aa <lcd_print+0x116>
+	{
+		lcd_wr_char('E');
+ 3a4:	85 e4       	ldi	r24, 0x45	; 69
+ 3a6:	0e 94 fc 00 	call	0x1f8	; 0x1f8 <lcd_wr_char>
+	}
+	
+}
+ 3aa:	df 91       	pop	r29
+ 3ac:	cf 91       	pop	r28
+ 3ae:	1f 91       	pop	r17
+ 3b0:	0f 91       	pop	r16
+ 3b2:	08 95       	ret
+
+000003b4 <lcd_port_config>:
+ *all the LCD pin's direction set as output
+ *all the LCD pins are set to logic 0 except PORTC 7
+ */
+void lcd_port_config (void)
+{
+ DDRC = DDRC | 0xF7; //all the LCD pin's direction set as output
+ 3b4:	87 b1       	in	r24, 0x07	; 7
+ 3b6:	87 6f       	ori	r24, 0xF7	; 247
+ 3b8:	87 b9       	out	0x07, r24	; 7
+ PORTC = PORTC & 0x80; // all the LCD pins are set to logic 0 except PORTC 7
+ 3ba:	88 b1       	in	r24, 0x08	; 8
+ 3bc:	80 78       	andi	r24, 0x80	; 128
+ 3be:	88 b9       	out	0x08, r24	; 8
+}
+ 3c0:	08 95       	ret
+
+000003c2 <left_position_encoder_interrupt_init>:
+/**
+ * Left shaft encoder init.
+ */
+void left_position_encoder_interrupt_init(void)
+{
+	cli();
+ 3c2:	f8 94       	cli
+	SetBit(EICRB,_BV(ISC41)); //The falling edge between two samples of INTn generates an interrupt request.
+ 3c4:	ea e6       	ldi	r30, 0x6A	; 106
+ 3c6:	f0 e0       	ldi	r31, 0x00	; 0
+ 3c8:	80 81       	ld	r24, Z
+ 3ca:	82 60       	ori	r24, 0x02	; 2
+ 3cc:	80 83       	st	Z, r24
+	SetBit(EIMSK,_BV(INT4)); //INT4 enable
+ 3ce:	ec 9a       	sbi	0x1d, 4	; 29
+	sei();
+ 3d0:	78 94       	sei
+}
+ 3d2:	08 95       	ret
+
+000003d4 <right_position_encoder_interrupt_init>:
+/**
+ * Right shaft encoder init.
+ */
+void right_position_encoder_interrupt_init(void)
+{
+	cli();
+ 3d4:	f8 94       	cli
+	SetBit(EICRB,_BV(ISC51)); //The falling edge between two samples of INTn generates an interrupt request.
+ 3d6:	ea e6       	ldi	r30, 0x6A	; 106
+ 3d8:	f0 e0       	ldi	r31, 0x00	; 0
+ 3da:	80 81       	ld	r24, Z
+ 3dc:	88 60       	ori	r24, 0x08	; 8
+ 3de:	80 83       	st	Z, r24
+	SetBit(EIMSK,_BV(INT5)); //INT5 enable
+ 3e0:	ed 9a       	sbi	0x1d, 5	; 29
+	sei();
+ 3e2:	78 94       	sei
+}
+ 3e4:	08 95       	ret
+
+000003e6 <__vector_5>:
+
+/**
+ * Interrupt handler for left shaft count change.
+ */
+ISR(INT4_vect)
+{
+ 3e6:	1f 92       	push	r1
+ 3e8:	0f 92       	push	r0
+ 3ea:	0f b6       	in	r0, 0x3f	; 63
+ 3ec:	0f 92       	push	r0
+ 3ee:	11 24       	eor	r1, r1
+ 3f0:	8f 93       	push	r24
+	ShaftCountLeft++;
+ 3f2:	80 91 0b 02 	lds	r24, 0x020B
+ 3f6:	8f 5f       	subi	r24, 0xFF	; 255
+ 3f8:	80 93 0b 02 	sts	0x020B, r24
+}
+ 3fc:	8f 91       	pop	r24
+ 3fe:	0f 90       	pop	r0
+ 400:	0f be       	out	0x3f, r0	; 63
+ 402:	0f 90       	pop	r0
+ 404:	1f 90       	pop	r1
+ 406:	18 95       	reti
+
+00000408 <__vector_6>:
+
+/**
+ * Interrupt handler for right shaft count change.
+ */
+ISR(INT5_vect)
+{
+ 408:	1f 92       	push	r1
+ 40a:	0f 92       	push	r0
+ 40c:	0f b6       	in	r0, 0x3f	; 63
+ 40e:	0f 92       	push	r0
+ 410:	11 24       	eor	r1, r1
+ 412:	8f 93       	push	r24
+	ShaftCountRight++;
+ 414:	80 91 0c 02 	lds	r24, 0x020C
+ 418:	8f 5f       	subi	r24, 0xFF	; 255
+ 41a:	80 93 0c 02 	sts	0x020C, r24
+}
+ 41e:	8f 91       	pop	r24
+ 420:	0f 90       	pop	r0
+ 422:	0f be       	out	0x3f, r0	; 63
+ 424:	0f 90       	pop	r0
+ 426:	1f 90       	pop	r1
+ 428:	18 95       	reti
+
+0000042a <reset_shaft_counters>:
+/**
+ * Reset shaft counters.
+ */
+void reset_shaft_counters()
+{
+	ShaftCountLeft = 0;
+ 42a:	10 92 0b 02 	sts	0x020B, r1
+	ShaftCountRight = 0;
+ 42e:	10 92 0c 02 	sts	0x020C, r1
+}
+ 432:	08 95       	ret
+
+00000434 <adc_pin_config>:
+/**
+ * Set ADC pin configuration
+ */
+void adc_pin_config (void)
+{
+ DDRF = 0x00; 
+ 434:	10 ba       	out	0x10, r1	; 16
+ PORTF = 0x00;
+ 436:	11 ba       	out	0x11, r1	; 17
+ DDRK = 0x00;
+ 438:	10 92 07 01 	sts	0x0107, r1
+ PORTK = 0x00;
+ 43c:	10 92 08 01 	sts	0x0108, r1
+}
+ 440:	08 95       	ret
+
+00000442 <motion_pin_config>:
+/**
+ * Function to configure ports to enable robot's motion
+ */
+void motion_pin_config (void) 
+{
+ DDRA = DDRA | 0x0F;
+ 442:	81 b1       	in	r24, 0x01	; 1
+ 444:	8f 60       	ori	r24, 0x0F	; 15
+ 446:	81 b9       	out	0x01, r24	; 1
+ PORTA = PORTA & 0xF0;
+ 448:	82 b1       	in	r24, 0x02	; 2
+ 44a:	80 7f       	andi	r24, 0xF0	; 240
+ 44c:	82 b9       	out	0x02, r24	; 2
+ DDRL = DDRL | 0x18;   //Setting PL3 and PL4 pins as output for PWM generation
+ 44e:	ea e0       	ldi	r30, 0x0A	; 10
+ 450:	f1 e0       	ldi	r31, 0x01	; 1
+ 452:	80 81       	ld	r24, Z
+ 454:	88 61       	ori	r24, 0x18	; 24
+ 456:	80 83       	st	Z, r24
+ PORTL = PORTL | 0x18; //PL3 and PL4 pins are for velocity control using PWM.
+ 458:	eb e0       	ldi	r30, 0x0B	; 11
+ 45a:	f1 e0       	ldi	r31, 0x01	; 1
+ 45c:	80 81       	ld	r24, Z
+ 45e:	88 61       	ori	r24, 0x18	; 24
+ 460:	80 83       	st	Z, r24
+}
+ 462:	08 95       	ret
+
+00000464 <port_init>:
+ *all the LCD pin's direction set as output
+ *all the LCD pins are set to logic 0 except PORTC 7
+ */
+void lcd_port_config (void)
+{
+ DDRC = DDRC | 0xF7; //all the LCD pin's direction set as output
+ 464:	87 b1       	in	r24, 0x07	; 7
+ 466:	87 6f       	ori	r24, 0xF7	; 247
+ 468:	87 b9       	out	0x07, r24	; 7
+ PORTC = PORTC & 0x80; // all the LCD pins are set to logic 0 except PORTC 7
+ 46a:	88 b1       	in	r24, 0x08	; 8
+ 46c:	80 78       	andi	r24, 0x80	; 128
+ 46e:	88 b9       	out	0x08, r24	; 8
+/**
+ * Set ADC pin configuration
+ */
+void adc_pin_config (void)
+{
+ DDRF = 0x00; 
+ 470:	10 ba       	out	0x10, r1	; 16
+ PORTF = 0x00;
+ 472:	11 ba       	out	0x11, r1	; 17
+ DDRK = 0x00;
+ 474:	10 92 07 01 	sts	0x0107, r1
+ PORTK = 0x00;
+ 478:	10 92 08 01 	sts	0x0108, r1
+ */
+void port_init()
+{
+	lcd_port_config();
+	adc_pin_config();
+	motion_pin_config();	
+ 47c:	0e 94 21 02 	call	0x442	; 0x442 <motion_pin_config>
+}
+ 480:	08 95       	ret
+
+00000482 <timer5_init>:
+* PWM 8bit fast, TOP=0x00FF
+* Timer Frequency:674.988Hz
+*/
+void timer5_init()
+{
+	TCCR5B = 0x00;			//Stop
+ 482:	e1 e2       	ldi	r30, 0x21	; 33
+ 484:	f1 e0       	ldi	r31, 0x01	; 1
+ 486:	10 82       	st	Z, r1
+	TCNT5H = 0xFF;			//Counter higher 8-bit value to which OCR5xH value is compared with
+ 488:	9f ef       	ldi	r25, 0xFF	; 255
+ 48a:	90 93 25 01 	sts	0x0125, r25
+	TCNT5L = 0x01;			//Counter lower 8-bit value to which OCR5xH value is compared with
+ 48e:	81 e0       	ldi	r24, 0x01	; 1
+ 490:	80 93 24 01 	sts	0x0124, r24
+	OCR5AH = 0x00;			//Output compare register high value for Left Motor
+ 494:	10 92 29 01 	sts	0x0129, r1
+	OCR5AL = 0xFF;			//Output compare register low value for Left Motor
+ 498:	90 93 28 01 	sts	0x0128, r25
+	OCR5BH = 0x00;			//Output compare register high value for Right Motor
+ 49c:	10 92 2b 01 	sts	0x012B, r1
+	OCR5BL = 0xFF;			//Output compare register low value for Right Motor
+ 4a0:	90 93 2a 01 	sts	0x012A, r25
+	OCR5CH = 0x00;			//Output compare register high value for Motor C1
+ 4a4:	10 92 2d 01 	sts	0x012D, r1
+	OCR5CL = 0xFF;			//Output compare register low value for Motor C1
+ 4a8:	90 93 2c 01 	sts	0x012C, r25
+	TCCR5A = 0xA9;			/*{COM5A1=1, COM5A0=0; COM5B1=1, COM5B0=0; COM5C1=1 COM5C0=0}
+ 4ac:	89 ea       	ldi	r24, 0xA9	; 169
+ 4ae:	80 93 20 01 	sts	0x0120, r24
+ 					  			For Overriding normal port functionalit to OCRnA outputs.
+				  	  			{WGM51=0, WGM50=1} Along With WGM52 in TCCR5B for Selecting FAST PWM 8-bit Mode*/
+	TCCR5B = 0x0B;			//WGM12=1; CS12=0, CS11=1, CS10=1 (Prescaler=64)
+ 4b2:	8b e0       	ldi	r24, 0x0B	; 11
+ 4b4:	80 83       	st	Z, r24
+}
+ 4b6:	08 95       	ret
+
+000004b8 <adc_init>:
+/**
+ * Initialize the ADC module.
+ */
+void adc_init()
+{
+	ADCSRA = 0x00;
+ 4b8:	ea e7       	ldi	r30, 0x7A	; 122
+ 4ba:	f0 e0       	ldi	r31, 0x00	; 0
+ 4bc:	10 82       	st	Z, r1
+	ADCSRB = 0x00;		//MUX5 = 0
+ 4be:	10 92 7b 00 	sts	0x007B, r1
+	ADMUX = 0x20;		//Vref=5V external --- ADLAR=1 --- MUX4:0 = 0000
+ 4c2:	80 e2       	ldi	r24, 0x20	; 32
+ 4c4:	80 93 7c 00 	sts	0x007C, r24
+	ACSR = 0x80;
+ 4c8:	80 e8       	ldi	r24, 0x80	; 128
+ 4ca:	80 bf       	out	0x30, r24	; 48
+	ADCSRA = 0x86;		//ADEN=1 --- ADIE=1 --- ADPS2:0 = 1 1 0
+ 4cc:	86 e8       	ldi	r24, 0x86	; 134
+ 4ce:	80 83       	st	Z, r24
+}
+ 4d0:	08 95       	ret
+
+000004d2 <ADC_Conversion>:
+
+/**
+ * ADC Conversion
+ */
+unsigned char ADC_Conversion(unsigned char Ch) 
+{
+ 4d2:	98 2f       	mov	r25, r24
+	unsigned char a;
+	if(Ch>7)
+ 4d4:	88 30       	cpi	r24, 0x08	; 8
+ 4d6:	18 f0       	brcs	.+6      	; 0x4de <ADC_Conversion+0xc>
+	{
+		ADCSRB = 0x08;
+ 4d8:	88 e0       	ldi	r24, 0x08	; 8
+ 4da:	80 93 7b 00 	sts	0x007B, r24
+	}
+	Ch = Ch & 0x07;  			
+	ADMUX= 0x20| Ch;	   		
+ 4de:	97 70       	andi	r25, 0x07	; 7
+ 4e0:	90 62       	ori	r25, 0x20	; 32
+ 4e2:	90 93 7c 00 	sts	0x007C, r25
+	ADCSRA = ADCSRA | 0x40;		//Set start conversion bit
+ 4e6:	80 91 7a 00 	lds	r24, 0x007A
+ 4ea:	80 64       	ori	r24, 0x40	; 64
+ 4ec:	80 93 7a 00 	sts	0x007A, r24
+	while((ADCSRA&0x10)==0);	//Wait for conversion to complete
+ 4f0:	80 91 7a 00 	lds	r24, 0x007A
+ 4f4:	84 ff       	sbrs	r24, 4
+ 4f6:	fc cf       	rjmp	.-8      	; 0x4f0 <ADC_Conversion+0x1e>
+	a=ADCH;
+ 4f8:	80 91 79 00 	lds	r24, 0x0079
+	ADCSRA = ADCSRA|0x10; //clear ADIF (ADC Interrupt Flag) by writing 1 to it
+ 4fc:	90 91 7a 00 	lds	r25, 0x007A
+ 500:	90 61       	ori	r25, 0x10	; 16
+ 502:	90 93 7a 00 	sts	0x007A, r25
+	ADCSRB = 0x00;
+ 506:	10 92 7b 00 	sts	0x007B, r1
+	return a;
+}
+ 50a:	08 95       	ret
+
+0000050c <print_sensor>:
+
+/**
+ * Print Sensor Values At Desired Row And Coloumn Location on LCD
+ */
+void print_sensor(char row, char coloumn,unsigned char channel)
+{
+ 50c:	0f 93       	push	r16
+ 50e:	1f 93       	push	r17
+ 510:	18 2f       	mov	r17, r24
+ 512:	06 2f       	mov	r16, r22
+ 514:	84 2f       	mov	r24, r20
+	
+	ADC_Value = ADC_Conversion(channel);
+ 516:	0e 94 69 02 	call	0x4d2	; 0x4d2 <ADC_Conversion>
+ 51a:	48 2f       	mov	r20, r24
+ 51c:	80 93 11 02 	sts	0x0211, r24
+	lcd_print(row, coloumn, ADC_Value, 3);
+ 520:	81 2f       	mov	r24, r17
+ 522:	60 2f       	mov	r22, r16
+ 524:	50 e0       	ldi	r21, 0x00	; 0
+ 526:	23 e0       	ldi	r18, 0x03	; 3
+ 528:	30 e0       	ldi	r19, 0x00	; 0
+ 52a:	0e 94 4a 01 	call	0x294	; 0x294 <lcd_print>
+}
+ 52e:	1f 91       	pop	r17
+ 530:	0f 91       	pop	r16
+ 532:	08 95       	ret
+
+00000534 <velocity>:
+/**
+ * Set velocity
+ */
+void velocity (unsigned char left_motor, unsigned char right_motor)
+{
+	OCR5AL = (unsigned char)left_motor;
+ 534:	80 93 28 01 	sts	0x0128, r24
+	OCR5BL = (unsigned char)right_motor;
+ 538:	60 93 2a 01 	sts	0x012A, r22
+}
+ 53c:	08 95       	ret
+
+0000053e <motion_set>:
+void motion_set (unsigned char Direction)
+{
+ unsigned char PortARestore = 0;
+
+ Direction &= 0x0F; 					// removing upper nibbel for the protection
+ PortARestore = PORTA; 				// reading the PORTA original status
+ 53e:	92 b1       	in	r25, 0x02	; 2
+ PortARestore &= 0xF0; 				// making lower direction nibbel to 0
+ 540:	90 7f       	andi	r25, 0xF0	; 240
+ PortARestore |= Direction; 		// adding lower nibbel for forward command and restoring the PORTA status
+ 542:	8f 70       	andi	r24, 0x0F	; 15
+ 544:	89 2b       	or	r24, r25
+ PORTA = PortARestore; 				// executing the command
+ 546:	82 b9       	out	0x02, r24	; 2
+}
+ 548:	08 95       	ret
+
+0000054a <forward>:
+void motion_set (unsigned char Direction)
+{
+ unsigned char PortARestore = 0;
+
+ Direction &= 0x0F; 					// removing upper nibbel for the protection
+ PortARestore = PORTA; 				// reading the PORTA original status
+ 54a:	82 b1       	in	r24, 0x02	; 2
+ PortARestore &= 0xF0; 				// making lower direction nibbel to 0
+ 54c:	80 7f       	andi	r24, 0xF0	; 240
+ PortARestore |= Direction; 		// adding lower nibbel for forward command and restoring the PORTA status
+ 54e:	86 60       	ori	r24, 0x06	; 6
+ PORTA = PortARestore; 				// executing the command
+ 550:	82 b9       	out	0x02, r24	; 2
+ * Set bot direction forward.
+ */
+void forward (void) 
+{
+  motion_set (0x06);
+}
+ 552:	08 95       	ret
+
+00000554 <stop>:
+void motion_set (unsigned char Direction)
+{
+ unsigned char PortARestore = 0;
+
+ Direction &= 0x0F; 					// removing upper nibbel for the protection
+ PortARestore = PORTA; 				// reading the PORTA original status
+ 554:	82 b1       	in	r24, 0x02	; 2
+ PortARestore &= 0xF0; 				// making lower direction nibbel to 0
+ 556:	80 7f       	andi	r24, 0xF0	; 240
+ PortARestore |= Direction; 		// adding lower nibbel for forward command and restoring the PORTA status
+ PORTA = PortARestore; 				// executing the command
+ 558:	82 b9       	out	0x02, r24	; 2
+ * Stop the bot
+ */
+void stop (void)
+{
+  motion_set (0x00);
+}
+ 55a:	08 95       	ret
+
+0000055c <init_devices>:
+/**
+ * Calls the init methods for all required devices.
+ */
+void init_devices (void)
+{
+ 	cli(); 
+ 55c:	f8 94       	cli
+	port_init();
+ 55e:	0e 94 32 02 	call	0x464	; 0x464 <port_init>
+/**
+ * Initialize the ADC module.
+ */
+void adc_init()
+{
+	ADCSRA = 0x00;
+ 562:	ea e7       	ldi	r30, 0x7A	; 122
+ 564:	f0 e0       	ldi	r31, 0x00	; 0
+ 566:	10 82       	st	Z, r1
+	ADCSRB = 0x00;		//MUX5 = 0
+ 568:	10 92 7b 00 	sts	0x007B, r1
+	ADMUX = 0x20;		//Vref=5V external --- ADLAR=1 --- MUX4:0 = 0000
+ 56c:	80 e2       	ldi	r24, 0x20	; 32
+ 56e:	80 93 7c 00 	sts	0x007C, r24
+	ACSR = 0x80;
+ 572:	80 e8       	ldi	r24, 0x80	; 128
+ 574:	80 bf       	out	0x30, r24	; 48
+	ADCSRA = 0x86;		//ADEN=1 --- ADIE=1 --- ADPS2:0 = 1 1 0
+ 576:	86 e8       	ldi	r24, 0x86	; 134
+ 578:	80 83       	st	Z, r24
+void init_devices (void)
+{
+ 	cli(); 
+	port_init();
+	adc_init();
+	timer5_init();
+ 57a:	0e 94 41 02 	call	0x482	; 0x482 <timer5_init>
+	sei();   
+ 57e:	78 94       	sei
+}
+ 580:	08 95       	ret
+
+00000582 <print_sensor_data>:
+/**
+  Prints White line sensor values on the screen
+*/
+void print_sensor_data()
+{
+		print_sensor(1,1,3);	//Prints value of White Line Sensor1
+ 582:	81 e0       	ldi	r24, 0x01	; 1
+ 584:	61 e0       	ldi	r22, 0x01	; 1
+ 586:	43 e0       	ldi	r20, 0x03	; 3
+ 588:	0e 94 86 02 	call	0x50c	; 0x50c <print_sensor>
+		print_sensor(1,5,2);	//Prints Value of White Line Sensor2
+ 58c:	81 e0       	ldi	r24, 0x01	; 1
+ 58e:	65 e0       	ldi	r22, 0x05	; 5
+ 590:	42 e0       	ldi	r20, 0x02	; 2
+ 592:	0e 94 86 02 	call	0x50c	; 0x50c <print_sensor>
+		print_sensor(1,9,1);	//Prints Value of White Line Sensor3
+ 596:	81 e0       	ldi	r24, 0x01	; 1
+ 598:	69 e0       	ldi	r22, 0x09	; 9
+ 59a:	41 e0       	ldi	r20, 0x01	; 1
+ 59c:	0e 94 86 02 	call	0x50c	; 0x50c <print_sensor>
+}
+ 5a0:	08 95       	ret
+
+000005a2 <read_sensors>:
+/**
+  Reads all relevant sensor values and stores it in appropriate global variables.
+*/
+void read_sensors()
+{
+	Left_white_line = ADC_Conversion(LEFT_SENSOR);	
+ 5a2:	83 e0       	ldi	r24, 0x03	; 3
+ 5a4:	0e 94 69 02 	call	0x4d2	; 0x4d2 <ADC_Conversion>
+ 5a8:	80 93 05 02 	sts	0x0205, r24
+	Center_white_line = ADC_Conversion(CENTER_SENSOR);	
+ 5ac:	82 e0       	ldi	r24, 0x02	; 2
+ 5ae:	0e 94 69 02 	call	0x4d2	; 0x4d2 <ADC_Conversion>
+ 5b2:	80 93 06 02 	sts	0x0206, r24
+	Right_white_line = ADC_Conversion(RIGHT_SENSOR);	
+ 5b6:	81 e0       	ldi	r24, 0x01	; 1
+ 5b8:	0e 94 69 02 	call	0x4d2	; 0x4d2 <ADC_Conversion>
+ 5bc:	80 93 07 02 	sts	0x0207, r24
+	Front_IR_Sensor = ADC_Conversion(FRONT_IR_SENSOR);
+ 5c0:	86 e0       	ldi	r24, 0x06	; 6
+ 5c2:	0e 94 69 02 	call	0x4d2	; 0x4d2 <ADC_Conversion>
+ 5c6:	80 93 08 02 	sts	0x0208, r24
+}
+ 5ca:	08 95       	ret
+
+000005cc <buzzer_on>:
+  Changes status of the bot to BLOCKED, which is sent to the server (which in turn sends an SMS to inform the guards to take appropriate actions.)
+*/
+void buzzer_on (void)
+{
+ unsigned char port_restore = 0;
+ port_restore = PINC;
+ 5cc:	86 b1       	in	r24, 0x06	; 6
+ port_restore = port_restore | 0x08;
+ 5ce:	88 60       	ori	r24, 0x08	; 8
+ PORTC = port_restore;
+ 5d0:	88 b9       	out	0x08, r24	; 8
+ status = BLOCKED;
+ 5d2:	10 92 02 02 	sts	0x0202, r1
+}
+ 5d6:	08 95       	ret
+
+000005d8 <buzzer_off>:
+  Switches the buzzer off.
+*/
+void buzzer_off (void)
+{
+ unsigned char port_restore = 0;
+ port_restore = PINC;
+ 5d8:	86 b1       	in	r24, 0x06	; 6
+ port_restore = port_restore & 0xF7;
+ 5da:	87 7f       	andi	r24, 0xF7	; 247
+ PORTC = port_restore;
+ 5dc:	88 b9       	out	0x08, r24	; 8
+ status = BLOCKED;
+ 5de:	10 92 02 02 	sts	0x0202, r1
+}
+ 5e2:	08 95       	ret
+
+000005e4 <turn_right>:
+  Switches the buzzer off.
+*/
+void buzzer_off (void)
+{
+ unsigned char port_restore = 0;
+ port_restore = PINC;
+ 5e4:	86 b1       	in	r24, 0x06	; 6
+ port_restore = port_restore & 0xF7;
+ 5e6:	87 7f       	andi	r24, 0xF7	; 247
+ PORTC = port_restore;
+ 5e8:	88 b9       	out	0x08, r24	; 8
+ status = BLOCKED;
+ 5ea:	10 92 02 02 	sts	0x0202, r1
+void motion_set (unsigned char Direction)
+{
+ unsigned char PortARestore = 0;
+
+ Direction &= 0x0F; 					// removing upper nibbel for the protection
+ PortARestore = PORTA; 				// reading the PORTA original status
+ 5ee:	82 b1       	in	r24, 0x02	; 2
+ PortARestore &= 0xF0; 				// making lower direction nibbel to 0
+ 5f0:	80 7f       	andi	r24, 0xF0	; 240
+ PortARestore |= Direction; 		// adding lower nibbel for forward command and restoring the PORTA status
+ 5f2:	8a 60       	ori	r24, 0x0A	; 10
+ PORTA = PortARestore; 				// executing the command
+ 5f4:	82 b9       	out	0x02, r24	; 2
+/**
+ * Set velocity
+ */
+void velocity (unsigned char left_motor, unsigned char right_motor)
+{
+	OCR5AL = (unsigned char)left_motor;
+ 5f6:	84 e6       	ldi	r24, 0x64	; 100
+ 5f8:	80 93 28 01 	sts	0x0128, r24
+	OCR5BL = (unsigned char)right_motor;
+ 5fc:	80 93 2a 01 	sts	0x012A, r24
+ 600:	80 e1       	ldi	r24, 0x10	; 16
+ 602:	97 e2       	ldi	r25, 0x27	; 39
+ 604:	24 e1       	ldi	r18, 0x14	; 20
+ 606:	31 e0       	ldi	r19, 0x01	; 1
+ 608:	f9 01       	movw	r30, r18
+ 60a:	31 97       	sbiw	r30, 0x01	; 1
+ 60c:	f1 f7       	brne	.-4      	; 0x60a <turn_right+0x26>
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+ 60e:	01 97       	sbiw	r24, 0x01	; 1
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+ 610:	d9 f7       	brne	.-10     	; 0x608 <turn_right+0x24>
+	buzzer_off();
+	motion_set(0x0A);
+	velocity(100,100);
+	_delay_ms(1000);
+	while(1){
+		print_sensor_data();
+ 612:	0e 94 c1 02 	call	0x582	; 0x582 <print_sensor_data>
+		read_sensors();
+ 616:	0e 94 d1 02 	call	0x5a2	; 0x5a2 <read_sensors>
+		if(Center_white_line < W_THRESHOLD) break;
+ 61a:	80 91 06 02 	lds	r24, 0x0206
+ 61e:	8f 30       	cpi	r24, 0x0F	; 15
+ 620:	c0 f7       	brcc	.-16     	; 0x612 <turn_right+0x2e>
+/**
+ * Set velocity
+ */
+void velocity (unsigned char left_motor, unsigned char right_motor)
+{
+	OCR5AL = (unsigned char)left_motor;
+ 622:	10 92 28 01 	sts	0x0128, r1
+	OCR5BL = (unsigned char)right_motor;
+ 626:	10 92 2a 01 	sts	0x012A, r1
+		print_sensor_data();
+		read_sensors();
+		if(Center_white_line < W_THRESHOLD) break;
+	}
+	velocity(0,0);
+}
+ 62a:	08 95       	ret
+
+0000062c <turn_left>:
+  Switches the buzzer off.
+*/
+void buzzer_off (void)
+{
+ unsigned char port_restore = 0;
+ port_restore = PINC;
+ 62c:	86 b1       	in	r24, 0x06	; 6
+ port_restore = port_restore & 0xF7;
+ 62e:	87 7f       	andi	r24, 0xF7	; 247
+ PORTC = port_restore;
+ 630:	88 b9       	out	0x08, r24	; 8
+ status = BLOCKED;
+ 632:	10 92 02 02 	sts	0x0202, r1
+void motion_set (unsigned char Direction)
+{
+ unsigned char PortARestore = 0;
+
+ Direction &= 0x0F; 					// removing upper nibbel for the protection
+ PortARestore = PORTA; 				// reading the PORTA original status
+ 636:	82 b1       	in	r24, 0x02	; 2
+ PortARestore &= 0xF0; 				// making lower direction nibbel to 0
+ 638:	80 7f       	andi	r24, 0xF0	; 240
+ PortARestore |= Direction; 		// adding lower nibbel for forward command and restoring the PORTA status
+ 63a:	85 60       	ori	r24, 0x05	; 5
+ PORTA = PortARestore; 				// executing the command
+ 63c:	82 b9       	out	0x02, r24	; 2
+/**
+ * Set velocity
+ */
+void velocity (unsigned char left_motor, unsigned char right_motor)
+{
+	OCR5AL = (unsigned char)left_motor;
+ 63e:	84 e6       	ldi	r24, 0x64	; 100
+ 640:	80 93 28 01 	sts	0x0128, r24
+	OCR5BL = (unsigned char)right_motor;
+ 644:	80 93 2a 01 	sts	0x012A, r24
+ 648:	80 e1       	ldi	r24, 0x10	; 16
+ 64a:	97 e2       	ldi	r25, 0x27	; 39
+ 64c:	24 e1       	ldi	r18, 0x14	; 20
+ 64e:	31 e0       	ldi	r19, 0x01	; 1
+ 650:	f9 01       	movw	r30, r18
+ 652:	31 97       	sbiw	r30, 0x01	; 1
+ 654:	f1 f7       	brne	.-4      	; 0x652 <turn_left+0x26>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+ 656:	01 97       	sbiw	r24, 0x01	; 1
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+ 658:	d9 f7       	brne	.-10     	; 0x650 <turn_left+0x24>
+	buzzer_off();
+	motion_set(0x05);
+	velocity(100,100);
+	_delay_ms(1000);
+	while(1){
+		print_sensor_data();
+ 65a:	0e 94 c1 02 	call	0x582	; 0x582 <print_sensor_data>
+		read_sensors();
+ 65e:	0e 94 d1 02 	call	0x5a2	; 0x5a2 <read_sensors>
+		if(Center_white_line < W_THRESHOLD) break;
+ 662:	80 91 06 02 	lds	r24, 0x0206
+ 666:	8f 30       	cpi	r24, 0x0F	; 15
+ 668:	c0 f7       	brcc	.-16     	; 0x65a <turn_left+0x2e>
+/**
+ * Set velocity
+ */
+void velocity (unsigned char left_motor, unsigned char right_motor)
+{
+	OCR5AL = (unsigned char)left_motor;
+ 66a:	10 92 28 01 	sts	0x0128, r1
+	OCR5BL = (unsigned char)right_motor;
+ 66e:	10 92 2a 01 	sts	0x012A, r1
+		print_sensor_data();
+		read_sensors();
+		if(Center_white_line < W_THRESHOLD) break;
+	}
+	velocity(0,0);
+}
+ 672:	08 95       	ret
+
+00000674 <go_distance>:
+
+/**
+  Go forward by a certain specified number of steps.
+*/
+void go_distance(unsigned char x)
+{
+ 674:	cf 93       	push	r28
+ 676:	df 93       	push	r29
+/**
+ * Reset shaft counters.
+ */
+void reset_shaft_counters()
+{
+	ShaftCountLeft = 0;
+ 678:	10 92 0b 02 	sts	0x020B, r1
+	ShaftCountRight = 0;
+ 67c:	10 92 0c 02 	sts	0x020C, r1
+void motion_set (unsigned char Direction)
+{
+ unsigned char PortARestore = 0;
+
+ Direction &= 0x0F; 					// removing upper nibbel for the protection
+ PortARestore = PORTA; 				// reading the PORTA original status
+ 680:	92 b1       	in	r25, 0x02	; 2
+ PortARestore &= 0xF0; 				// making lower direction nibbel to 0
+ 682:	90 7f       	andi	r25, 0xF0	; 240
+ PortARestore |= Direction; 		// adding lower nibbel for forward command and restoring the PORTA status
+ 684:	96 60       	ori	r25, 0x06	; 6
+ PORTA = PortARestore; 				// executing the command
+ 686:	92 b9       	out	0x02, r25	; 2
+/**
+ * Set velocity
+ */
+void velocity (unsigned char left_motor, unsigned char right_motor)
+{
+	OCR5AL = (unsigned char)left_motor;
+ 688:	94 e6       	ldi	r25, 0x64	; 100
+ 68a:	90 93 28 01 	sts	0x0128, r25
+	OCR5BL = (unsigned char)right_motor;
+ 68e:	90 93 2a 01 	sts	0x012A, r25
+void go_distance(unsigned char x)
+{
+	reset_shaft_counters();
+   forward();
+	velocity(100,100);
+	PORTJ = 0x00;
+ 692:	10 92 05 01 	sts	0x0105, r1
+		else
+		{
+			forward();
+			buzzer_off();
+		}
+		if((ShaftCountLeft + ShaftCountRight)*5 > x*10)
+ 696:	9a e0       	ldi	r25, 0x0A	; 10
+ 698:	89 9f       	mul	r24, r25
+ 69a:	e0 01       	movw	r28, r0
+ 69c:	11 24       	eor	r1, r1
+	reset_shaft_counters();
+   forward();
+	velocity(100,100);
+	PORTJ = 0x00;
+	while(1){
+		read_sensors();
+ 69e:	0e 94 d1 02 	call	0x5a2	; 0x5a2 <read_sensors>
+		print_sensor_data();
+ 6a2:	0e 94 c1 02 	call	0x582	; 0x582 <print_sensor_data>
+		if( Front_IR_Sensor<0xF0)
+ 6a6:	80 91 08 02 	lds	r24, 0x0208
+ 6aa:	80 3f       	cpi	r24, 0xF0	; 240
+ 6ac:	30 f4       	brcc	.+12     	; 0x6ba <go_distance+0x46>
+void motion_set (unsigned char Direction)
+{
+ unsigned char PortARestore = 0;
+
+ Direction &= 0x0F; 					// removing upper nibbel for the protection
+ PortARestore = PORTA; 				// reading the PORTA original status
+ 6ae:	82 b1       	in	r24, 0x02	; 2
+ PortARestore &= 0xF0; 				// making lower direction nibbel to 0
+ 6b0:	80 7f       	andi	r24, 0xF0	; 240
+ PortARestore |= Direction; 		// adding lower nibbel for forward command and restoring the PORTA status
+ PORTA = PortARestore; 				// executing the command
+ 6b2:	82 b9       	out	0x02, r24	; 2
+  Changes status of the bot to BLOCKED, which is sent to the server (which in turn sends an SMS to inform the guards to take appropriate actions.)
+*/
+void buzzer_on (void)
+{
+ unsigned char port_restore = 0;
+ port_restore = PINC;
+ 6b4:	86 b1       	in	r24, 0x06	; 6
+ port_restore = port_restore | 0x08;
+ 6b6:	88 60       	ori	r24, 0x08	; 8
+ 6b8:	06 c0       	rjmp	.+12     	; 0x6c6 <go_distance+0x52>
+void motion_set (unsigned char Direction)
+{
+ unsigned char PortARestore = 0;
+
+ Direction &= 0x0F; 					// removing upper nibbel for the protection
+ PortARestore = PORTA; 				// reading the PORTA original status
+ 6ba:	82 b1       	in	r24, 0x02	; 2
+ PortARestore &= 0xF0; 				// making lower direction nibbel to 0
+ 6bc:	80 7f       	andi	r24, 0xF0	; 240
+ PortARestore |= Direction; 		// adding lower nibbel for forward command and restoring the PORTA status
+ 6be:	86 60       	ori	r24, 0x06	; 6
+ PORTA = PortARestore; 				// executing the command
+ 6c0:	82 b9       	out	0x02, r24	; 2
+  Switches the buzzer off.
+*/
+void buzzer_off (void)
+{
+ unsigned char port_restore = 0;
+ port_restore = PINC;
+ 6c2:	86 b1       	in	r24, 0x06	; 6
+ port_restore = port_restore & 0xF7;
+ 6c4:	87 7f       	andi	r24, 0xF7	; 247
+ PORTC = port_restore;
+ 6c6:	88 b9       	out	0x08, r24	; 8
+ status = BLOCKED;
+ 6c8:	10 92 02 02 	sts	0x0202, r1
+		else
+		{
+			forward();
+			buzzer_off();
+		}
+		if((ShaftCountLeft + ShaftCountRight)*5 > x*10)
+ 6cc:	80 91 0b 02 	lds	r24, 0x020B
+ 6d0:	20 91 0c 02 	lds	r18, 0x020C
+ 6d4:	90 e0       	ldi	r25, 0x00	; 0
+ 6d6:	82 0f       	add	r24, r18
+ 6d8:	91 1d       	adc	r25, r1
+ 6da:	9c 01       	movw	r18, r24
+ 6dc:	22 0f       	add	r18, r18
+ 6de:	33 1f       	adc	r19, r19
+ 6e0:	22 0f       	add	r18, r18
+ 6e2:	33 1f       	adc	r19, r19
+ 6e4:	28 0f       	add	r18, r24
+ 6e6:	39 1f       	adc	r19, r25
+ 6e8:	c2 17       	cp	r28, r18
+ 6ea:	d3 07       	cpc	r29, r19
+ 6ec:	c4 f6       	brge	.-80     	; 0x69e <go_distance+0x2a>
+/**
+ * Set velocity
+ */
+void velocity (unsigned char left_motor, unsigned char right_motor)
+{
+	OCR5AL = (unsigned char)left_motor;
+ 6ee:	10 92 28 01 	sts	0x0128, r1
+	OCR5BL = (unsigned char)right_motor;
+ 6f2:	10 92 2a 01 	sts	0x012A, r1
+		}
+		if((ShaftCountLeft + ShaftCountRight)*5 > x*10)
+			break;
+	}
+	velocity(0,0);
+}
+ 6f6:	df 91       	pop	r29
+ 6f8:	cf 91       	pop	r28
+ 6fa:	08 95       	ret
+
+000006fc <go_upto_next_cross>:
+			(0,1,1)			- Turn left (slightly)
+			(0,0,1)			- Turn left (hard)
+			(1,1,1)			- Reached the intersection
+			(0,0,0)			- Recovery mode. Move in the direction of the last sensor that was on white line
+*/
+void go_upto_next_cross(){
+ 6fc:	8f 92       	push	r8
+ 6fe:	9f 92       	push	r9
+ 700:	af 92       	push	r10
+ 702:	bf 92       	push	r11
+ 704:	cf 92       	push	r12
+ 706:	df 92       	push	r13
+ 708:	ef 92       	push	r14
+ 70a:	ff 92       	push	r15
+ 70c:	0f 93       	push	r16
+ 70e:	1f 93       	push	r17
+ 710:	03 e0       	ldi	r16, 0x03	; 3
+ 712:	10 e0       	ldi	r17, 0x00	; 0
+				}
+			}
+			black_flag = (black_flag < CONT_BLACK)?black_flag+1:CONT_BLACK;
+			forward();
+			velocity(0,0);
+			PORTJ = 0x99;
+ 714:	89 e9       	ldi	r24, 0x99	; 153
+ 716:	88 2e       	mov	r8, r24
+/**
+ * Set velocity
+ */
+void velocity (unsigned char left_motor, unsigned char right_motor)
+{
+	OCR5AL = (unsigned char)left_motor;
+ 718:	b4 e6       	ldi	r27, 0x64	; 100
+ 71a:	bb 2e       	mov	r11, r27
+					motion_set(0x0A);
+				velocity(100,100);
+				while(1){
+					print_sensor_data();
+					read_sensors();
+					if(Center_white_line < W_THRESHOLD) break;
+ 71c:	a5 e0       	ldi	r26, 0x05	; 5
+ 71e:	aa 2e       	mov	r10, r26
+		}
+
+		//Sensor config : 001
+		else if(Left_white_line > W_THRESHOLD && Center_white_line > W_THRESHOLD && Right_white_line < W_THRESHOLD)
+		{
+			PORTA = 0x0A;
+ 720:	fa e0       	ldi	r31, 0x0A	; 10
+ 722:	9f 2e       	mov	r9, r31
+/**
+ * Set velocity
+ */
+void velocity (unsigned char left_motor, unsigned char right_motor)
+{
+	OCR5AL = (unsigned char)left_motor;
+ 724:	e2 e8       	ldi	r30, 0x82	; 130
+ 726:	ce 2e       	mov	r12, r30
+	OCR5BL = (unsigned char)right_motor;
+ 728:	72 e3       	ldi	r23, 0x32	; 50
+ 72a:	d7 2e       	mov	r13, r23
+/**
+ * Set velocity
+ */
+void velocity (unsigned char left_motor, unsigned char right_motor)
+{
+	OCR5AL = (unsigned char)left_motor;
+ 72c:	66 e9       	ldi	r22, 0x96	; 150
+ 72e:	f6 2e       	mov	r15, r22
+	OCR5BL = (unsigned char)right_motor;
+ 730:	58 e7       	ldi	r21, 0x78	; 120
+ 732:	e5 2e       	mov	r14, r21
+void go_upto_next_cross(){
+	char last_on = LEFT_SENSOR;
+	char black_flag = 0;
+	while(1)
+	{
+		PORTJ = PORTJ+1;
+ 734:	80 91 05 01 	lds	r24, 0x0105
+ 738:	8f 5f       	subi	r24, 0xFF	; 255
+ 73a:	80 93 05 01 	sts	0x0105, r24
+		if(Center_white_line<W_THRESHOLD_STOP && Left_white_line<W_THRESHOLD_STOP && Right_white_line<W_THRESHOLD_STOP ){
+ 73e:	80 91 06 02 	lds	r24, 0x0206
+ 742:	88 30       	cpi	r24, 0x08	; 8
+ 744:	e8 f4       	brcc	.+58     	; 0x780 <go_upto_next_cross+0x84>
+ 746:	80 91 05 02 	lds	r24, 0x0205
+ 74a:	88 30       	cpi	r24, 0x08	; 8
+ 74c:	c8 f4       	brcc	.+50     	; 0x780 <go_upto_next_cross+0x84>
+ 74e:	80 91 07 02 	lds	r24, 0x0207
+ 752:	88 30       	cpi	r24, 0x08	; 8
+ 754:	a8 f4       	brcc	.+42     	; 0x780 <go_upto_next_cross+0x84>
+			PORTJ = 0xAA;
+ 756:	8a ea       	ldi	r24, 0xAA	; 170
+ 758:	80 93 05 01 	sts	0x0105, r24
+/**
+ * Set velocity
+ */
+void velocity (unsigned char left_motor, unsigned char right_motor)
+{
+	OCR5AL = (unsigned char)left_motor;
+ 75c:	10 92 28 01 	sts	0x0128, r1
+	OCR5BL = (unsigned char)right_motor;
+ 760:	10 92 2a 01 	sts	0x012A, r1
+			velocity(0,0);
+			PORTJ = 0x99;
+		}
+	}
+	velocity(0,0);	
+	go_distance(8);
+ 764:	88 e0       	ldi	r24, 0x08	; 8
+ 766:	0e 94 3a 03 	call	0x674	; 0x674 <go_distance>
+}
+ 76a:	1f 91       	pop	r17
+ 76c:	0f 91       	pop	r16
+ 76e:	ff 90       	pop	r15
+ 770:	ef 90       	pop	r14
+ 772:	df 90       	pop	r13
+ 774:	cf 90       	pop	r12
+ 776:	bf 90       	pop	r11
+ 778:	af 90       	pop	r10
+ 77a:	9f 90       	pop	r9
+ 77c:	8f 90       	pop	r8
+ 77e:	08 95       	ret
+		if(Center_white_line<W_THRESHOLD_STOP && Left_white_line<W_THRESHOLD_STOP && Right_white_line<W_THRESHOLD_STOP ){
+			PORTJ = 0xAA;
+		 	break;
+		}
+
+		read_sensors();
+ 780:	0e 94 d1 02 	call	0x5a2	; 0x5a2 <read_sensors>
+
+		flag=0;
+ 784:	10 92 04 02 	sts	0x0204, r1
+		print_sensor_data();
+ 788:	0e 94 c1 02 	call	0x582	; 0x582 <print_sensor_data>
+		
+		if( Front_IR_Sensor<0xF0)
+ 78c:	80 91 08 02 	lds	r24, 0x0208
+ 790:	80 3f       	cpi	r24, 0xF0	; 240
+ 792:	48 f4       	brcc	.+18     	; 0x7a6 <go_upto_next_cross+0xaa>
+void motion_set (unsigned char Direction)
+{
+ unsigned char PortARestore = 0;
+
+ Direction &= 0x0F; 					// removing upper nibbel for the protection
+ PortARestore = PORTA; 				// reading the PORTA original status
+ 794:	82 b1       	in	r24, 0x02	; 2
+ PortARestore &= 0xF0; 				// making lower direction nibbel to 0
+ 796:	80 7f       	andi	r24, 0xF0	; 240
+ PortARestore |= Direction; 		// adding lower nibbel for forward command and restoring the PORTA status
+ PORTA = PortARestore; 				// executing the command
+ 798:	82 b9       	out	0x02, r24	; 2
+  Changes status of the bot to BLOCKED, which is sent to the server (which in turn sends an SMS to inform the guards to take appropriate actions.)
+*/
+void buzzer_on (void)
+{
+ unsigned char port_restore = 0;
+ port_restore = PINC;
+ 79a:	86 b1       	in	r24, 0x06	; 6
+ port_restore = port_restore | 0x08;
+ 79c:	88 60       	ori	r24, 0x08	; 8
+ PORTC = port_restore;
+ 79e:	88 b9       	out	0x08, r24	; 8
+ status = BLOCKED;
+ 7a0:	10 92 02 02 	sts	0x0202, r1
+ 7a4:	c7 cf       	rjmp	.-114    	; 0x734 <go_upto_next_cross+0x38>
+		{
+			stop();
+			buzzer_on();
+		}
+		//Sensor config : 010
+		else if(Left_white_line > W_THRESHOLD && Center_white_line < W_THRESHOLD && Right_white_line > W_THRESHOLD)
+ 7a6:	20 91 05 02 	lds	r18, 0x0205
+ 7aa:	20 31       	cpi	r18, 0x10	; 16
+ 7ac:	78 f0       	brcs	.+30     	; 0x7cc <go_upto_next_cross+0xd0>
+ 7ae:	80 91 06 02 	lds	r24, 0x0206
+ 7b2:	8f 30       	cpi	r24, 0x0F	; 15
+ 7b4:	58 f4       	brcc	.+22     	; 0x7cc <go_upto_next_cross+0xd0>
+ 7b6:	80 91 07 02 	lds	r24, 0x0207
+ 7ba:	80 31       	cpi	r24, 0x10	; 16
+ 7bc:	38 f0       	brcs	.+14     	; 0x7cc <go_upto_next_cross+0xd0>
+void motion_set (unsigned char Direction)
+{
+ unsigned char PortARestore = 0;
+
+ Direction &= 0x0F; 					// removing upper nibbel for the protection
+ PortARestore = PORTA; 				// reading the PORTA original status
+ 7be:	82 b1       	in	r24, 0x02	; 2
+ PortARestore &= 0xF0; 				// making lower direction nibbel to 0
+ 7c0:	80 7f       	andi	r24, 0xF0	; 240
+ PortARestore |= Direction; 		// adding lower nibbel for forward command and restoring the PORTA status
+ 7c2:	86 60       	ori	r24, 0x06	; 6
+ PORTA = PortARestore; 				// executing the command
+ 7c4:	82 b9       	out	0x02, r24	; 2
+/**
+ * Set velocity
+ */
+void velocity (unsigned char left_motor, unsigned char right_motor)
+{
+	OCR5AL = (unsigned char)left_motor;
+ 7c6:	f0 92 28 01 	sts	0x0128, r15
+ 7ca:	10 c0       	rjmp	.+32     	; 0x7ec <go_upto_next_cross+0xf0>
+			black_flag = 0;
+			buzzer_off();
+		}
+
+		//Sensor config : 110
+		else if(Left_white_line < W_THRESHOLD && Center_white_line < W_THRESHOLD && Right_white_line > W_THRESHOLD)
+ 7cc:	2f 30       	cpi	r18, 0x0F	; 15
+ 7ce:	18 f5       	brcc	.+70     	; 0x816 <go_upto_next_cross+0x11a>
+ 7d0:	90 91 06 02 	lds	r25, 0x0206
+ 7d4:	9f 30       	cpi	r25, 0x0F	; 15
+ 7d6:	68 f4       	brcc	.+26     	; 0x7f2 <go_upto_next_cross+0xf6>
+ 7d8:	80 91 07 02 	lds	r24, 0x0207
+ 7dc:	80 31       	cpi	r24, 0x10	; 16
+ 7de:	48 f0       	brcs	.+18     	; 0x7f2 <go_upto_next_cross+0xf6>
+void motion_set (unsigned char Direction)
+{
+ unsigned char PortARestore = 0;
+
+ Direction &= 0x0F; 					// removing upper nibbel for the protection
+ PortARestore = PORTA; 				// reading the PORTA original status
+ 7e0:	82 b1       	in	r24, 0x02	; 2
+ PortARestore &= 0xF0; 				// making lower direction nibbel to 0
+ 7e2:	80 7f       	andi	r24, 0xF0	; 240
+ PortARestore |= Direction; 		// adding lower nibbel for forward command and restoring the PORTA status
+ 7e4:	86 60       	ori	r24, 0x06	; 6
+ PORTA = PortARestore; 				// executing the command
+ 7e6:	82 b9       	out	0x02, r24	; 2
+/**
+ * Set velocity
+ */
+void velocity (unsigned char left_motor, unsigned char right_motor)
+{
+	OCR5AL = (unsigned char)left_motor;
+ 7e8:	e0 92 28 01 	sts	0x0128, r14
+	OCR5BL = (unsigned char)right_motor;
+ 7ec:	f0 92 2a 01 	sts	0x012A, r15
+ 7f0:	24 c0       	rjmp	.+72     	; 0x83a <go_upto_next_cross+0x13e>
+			black_flag = 0;
+			buzzer_off();
+		}
+		
+		//Sensor config : 100
+		else if(Left_white_line < W_THRESHOLD && Center_white_line > W_THRESHOLD && Right_white_line > W_THRESHOLD)
+ 7f2:	90 31       	cpi	r25, 0x10	; 16
+ 7f4:	80 f0       	brcs	.+32     	; 0x816 <go_upto_next_cross+0x11a>
+ 7f6:	80 91 07 02 	lds	r24, 0x0207
+ 7fa:	80 31       	cpi	r24, 0x10	; 16
+ 7fc:	60 f0       	brcs	.+24     	; 0x816 <go_upto_next_cross+0x11a>
+		{
+			PORTA = 0x05;
+ 7fe:	a2 b8       	out	0x02, r10	; 2
+/**
+ * Set velocity
+ */
+void velocity (unsigned char left_motor, unsigned char right_motor)
+{
+	OCR5AL = (unsigned char)left_motor;
+ 800:	d0 92 28 01 	sts	0x0128, r13
+	OCR5BL = (unsigned char)right_motor;
+ 804:	c0 92 2a 01 	sts	0x012A, r12
+  Switches the buzzer off.
+*/
+void buzzer_off (void)
+{
+ unsigned char port_restore = 0;
+ port_restore = PINC;
+ 808:	86 b1       	in	r24, 0x06	; 6
+ port_restore = port_restore & 0xF7;
+ 80a:	87 7f       	andi	r24, 0xF7	; 247
+ PORTC = port_restore;
+ 80c:	88 b9       	out	0x08, r24	; 8
+ status = BLOCKED;
+ 80e:	10 92 02 02 	sts	0x0202, r1
+ 812:	03 e0       	ldi	r16, 0x03	; 3
+ 814:	29 c0       	rjmp	.+82     	; 0x868 <go_upto_next_cross+0x16c>
+			black_flag = 0;
+			buzzer_off();
+		}
+
+		//Sensor config : 011
+		else if(Left_white_line > W_THRESHOLD && Center_white_line < W_THRESHOLD && Right_white_line < W_THRESHOLD)
+ 816:	20 31       	cpi	r18, 0x10	; 16
+ 818:	48 f1       	brcs	.+82     	; 0x86c <go_upto_next_cross+0x170>
+ 81a:	90 91 06 02 	lds	r25, 0x0206
+ 81e:	9f 30       	cpi	r25, 0x0F	; 15
+ 820:	90 f4       	brcc	.+36     	; 0x846 <go_upto_next_cross+0x14a>
+ 822:	80 91 07 02 	lds	r24, 0x0207
+ 826:	8f 30       	cpi	r24, 0x0F	; 15
+ 828:	70 f4       	brcc	.+28     	; 0x846 <go_upto_next_cross+0x14a>
+void motion_set (unsigned char Direction)
+{
+ unsigned char PortARestore = 0;
+
+ Direction &= 0x0F; 					// removing upper nibbel for the protection
+ PortARestore = PORTA; 				// reading the PORTA original status
+ 82a:	82 b1       	in	r24, 0x02	; 2
+ PortARestore &= 0xF0; 				// making lower direction nibbel to 0
+ 82c:	80 7f       	andi	r24, 0xF0	; 240
+ PortARestore |= Direction; 		// adding lower nibbel for forward command and restoring the PORTA status
+ 82e:	86 60       	ori	r24, 0x06	; 6
+ PORTA = PortARestore; 				// executing the command
+ 830:	82 b9       	out	0x02, r24	; 2
+/**
+ * Set velocity
+ */
+void velocity (unsigned char left_motor, unsigned char right_motor)
+{
+	OCR5AL = (unsigned char)left_motor;
+ 832:	f0 92 28 01 	sts	0x0128, r15
+	OCR5BL = (unsigned char)right_motor;
+ 836:	e0 92 2a 01 	sts	0x012A, r14
+  Switches the buzzer off.
+*/
+void buzzer_off (void)
+{
+ unsigned char port_restore = 0;
+ port_restore = PINC;
+ 83a:	86 b1       	in	r24, 0x06	; 6
+ port_restore = port_restore & 0xF7;
+ 83c:	87 7f       	andi	r24, 0xF7	; 247
+ PORTC = port_restore;
+ 83e:	88 b9       	out	0x08, r24	; 8
+ status = BLOCKED;
+ 840:	10 92 02 02 	sts	0x0202, r1
+ 844:	11 c0       	rjmp	.+34     	; 0x868 <go_upto_next_cross+0x16c>
+			black_flag = 0;
+			buzzer_off();
+		}
+
+		//Sensor config : 001
+		else if(Left_white_line > W_THRESHOLD && Center_white_line > W_THRESHOLD && Right_white_line < W_THRESHOLD)
+ 846:	90 31       	cpi	r25, 0x10	; 16
+ 848:	88 f0       	brcs	.+34     	; 0x86c <go_upto_next_cross+0x170>
+ 84a:	80 91 07 02 	lds	r24, 0x0207
+ 84e:	8f 30       	cpi	r24, 0x0F	; 15
+ 850:	68 f4       	brcc	.+26     	; 0x86c <go_upto_next_cross+0x170>
+		{
+			PORTA = 0x0A;
+ 852:	92 b8       	out	0x02, r9	; 2
+/**
+ * Set velocity
+ */
+void velocity (unsigned char left_motor, unsigned char right_motor)
+{
+	OCR5AL = (unsigned char)left_motor;
+ 854:	c0 92 28 01 	sts	0x0128, r12
+	OCR5BL = (unsigned char)right_motor;
+ 858:	d0 92 2a 01 	sts	0x012A, r13
+  Switches the buzzer off.
+*/
+void buzzer_off (void)
+{
+ unsigned char port_restore = 0;
+ port_restore = PINC;
+ 85c:	86 b1       	in	r24, 0x06	; 6
+ port_restore = port_restore & 0xF7;
+ 85e:	87 7f       	andi	r24, 0xF7	; 247
+ PORTC = port_restore;
+ 860:	88 b9       	out	0x08, r24	; 8
+ status = BLOCKED;
+ 862:	10 92 02 02 	sts	0x0202, r1
+ 866:	01 e0       	ldi	r16, 0x01	; 1
+ 868:	10 e0       	ldi	r17, 0x00	; 0
+ 86a:	64 cf       	rjmp	.-312    	; 0x734 <go_upto_next_cross+0x38>
+  Switches the buzzer off.
+*/
+void buzzer_off (void)
+{
+ unsigned char port_restore = 0;
+ port_restore = PINC;
+ 86c:	86 b1       	in	r24, 0x06	; 6
+ port_restore = port_restore & 0xF7;
+ 86e:	87 7f       	andi	r24, 0xF7	; 247
+ PORTC = port_restore;
+ 870:	88 b9       	out	0x08, r24	; 8
+ status = BLOCKED;
+ 872:	10 92 02 02 	sts	0x0202, r1
+		}
+		//Sensor config : 000
+		else
+		{
+			buzzer_off();
+			if(black_flag >= CONT_BLACK)  {
+ 876:	15 30       	cpi	r17, 0x05	; 5
+ 878:	d0 f0       	brcs	.+52     	; 0x8ae <go_upto_next_cross+0x1b2>
+				if(last_on == LEFT_SENSOR)
+ 87a:	03 30       	cpi	r16, 0x03	; 3
+ 87c:	21 f4       	brne	.+8      	; 0x886 <go_upto_next_cross+0x18a>
+void motion_set (unsigned char Direction)
+{
+ unsigned char PortARestore = 0;
+
+ Direction &= 0x0F; 					// removing upper nibbel for the protection
+ PortARestore = PORTA; 				// reading the PORTA original status
+ 87e:	82 b1       	in	r24, 0x02	; 2
+ PortARestore &= 0xF0; 				// making lower direction nibbel to 0
+ 880:	80 7f       	andi	r24, 0xF0	; 240
+ PortARestore |= Direction; 		// adding lower nibbel for forward command and restoring the PORTA status
+ 882:	85 60       	ori	r24, 0x05	; 5
+ 884:	05 c0       	rjmp	.+10     	; 0x890 <go_upto_next_cross+0x194>
+		{
+			buzzer_off();
+			if(black_flag >= CONT_BLACK)  {
+				if(last_on == LEFT_SENSOR)
+					motion_set(0x05);
+				else if(last_on == RIGHT_SENSOR)
+ 886:	01 30       	cpi	r16, 0x01	; 1
+ 888:	21 f4       	brne	.+8      	; 0x892 <go_upto_next_cross+0x196>
+void motion_set (unsigned char Direction)
+{
+ unsigned char PortARestore = 0;
+
+ Direction &= 0x0F; 					// removing upper nibbel for the protection
+ PortARestore = PORTA; 				// reading the PORTA original status
+ 88a:	82 b1       	in	r24, 0x02	; 2
+ PortARestore &= 0xF0; 				// making lower direction nibbel to 0
+ 88c:	80 7f       	andi	r24, 0xF0	; 240
+ PortARestore |= Direction; 		// adding lower nibbel for forward command and restoring the PORTA status
+ 88e:	8a 60       	ori	r24, 0x0A	; 10
+ PORTA = PortARestore; 				// executing the command
+ 890:	82 b9       	out	0x02, r24	; 2
+/**
+ * Set velocity
+ */
+void velocity (unsigned char left_motor, unsigned char right_motor)
+{
+	OCR5AL = (unsigned char)left_motor;
+ 892:	b0 92 28 01 	sts	0x0128, r11
+	OCR5BL = (unsigned char)right_motor;
+ 896:	b0 92 2a 01 	sts	0x012A, r11
+					motion_set(0x05);
+				else if(last_on == RIGHT_SENSOR)
+					motion_set(0x0A);
+				velocity(100,100);
+				while(1){
+					print_sensor_data();
+ 89a:	0e 94 c1 02 	call	0x582	; 0x582 <print_sensor_data>
+					read_sensors();
+ 89e:	0e 94 d1 02 	call	0x5a2	; 0x5a2 <read_sensors>
+					if(Center_white_line < W_THRESHOLD) break;
+ 8a2:	80 91 06 02 	lds	r24, 0x0206
+ 8a6:	8f 30       	cpi	r24, 0x0F	; 15
+ 8a8:	c0 f7       	brcc	.-16     	; 0x89a <go_upto_next_cross+0x19e>
+ 8aa:	15 e0       	ldi	r17, 0x05	; 5
+ 8ac:	01 c0       	rjmp	.+2      	; 0x8b0 <go_upto_next_cross+0x1b4>
+				}
+			}
+			black_flag = (black_flag < CONT_BLACK)?black_flag+1:CONT_BLACK;
+ 8ae:	1f 5f       	subi	r17, 0xFF	; 255
+void motion_set (unsigned char Direction)
+{
+ unsigned char PortARestore = 0;
+
+ Direction &= 0x0F; 					// removing upper nibbel for the protection
+ PortARestore = PORTA; 				// reading the PORTA original status
+ 8b0:	82 b1       	in	r24, 0x02	; 2
+ PortARestore &= 0xF0; 				// making lower direction nibbel to 0
+ 8b2:	80 7f       	andi	r24, 0xF0	; 240
+ PortARestore |= Direction; 		// adding lower nibbel for forward command and restoring the PORTA status
+ 8b4:	86 60       	ori	r24, 0x06	; 6
+ PORTA = PortARestore; 				// executing the command
+ 8b6:	82 b9       	out	0x02, r24	; 2
+/**
+ * Set velocity
+ */
+void velocity (unsigned char left_motor, unsigned char right_motor)
+{
+	OCR5AL = (unsigned char)left_motor;
+ 8b8:	10 92 28 01 	sts	0x0128, r1
+	OCR5BL = (unsigned char)right_motor;
+ 8bc:	10 92 2a 01 	sts	0x012A, r1
+				}
+			}
+			black_flag = (black_flag < CONT_BLACK)?black_flag+1:CONT_BLACK;
+			forward();
+			velocity(0,0);
+			PORTJ = 0x99;
+ 8c0:	80 92 05 01 	sts	0x0105, r8
+ 8c4:	37 cf       	rjmp	.-402    	; 0x734 <go_upto_next_cross+0x38>
+
+000008c6 <USART_Init>:
+ parity: Disabled
+*/
+
+void USART_Init(void)
+{
+  UCSR0B = 0x00; 
+ 8c6:	e1 ec       	ldi	r30, 0xC1	; 193
+ 8c8:	f0 e0       	ldi	r31, 0x00	; 0
+ 8ca:	10 82       	st	Z, r1
+  UCSR0A = 0x00;
+ 8cc:	10 92 c0 00 	sts	0x00C0, r1
+  UCSR0C = 0x06;
+ 8d0:	86 e0       	ldi	r24, 0x06	; 6
+ 8d2:	80 93 c2 00 	sts	0x00C2, r24
+  UBRR0L = 0x47; 
+ 8d6:	87 e4       	ldi	r24, 0x47	; 71
+ 8d8:	80 93 c4 00 	sts	0x00C4, r24
+  UBRR0H = 0x00; 
+ 8dc:	10 92 c5 00 	sts	0x00C5, r1
+  UCSR0B = 0x98;
+ 8e0:	88 e9       	ldi	r24, 0x98	; 152
+ 8e2:	80 83       	st	Z, r24
+}
+ 8e4:	08 95       	ret
+
+000008e6 <__vector_25>:
+/**
+ ISR for receive complete interrupt
+ Replies back to the polling/server instruction
+*/
+SIGNAL(SIG_USART0_RECV)
+{
+ 8e6:	1f 92       	push	r1
+ 8e8:	0f 92       	push	r0
+ 8ea:	0f b6       	in	r0, 0x3f	; 63
+ 8ec:	0f 92       	push	r0
+ 8ee:	11 24       	eor	r1, r1
+ 8f0:	8f 93       	push	r24
+ 8f2:	9f 93       	push	r25
+	data = UDR0;
+ 8f4:	80 91 c6 00 	lds	r24, 0x00C6
+ 8f8:	80 93 0a 02 	sts	0x020A, r24
+ 8fc:	80 e0       	ldi	r24, 0x00	; 0
+ 8fe:	9c e6       	ldi	r25, 0x6C	; 108
+ 900:	01 97       	sbiw	r24, 0x01	; 1
+ 902:	f1 f7       	brne	.-4      	; 0x900 <__vector_25+0x1a>
+	_delay_ms(10);
+	if(GetBit(data,ID_MASK) == MY_ID)
+ 904:	80 91 0a 02 	lds	r24, 0x020A
+ 908:	80 7e       	andi	r24, 0xE0	; 224
+ 90a:	09 f0       	breq	.+2      	; 0x90e <__vector_25+0x28>
+ 90c:	4a c0       	rjmp	.+148    	; 0x9a2 <__vector_25+0xbc>
+	{	
+		PORTJ = 0xff;	
+ 90e:	8f ef       	ldi	r24, 0xFF	; 255
+ 910:	80 93 05 01 	sts	0x0105, r24
+		instruction = GetBit(data,INST_MASK);
+ 914:	80 91 0a 02 	lds	r24, 0x020A
+ 918:	8f 71       	andi	r24, 0x1F	; 31
+ 91a:	80 93 09 02 	sts	0x0209, r24
+		if(instruction == POLLING){
+ 91e:	80 91 09 02 	lds	r24, 0x0209
+ 922:	85 30       	cpi	r24, 0x05	; 5
+ 924:	39 f4       	brne	.+14     	; 0x934 <__vector_25+0x4e>
+			PORTJ = 5;	
+ 926:	80 93 05 01 	sts	0x0105, r24
+			UDR0 = (MY_ID | status);
+ 92a:	80 91 02 02 	lds	r24, 0x0202
+ 92e:	80 93 c6 00 	sts	0x00C6, r24
+ 932:	37 c0       	rjmp	.+110    	; 0x9a2 <__vector_25+0xbc>
+		}
+		else if(instruction==GO_UPTO_CROSS)
+ 934:	90 91 09 02 	lds	r25, 0x0209
+ 938:	92 30       	cpi	r25, 0x02	; 2
+ 93a:	41 f4       	brne	.+16     	; 0x94c <__vector_25+0x66>
+		{
+			PORTJ = 1;	
+ 93c:	81 e0       	ldi	r24, 0x01	; 1
+ 93e:	80 93 05 01 	sts	0x0105, r24
+			status = PROCESSING;
+ 942:	90 93 02 02 	sts	0x0202, r25
+			ACTION = GO_UPTO_CROSS;
+ 946:	82 e0       	ldi	r24, 0x02	; 2
+ 948:	90 e0       	ldi	r25, 0x00	; 0
+ 94a:	27 c0       	rjmp	.+78     	; 0x99a <__vector_25+0xb4>
+		}
+		else if(instruction==TURN_RIGHT)
+ 94c:	80 91 09 02 	lds	r24, 0x0209
+ 950:	88 23       	and	r24, r24
+ 952:	51 f4       	brne	.+20     	; 0x968 <__vector_25+0x82>
+		{
+			PORTJ = 2;	
+ 954:	82 e0       	ldi	r24, 0x02	; 2
+ 956:	80 93 05 01 	sts	0x0105, r24
+			status = PROCESSING;
+ 95a:	80 93 02 02 	sts	0x0202, r24
+			ACTION = TURN_RIGHT;
+ 95e:	10 92 01 02 	sts	0x0201, r1
+ 962:	10 92 00 02 	sts	0x0200, r1
+ 966:	1d c0       	rjmp	.+58     	; 0x9a2 <__vector_25+0xbc>
+		}
+		else if(instruction==TURN_LEFT)
+ 968:	80 91 09 02 	lds	r24, 0x0209
+ 96c:	81 30       	cpi	r24, 0x01	; 1
+ 96e:	49 f4       	brne	.+18     	; 0x982 <__vector_25+0x9c>
+		{
+			PORTJ = 3;	
+ 970:	83 e0       	ldi	r24, 0x03	; 3
+ 972:	80 93 05 01 	sts	0x0105, r24
+			status = PROCESSING;
+ 976:	82 e0       	ldi	r24, 0x02	; 2
+ 978:	80 93 02 02 	sts	0x0202, r24
+			ACTION = TURN_LEFT;
+ 97c:	81 e0       	ldi	r24, 0x01	; 1
+ 97e:	90 e0       	ldi	r25, 0x00	; 0
+ 980:	0c c0       	rjmp	.+24     	; 0x99a <__vector_25+0xb4>
+		}
+		else if(instruction==TURN_AROUND)
+ 982:	80 91 09 02 	lds	r24, 0x0209
+ 986:	83 30       	cpi	r24, 0x03	; 3
+ 988:	61 f4       	brne	.+24     	; 0x9a2 <__vector_25+0xbc>
+		{
+			PORTJ = 4;
+ 98a:	84 e0       	ldi	r24, 0x04	; 4
+ 98c:	80 93 05 01 	sts	0x0105, r24
+			status = PROCESSING;
+ 990:	82 e0       	ldi	r24, 0x02	; 2
+ 992:	80 93 02 02 	sts	0x0202, r24
+			ACTION = TURN_AROUND;
+ 996:	83 e0       	ldi	r24, 0x03	; 3
+ 998:	90 e0       	ldi	r25, 0x00	; 0
+ 99a:	90 93 01 02 	sts	0x0201, r25
+ 99e:	80 93 00 02 	sts	0x0200, r24
+		}
+	}
+}
+ 9a2:	9f 91       	pop	r25
+ 9a4:	8f 91       	pop	r24
+ 9a6:	0f 90       	pop	r0
+ 9a8:	0f be       	out	0x3f, r0	; 63
+ 9aa:	0f 90       	pop	r0
+ 9ac:	1f 90       	pop	r1
+ 9ae:	18 95       	reti
+
+000009b0 <init_devices_1>:
+
+/**
+	Inits the Zigbee module
+*/
+void init_devices_1(){
+	cli();
+ 9b0:	f8 94       	cli
+	USART_Init();
+ 9b2:	0e 94 63 04 	call	0x8c6	; 0x8c6 <USART_Init>
+	sei();
+ 9b6:	78 94       	sei
+}
+ 9b8:	08 95       	ret
+
+000009ba <main>:
+/**
+	Processes the requests given by the server in an infinite loop.
+   Sets the status at appropriate times (which are later sent back to the server during polling).
+*/
+int main()
+{
+ 9ba:	0f 93       	push	r16
+ 9bc:	1f 93       	push	r17
+ 9be:	cf 93       	push	r28
+ 9c0:	df 93       	push	r29
+	init_devices_1();
+ 9c2:	0e 94 d8 04 	call	0x9b0	; 0x9b0 <init_devices_1>
+	init_devices();
+ 9c6:	0e 94 ae 02 	call	0x55c	; 0x55c <init_devices>
+	
+	lcd_set_4bit();
+ 9ca:	0e 94 95 00 	call	0x12a	; 0x12a <lcd_set_4bit>
+	lcd_init();
+ 9ce:	0e 94 e8 00 	call	0x1d0	; 0x1d0 <lcd_init>
+	DDRJ = 0xff;
+ 9d2:	8f ef       	ldi	r24, 0xFF	; 255
+ 9d4:	80 93 04 01 	sts	0x0104, r24
+	PORTJ = 0xf0;	
+ 9d8:	80 ef       	ldi	r24, 0xF0	; 240
+ 9da:	80 93 05 01 	sts	0x0105, r24
+
+	left_position_encoder_interrupt_init();
+ 9de:	0e 94 e1 01 	call	0x3c2	; 0x3c2 <left_position_encoder_interrupt_init>
+	right_position_encoder_interrupt_init();
+ 9e2:	0e 94 ea 01 	call	0x3d4	; 0x3d4 <right_position_encoder_interrupt_init>
+ 9e6:	10 e0       	ldi	r17, 0x00	; 0
+
+	unsigned char q = 0;
+	for(q = 0;q<10;q++){
+		Left_white_line = ADC_Conversion(3);	//Getting data of Left WL Sensor
+ 9e8:	83 e0       	ldi	r24, 0x03	; 3
+ 9ea:	0e 94 69 02 	call	0x4d2	; 0x4d2 <ADC_Conversion>
+ 9ee:	80 93 05 02 	sts	0x0205, r24
+		Center_white_line = ADC_Conversion(2);	//Getting data of Center WL Sensor
+ 9f2:	82 e0       	ldi	r24, 0x02	; 2
+ 9f4:	0e 94 69 02 	call	0x4d2	; 0x4d2 <ADC_Conversion>
+ 9f8:	80 93 06 02 	sts	0x0206, r24
+		Right_white_line = ADC_Conversion(1);	//Getting data of Right WL Sensor
+ 9fc:	81 e0       	ldi	r24, 0x01	; 1
+ 9fe:	0e 94 69 02 	call	0x4d2	; 0x4d2 <ADC_Conversion>
+ a02:	80 93 07 02 	sts	0x0207, r24
+
+	left_position_encoder_interrupt_init();
+	right_position_encoder_interrupt_init();
+
+	unsigned char q = 0;
+	for(q = 0;q<10;q++){
+ a06:	1f 5f       	subi	r17, 0xFF	; 255
+ a08:	1a 30       	cpi	r17, 0x0A	; 10
+ a0a:	71 f7       	brne	.-36     	; 0x9e8 <main+0x2e>
+			status = IDLE;
+			ACTION = NOTHING;
+		}
+		else if(ACTION == TURN_AROUND)
+		{
+			status = PROCESSING;
+ a0c:	02 e0       	ldi	r16, 0x02	; 2
+			turn_left();
+			instruction = 0;
+			status = IDLE;
+ a0e:	11 e0       	ldi	r17, 0x01	; 1
+			ACTION = NOTHING;
+ a10:	ca e0       	ldi	r28, 0x0A	; 10
+ a12:	d0 e0       	ldi	r29, 0x00	; 0
+		Right_white_line = ADC_Conversion(1);	//Getting data of Right WL Sensor
+	}
+
+	while(1)
+	{
+		if(ACTION == GO_UPTO_CROSS)
+ a14:	80 91 00 02 	lds	r24, 0x0200
+ a18:	90 91 01 02 	lds	r25, 0x0201
+ a1c:	02 97       	sbiw	r24, 0x02	; 2
+ a1e:	29 f4       	brne	.+10     	; 0xa2a <main+0x70>
+		{
+			status = PROCESSING;
+ a20:	00 93 02 02 	sts	0x0202, r16
+			go_upto_next_cross();
+ a24:	0e 94 7e 03 	call	0x6fc	; 0x6fc <go_upto_next_cross>
+ a28:	1b c0       	rjmp	.+54     	; 0xa60 <main+0xa6>
+			instruction = 0;
+			status = IDLE;
+			ACTION = NOTHING;
+		}
+		else if(ACTION == TURN_RIGHT)
+ a2a:	80 91 00 02 	lds	r24, 0x0200
+ a2e:	90 91 01 02 	lds	r25, 0x0201
+ a32:	89 2b       	or	r24, r25
+ a34:	29 f4       	brne	.+10     	; 0xa40 <main+0x86>
+		{
+			status = PROCESSING;
+ a36:	00 93 02 02 	sts	0x0202, r16
+			turn_right();
+ a3a:	0e 94 f2 02 	call	0x5e4	; 0x5e4 <turn_right>
+ a3e:	10 c0       	rjmp	.+32     	; 0xa60 <main+0xa6>
+			instruction = 0;
+			status = IDLE;
+			ACTION = NOTHING;
+		}
+		else if(ACTION == TURN_LEFT)
+ a40:	80 91 00 02 	lds	r24, 0x0200
+ a44:	90 91 01 02 	lds	r25, 0x0201
+ a48:	01 97       	sbiw	r24, 0x01	; 1
+ a4a:	31 f0       	breq	.+12     	; 0xa58 <main+0x9e>
+			turn_left();
+			instruction = 0;
+			status = IDLE;
+			ACTION = NOTHING;
+		}
+		else if(ACTION == TURN_AROUND)
+ a4c:	80 91 00 02 	lds	r24, 0x0200
+ a50:	90 91 01 02 	lds	r25, 0x0201
+ a54:	03 97       	sbiw	r24, 0x03	; 3
+ a56:	f1 f6       	brne	.-68     	; 0xa14 <main+0x5a>
+		{
+			status = PROCESSING;
+ a58:	00 93 02 02 	sts	0x0202, r16
+			turn_left();
+ a5c:	0e 94 16 03 	call	0x62c	; 0x62c <turn_left>
+			instruction = 0;
+ a60:	10 92 09 02 	sts	0x0209, r1
+			status = IDLE;
+ a64:	10 93 02 02 	sts	0x0202, r17
+			ACTION = NOTHING;
+ a68:	d0 93 01 02 	sts	0x0201, r29
+ a6c:	c0 93 00 02 	sts	0x0200, r28
+ a70:	d1 cf       	rjmp	.-94     	; 0xa14 <main+0x5a>
+
+00000a72 <__udivmodhi4>:
+ a72:	aa 1b       	sub	r26, r26
+ a74:	bb 1b       	sub	r27, r27
+ a76:	51 e1       	ldi	r21, 0x11	; 17
+ a78:	07 c0       	rjmp	.+14     	; 0xa88 <__udivmodhi4_ep>
+
+00000a7a <__udivmodhi4_loop>:
+ a7a:	aa 1f       	adc	r26, r26
+ a7c:	bb 1f       	adc	r27, r27
+ a7e:	a6 17       	cp	r26, r22
+ a80:	b7 07       	cpc	r27, r23
+ a82:	10 f0       	brcs	.+4      	; 0xa88 <__udivmodhi4_ep>
+ a84:	a6 1b       	sub	r26, r22
+ a86:	b7 0b       	sbc	r27, r23
+
+00000a88 <__udivmodhi4_ep>:
+ a88:	88 1f       	adc	r24, r24
+ a8a:	99 1f       	adc	r25, r25
+ a8c:	5a 95       	dec	r21
+ a8e:	a9 f7       	brne	.-22     	; 0xa7a <__udivmodhi4_loop>
+ a90:	80 95       	com	r24
+ a92:	90 95       	com	r25
+ a94:	bc 01       	movw	r22, r24
+ a96:	cd 01       	movw	r24, r26
+ a98:	08 95       	ret
+
+00000a9a <_exit>:
+ a9a:	f8 94       	cli
+
+00000a9c <__stop_program>:
+ a9c:	ff cf       	rjmp	.-2      	; 0xa9c <__stop_program>

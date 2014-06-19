@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src/SERVER_CODE"/>
+	<classpathentry kind="lib" path="dist/lib/log4j.jar"/>
+	<classpathentry kind="lib" path="dist/lib/mysql.jar"/>
+	<classpathentry kind="lib" path="dist/lib/RXTXcomm.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="output" path="classes"/>
+</classpath>

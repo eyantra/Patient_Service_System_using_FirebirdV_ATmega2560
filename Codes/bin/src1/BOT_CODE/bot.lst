@@ -1,0 +1,3718 @@
+   1               		.file	"bot.c"
+   2               	__SREG__ = 0x3f
+   3               	__SP_H__ = 0x3e
+   4               	__SP_L__ = 0x3d
+   5               	__CCP__  = 0x34
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+  10               		.text
+  11               	.Ltext0:
+  70               	.global	lcd_set_4bit
+  72               	lcd_set_4bit:
+  73               		.stabd	46,0,0
+  75               	.Ltext1:
+   1:src/BOT_CODE/lcd.h **** #include <avr/io.h>
+   2:src/BOT_CODE/lcd.h **** #include <avr/delay.h>
+   3:src/BOT_CODE/lcd.h **** #include <util/delay.h>
+   4:src/BOT_CODE/lcd.h **** 
+   5:src/BOT_CODE/lcd.h **** #define FCPU 11059200ul
+   6:src/BOT_CODE/lcd.h **** #define RS 0
+   7:src/BOT_CODE/lcd.h **** #define RW 1
+   8:src/BOT_CODE/lcd.h **** #define EN 2
+   9:src/BOT_CODE/lcd.h **** #define lcd_port PORTC
+  10:src/BOT_CODE/lcd.h **** 
+  11:src/BOT_CODE/lcd.h **** #define sbit(reg,bit)	reg |= (1<<bit)
+  12:src/BOT_CODE/lcd.h **** #define cbit(reg,bit)	reg &= ~(1<<bit)
+  13:src/BOT_CODE/lcd.h **** 
+  14:src/BOT_CODE/lcd.h **** void init_ports();
+  15:src/BOT_CODE/lcd.h **** void lcd_reset_4bit();
+  16:src/BOT_CODE/lcd.h **** void lcd_init();
+  17:src/BOT_CODE/lcd.h **** void lcd_wr_command(unsigned char);
+  18:src/BOT_CODE/lcd.h **** void lcd_wr_char(char);
+  19:src/BOT_CODE/lcd.h **** void lcd_home();
+  20:src/BOT_CODE/lcd.h **** void lcd_cursor(char, char);
+  21:src/BOT_CODE/lcd.h **** void lcd_print(char, char, unsigned int, int);
+  22:src/BOT_CODE/lcd.h **** void lcd_string(char*);
+  23:src/BOT_CODE/lcd.h **** 
+  24:src/BOT_CODE/lcd.h **** unsigned int temp;
+  25:src/BOT_CODE/lcd.h **** unsigned int unit;
+  26:src/BOT_CODE/lcd.h **** unsigned int tens;
+  27:src/BOT_CODE/lcd.h **** unsigned int hundred;
+  28:src/BOT_CODE/lcd.h **** unsigned int thousand;
+  29:src/BOT_CODE/lcd.h **** unsigned int million;
+  30:src/BOT_CODE/lcd.h **** 
+  31:src/BOT_CODE/lcd.h **** int i;
+  32:src/BOT_CODE/lcd.h **** 
+  33:src/BOT_CODE/lcd.h **** 
+  34:src/BOT_CODE/lcd.h **** /*****Function to Reset LCD*****/
+  35:src/BOT_CODE/lcd.h **** void lcd_set_4bit()
+  36:src/BOT_CODE/lcd.h **** {
+  77               	.LM0:
+  78               	.LFBB1:
+  79               	/* prologue: function */
+  80               	/* frame size = 0 */
+  81               	.LBB204:
+  82               	.LBB205:
+  83               	.LBB206:
+  84               	.LBB207:
+  86               	.Ltext2:
+   1:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h **** /* Copyright (c) 2002, Marek Michalkiewicz
+   2:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h ****    Copyright (c) 2007 Joerg Wunsch
+   3:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h ****    All rights reserved.
+   4:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h **** 
+   5:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h ****    Redistribution and use in source and binary forms, with or without
+   6:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h ****    modification, are permitted provided that the following conditions are met:
+   7:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h **** 
+   8:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h ****    * Redistributions of source code must retain the above copyright
+   9:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h ****      notice, this list of conditions and the following disclaimer.
+  10:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h **** 
+  11:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h ****    * Redistributions in binary form must reproduce the above copyright
+  12:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h ****      notice, this list of conditions and the following disclaimer in
+  13:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h ****      the documentation and/or other materials provided with the
+  14:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h ****      distribution.
+  15:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h **** 
+  16:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h ****    * Neither the name of the copyright holders nor the names of
+  17:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h ****      contributors may be used to endorse or promote products derived
+  18:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h ****      from this software without specific prior written permission.
+  19:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h **** 
+  20:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h ****   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+  21:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h ****   AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+  22:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h ****   IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+  23:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h ****   ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+  24:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h ****   LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+  25:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h ****   CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+  26:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h ****   SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+  27:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h ****   INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+  28:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h ****   CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+  29:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h ****   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+  30:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h ****   POSSIBILITY OF SUCH DAMAGE. */
+  31:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h **** 
+  32:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h **** /* $Id: delay_basic.h,v 1.1 2007/05/13 21:23:20 joerg_wunsch Exp $ */
+  33:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h **** 
+  34:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h **** #ifndef _UTIL_DELAY_BASIC_H_
+  35:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h **** #define _UTIL_DELAY_BASIC_H_ 1
+  36:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h **** 
+  37:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h **** #include <inttypes.h>
+  38:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h **** 
+  39:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h **** /** \file */
+  40:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h **** /** \defgroup util_delay_basic <util/delay_basic.h>: Basic busy-wait delay loops
+  41:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h ****     \code
+  42:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h ****     #include <util/delay_basic.h>
+  43:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h ****     \endcode
+  44:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h **** 
+  45:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h ****     The functions in this header file implement simple delay loops
+  46:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h ****     that perform a busy-waiting.  They are typically used to
+  47:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h ****     facilitate short delays in the program execution.  They are
+  48:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h ****     implemented as count-down loops with a well-known CPU cycle
+  49:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h ****     count per loop iteration.  As such, no other processing can
+  50:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h ****     occur simultaneously.  It should be kept in mind that the
+  51:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h ****     functions described here do not disable interrupts.
+  52:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h **** 
+  53:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h ****     In general, for long delays, the use of hardware timers is
+  54:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h ****     much preferrable, as they free the CPU, and allow for
+  55:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h ****     concurrent processing of other events while the timer is
+  56:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h ****     running.  However, in particular for very short delays, the
+  57:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h ****     overhead of setting up a hardware timer is too much compared
+  58:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h ****     to the overall delay time.
+  59:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h **** 
+  60:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h ****     Two inline functions are provided for the actual delay algorithms.
+  61:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h **** 
+  62:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h **** */
+  63:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h **** 
+  64:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h **** #if !defined(__DOXYGEN__)
+  65:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h **** static inline void _delay_loop_1(uint8_t __count) __attribute__((always_inline));
+  66:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h **** static inline void _delay_loop_2(uint16_t __count) __attribute__((always_inline));
+  67:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h **** #endif
+  68:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h **** 
+  69:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h **** /** \ingroup util_delay_basic
+  70:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h **** 
+  71:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h ****     Delay loop using an 8-bit counter \c __count, so up to 256
+  72:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h ****     iterations are possible.  (The value 256 would have to be passed
+  73:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h ****     as 0.)  The loop executes three CPU cycles per iteration, not
+  74:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h ****     including the overhead the compiler needs to setup the counter
+  75:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h ****     register.
+  76:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h **** 
+  77:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h ****     Thus, at a CPU speed of 1 MHz, delays of up to 768 microseconds
+  78:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h ****     can be achieved.
+  79:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h **** */
+  80:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h **** void
+  81:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h **** _delay_loop_1(uint8_t __count)
+  82:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h **** {
+  83:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h **** 	__asm__ volatile (
+  84:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h **** 		"1: dec %0" "\n\t"
+  85:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h **** 		"brne 1b"
+  86:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h **** 		: "=r" (__count)
+  87:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h **** 		: "0" (__count)
+  88:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h **** 	);
+  89:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h **** }
+  90:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h **** 
+  91:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h **** /** \ingroup util_delay_basic
+  92:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h **** 
+  93:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h ****     Delay loop using a 16-bit counter \c __count, so up to 65536
+  94:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h ****     iterations are possible.  (The value 65536 would have to be
+  95:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h ****     passed as 0.)  The loop executes four CPU cycles per iteration,
+  96:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h ****     not including the overhead the compiler requires to setup the
+  97:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h ****     counter register pair.
+  98:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h **** 
+  99:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h ****     Thus, at a CPU speed of 1 MHz, delays of up to about 262.1
+ 100:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h ****     milliseconds can be achieved.
+ 101:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h ****  */
+ 102:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h **** void
+ 103:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h **** _delay_loop_2(uint16_t __count)
+ 104:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h **** {
+ 105:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h **** 	__asm__ volatile (
+  88               	.LM1:
+  89 0000 8CEC      		ldi r24,lo8(2764)
+  90 0002 9AE0      		ldi r25,hi8(2764)
+  91 0004 FC01      		movw r30,r24
+  92               	/* #APP */
+  93               	 ;  105 "/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h" 1
+  94 0006 3197      		1: sbiw r30,1
+  95 0008 01F4      		brne 1b
+  96               	 ;  0 "" 2
+  97               	/* #NOAPP */
+  98               	.LBE207:
+  99               	.LBE206:
+ 100               	.LBE205:
+ 101               	.LBE204:
+ 103               	.Ltext3:
+  37:src/BOT_CODE/lcd.h **** 	_delay_ms(1);
+  38:src/BOT_CODE/lcd.h **** 
+  39:src/BOT_CODE/lcd.h **** 	cbit(lcd_port,RS);				//RS=0 --- Command Input
+ 105               	.LM2:
+ 106 000a 4098      		cbi 40-32,0
+  40:src/BOT_CODE/lcd.h **** 	cbit(lcd_port,RW);				//RW=0 --- Writing to LCD
+ 108               	.LM3:
+ 109 000c 4198      		cbi 40-32,1
+  41:src/BOT_CODE/lcd.h **** 	lcd_port = 0x30;				//Sending 3
+ 111               	.LM4:
+ 112 000e 40E3      		ldi r20,lo8(48)
+ 113 0010 48B9      		out 40-32,r20
+  42:src/BOT_CODE/lcd.h **** 	sbit(lcd_port,EN);				//Set Enable Pin
+ 115               	.LM5:
+ 116 0012 429A      		sbi 40-32,2
+ 117               	.LBB208:
+ 118               	.LBB209:
+ 119               	.LBB210:
+ 120               	.LBB211:
+ 122               	.Ltext4:
+ 124               	.LM6:
+ 125 0014 20E0      		ldi r18,lo8(13824)
+ 126 0016 36E3      		ldi r19,hi8(13824)
+ 127 0018 F901      		movw r30,r18
+ 128               	/* #APP */
+ 129               	 ;  105 "/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h" 1
+ 130 001a 3197      		1: sbiw r30,1
+ 131 001c 01F4      		brne 1b
+ 132               	 ;  0 "" 2
+ 133               	/* #NOAPP */
+ 134               	.LBE211:
+ 135               	.LBE210:
+ 136               	.LBE209:
+ 137               	.LBE208:
+ 139               	.Ltext5:
+  43:src/BOT_CODE/lcd.h **** 	_delay_ms(5);					//Delay
+  44:src/BOT_CODE/lcd.h **** 	cbit(lcd_port,EN);				//Clear Enable Pin
+ 141               	.LM7:
+ 142 001e 4298      		cbi 40-32,2
+ 143               	.LBB212:
+ 144               	.LBB213:
+ 145               	.LBB214:
+ 146               	.LBB215:
+ 148               	.Ltext6:
+ 150               	.LM8:
+ 151 0020 FC01      		movw r30,r24
+ 152               	/* #APP */
+ 153               	 ;  105 "/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h" 1
+ 154 0022 3197      		1: sbiw r30,1
+ 155 0024 01F4      		brne 1b
+ 156               	 ;  0 "" 2
+ 157               	/* #NOAPP */
+ 158               	.LBE215:
+ 159               	.LBE214:
+ 160               	.LBE213:
+ 161               	.LBE212:
+ 163               	.Ltext7:
+  45:src/BOT_CODE/lcd.h **** 
+  46:src/BOT_CODE/lcd.h **** 	_delay_ms(1);
+  47:src/BOT_CODE/lcd.h **** 
+  48:src/BOT_CODE/lcd.h **** 	cbit(lcd_port,RS);				//RS=0 --- Command Input
+ 165               	.LM9:
+ 166 0026 4098      		cbi 40-32,0
+  49:src/BOT_CODE/lcd.h **** 	cbit(lcd_port,RW);				//RW=0 --- Writing to LCD
+ 168               	.LM10:
+ 169 0028 4198      		cbi 40-32,1
+  50:src/BOT_CODE/lcd.h **** 	lcd_port = 0x30;				//Sending 3
+ 171               	.LM11:
+ 172 002a 48B9      		out 40-32,r20
+  51:src/BOT_CODE/lcd.h **** 	sbit(lcd_port,EN);				//Set Enable Pin
+ 174               	.LM12:
+ 175 002c 429A      		sbi 40-32,2
+ 176               	.LBB216:
+ 177               	.LBB217:
+ 178               	.LBB218:
+ 179               	.LBB219:
+ 181               	.Ltext8:
+ 183               	.LM13:
+ 184 002e F901      		movw r30,r18
+ 185               	/* #APP */
+ 186               	 ;  105 "/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h" 1
+ 187 0030 3197      		1: sbiw r30,1
+ 188 0032 01F4      		brne 1b
+ 189               	 ;  0 "" 2
+ 190               	/* #NOAPP */
+ 191               	.LBE219:
+ 192               	.LBE218:
+ 193               	.LBE217:
+ 194               	.LBE216:
+ 196               	.Ltext9:
+  52:src/BOT_CODE/lcd.h **** 	_delay_ms(5);					//Delay
+  53:src/BOT_CODE/lcd.h **** 	cbit(lcd_port,EN);				//Clear Enable Pin
+ 198               	.LM14:
+ 199 0034 4298      		cbi 40-32,2
+ 200               	.LBB220:
+ 201               	.LBB221:
+ 202               	.LBB222:
+ 203               	.LBB223:
+ 205               	.Ltext10:
+ 207               	.LM15:
+ 208 0036 FC01      		movw r30,r24
+ 209               	/* #APP */
+ 210               	 ;  105 "/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h" 1
+ 211 0038 3197      		1: sbiw r30,1
+ 212 003a 01F4      		brne 1b
+ 213               	 ;  0 "" 2
+ 214               	/* #NOAPP */
+ 215               	.LBE223:
+ 216               	.LBE222:
+ 217               	.LBE221:
+ 218               	.LBE220:
+ 220               	.Ltext11:
+  54:src/BOT_CODE/lcd.h **** 
+  55:src/BOT_CODE/lcd.h **** 	_delay_ms(1);
+  56:src/BOT_CODE/lcd.h **** 
+  57:src/BOT_CODE/lcd.h **** 	cbit(lcd_port,RS);				//RS=0 --- Command Input
+ 222               	.LM16:
+ 223 003c 4098      		cbi 40-32,0
+  58:src/BOT_CODE/lcd.h **** 	cbit(lcd_port,RW);				//RW=0 --- Writing to LCD
+ 225               	.LM17:
+ 226 003e 4198      		cbi 40-32,1
+  59:src/BOT_CODE/lcd.h **** 	lcd_port = 0x30;				//Sending 3
+ 228               	.LM18:
+ 229 0040 48B9      		out 40-32,r20
+  60:src/BOT_CODE/lcd.h **** 	sbit(lcd_port,EN);				//Set Enable Pin
+ 231               	.LM19:
+ 232 0042 429A      		sbi 40-32,2
+ 233               	.LBB224:
+ 234               	.LBB225:
+ 235               	.LBB226:
+ 236               	.LBB227:
+ 238               	.Ltext12:
+ 240               	.LM20:
+ 241 0044 F901      		movw r30,r18
+ 242               	/* #APP */
+ 243               	 ;  105 "/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h" 1
+ 244 0046 3197      		1: sbiw r30,1
+ 245 0048 01F4      		brne 1b
+ 246               	 ;  0 "" 2
+ 247               	/* #NOAPP */
+ 248               	.LBE227:
+ 249               	.LBE226:
+ 250               	.LBE225:
+ 251               	.LBE224:
+ 253               	.Ltext13:
+  61:src/BOT_CODE/lcd.h **** 	_delay_ms(5);					//Delay
+  62:src/BOT_CODE/lcd.h **** 	cbit(lcd_port,EN);				//Clear Enable Pin
+ 255               	.LM21:
+ 256 004a 4298      		cbi 40-32,2
+ 257               	.LBB228:
+ 258               	.LBB229:
+ 259               	.LBB230:
+ 260               	.LBB231:
+ 262               	.Ltext14:
+ 264               	.LM22:
+ 265               	/* #APP */
+ 266               	 ;  105 "/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h" 1
+ 267 004c 0197      		1: sbiw r24,1
+ 268 004e 01F4      		brne 1b
+ 269               	 ;  0 "" 2
+ 270               	/* #NOAPP */
+ 271               	.LBE231:
+ 272               	.LBE230:
+ 273               	.LBE229:
+ 274               	.LBE228:
+ 276               	.Ltext15:
+  63:src/BOT_CODE/lcd.h **** 
+  64:src/BOT_CODE/lcd.h **** 	_delay_ms(1);
+  65:src/BOT_CODE/lcd.h **** 
+  66:src/BOT_CODE/lcd.h **** 	cbit(lcd_port,RS);				//RS=0 --- Command Input
+ 278               	.LM23:
+ 279 0050 4098      		cbi 40-32,0
+  67:src/BOT_CODE/lcd.h **** 	cbit(lcd_port,RW);				//RW=0 --- Writing to LCD
+ 281               	.LM24:
+ 282 0052 4198      		cbi 40-32,1
+  68:src/BOT_CODE/lcd.h **** 	lcd_port = 0x20;				//Sending 2 to initialise LCD 4-bit mode
+ 284               	.LM25:
+ 285 0054 80E2      		ldi r24,lo8(32)
+ 286 0056 88B9      		out 40-32,r24
+  69:src/BOT_CODE/lcd.h **** 	sbit(lcd_port,EN);				//Set Enable Pin
+ 288               	.LM26:
+ 289 0058 429A      		sbi 40-32,2
+ 290               	.LBB232:
+ 291               	.LBB233:
+ 292               	.LBB234:
+ 293               	.LBB235:
+ 295               	.Ltext16:
+ 297               	.LM27:
+ 298 005a C901      		movw r24,r18
+ 299               	/* #APP */
+ 300               	 ;  105 "/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h" 1
+ 301 005c 0197      		1: sbiw r24,1
+ 302 005e 01F4      		brne 1b
+ 303               	 ;  0 "" 2
+ 304               	/* #NOAPP */
+ 305               	.LBE235:
+ 306               	.LBE234:
+ 307               	.LBE233:
+ 308               	.LBE232:
+ 310               	.Ltext17:
+  70:src/BOT_CODE/lcd.h **** 	_delay_ms(5);					//Delay
+  71:src/BOT_CODE/lcd.h **** 	cbit(lcd_port,EN);				//Clear Enable Pin
+ 312               	.LM28:
+ 313 0060 4298      		cbi 40-32,2
+ 314               	/* epilogue start */
+  72:src/BOT_CODE/lcd.h **** 
+  73:src/BOT_CODE/lcd.h **** 	
+  74:src/BOT_CODE/lcd.h **** }
+ 316               	.LM29:
+ 317 0062 0895      		ret
+ 319               	.Lscope1:
+ 321               		.stabd	78,0,0
+ 324               	.global	lcd_wr_command
+ 326               	lcd_wr_command:
+ 327               		.stabd	46,0,0
+  75:src/BOT_CODE/lcd.h **** 
+  76:src/BOT_CODE/lcd.h **** /*****Function to Initialize LCD*****/
+  77:src/BOT_CODE/lcd.h **** void lcd_init()
+  78:src/BOT_CODE/lcd.h **** {
+  79:src/BOT_CODE/lcd.h **** 	_delay_ms(1);
+  80:src/BOT_CODE/lcd.h **** 
+  81:src/BOT_CODE/lcd.h **** 	lcd_wr_command(0x28);			//LCD 4-bit mode and 2 lines.
+  82:src/BOT_CODE/lcd.h **** 	lcd_wr_command(0x01);
+  83:src/BOT_CODE/lcd.h **** 	lcd_wr_command(0x06);
+  84:src/BOT_CODE/lcd.h **** 	lcd_wr_command(0x0E);
+  85:src/BOT_CODE/lcd.h **** 	lcd_wr_command(0x80);
+  86:src/BOT_CODE/lcd.h **** 		
+  87:src/BOT_CODE/lcd.h **** }
+  88:src/BOT_CODE/lcd.h **** 
+  89:src/BOT_CODE/lcd.h **** 	 
+  90:src/BOT_CODE/lcd.h **** /*****Function to Write Command on LCD*****/
+  91:src/BOT_CODE/lcd.h **** void lcd_wr_command(unsigned char cmd)
+  92:src/BOT_CODE/lcd.h **** {
+ 329               	.LM30:
+ 330               	.LFBB2:
+ 331               	/* prologue: function */
+ 332               	/* frame size = 0 */
+  93:src/BOT_CODE/lcd.h **** 	unsigned char temp;
+  94:src/BOT_CODE/lcd.h **** 	temp = cmd;
+  95:src/BOT_CODE/lcd.h **** 	temp = temp & 0xF0;
+  96:src/BOT_CODE/lcd.h **** 	lcd_port &= 0x0F;
+ 334               	.LM31:
+ 335 0064 98B1      		in r25,40-32
+ 336 0066 9F70      		andi r25,lo8(15)
+ 337 0068 98B9      		out 40-32,r25
+  97:src/BOT_CODE/lcd.h **** 	lcd_port |= temp;
+ 339               	.LM32:
+ 340 006a 28B1      		in r18,40-32
+ 341 006c 982F      		mov r25,r24
+ 342 006e 907F      		andi r25,lo8(-16)
+ 343 0070 922B      		or r25,r18
+ 344 0072 98B9      		out 40-32,r25
+  98:src/BOT_CODE/lcd.h **** 	cbit(lcd_port,RS);
+ 346               	.LM33:
+ 347 0074 4098      		cbi 40-32,0
+  99:src/BOT_CODE/lcd.h **** 	cbit(lcd_port,RW);
+ 349               	.LM34:
+ 350 0076 4198      		cbi 40-32,1
+ 100:src/BOT_CODE/lcd.h **** 	sbit(lcd_port,EN);
+ 352               	.LM35:
+ 353 0078 429A      		sbi 40-32,2
+ 354               	.LBB236:
+ 355               	.LBB237:
+ 356               	.LBB238:
+ 357               	.LBB239:
+ 359               	.Ltext18:
+ 361               	.LM36:
+ 362 007a 20E0      		ldi r18,lo8(13824)
+ 363 007c 36E3      		ldi r19,hi8(13824)
+ 364 007e F901      		movw r30,r18
+ 365               	/* #APP */
+ 366               	 ;  105 "/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h" 1
+ 367 0080 3197      		1: sbiw r30,1
+ 368 0082 01F4      		brne 1b
+ 369               	 ;  0 "" 2
+ 370               	/* #NOAPP */
+ 371               	.LBE239:
+ 372               	.LBE238:
+ 373               	.LBE237:
+ 374               	.LBE236:
+ 376               	.Ltext19:
+ 101:src/BOT_CODE/lcd.h **** 	_delay_ms(5);
+ 102:src/BOT_CODE/lcd.h **** 	cbit(lcd_port,EN);
+ 378               	.LM37:
+ 379 0084 4298      		cbi 40-32,2
+ 103:src/BOT_CODE/lcd.h **** 	
+ 104:src/BOT_CODE/lcd.h **** 	cmd = cmd & 0x0F;
+ 105:src/BOT_CODE/lcd.h **** 	cmd = cmd<<4;
+ 106:src/BOT_CODE/lcd.h **** 	lcd_port &= 0x0F;
+ 381               	.LM38:
+ 382 0086 98B1      		in r25,40-32
+ 383 0088 9F70      		andi r25,lo8(15)
+ 384 008a 98B9      		out 40-32,r25
+ 107:src/BOT_CODE/lcd.h **** 	lcd_port |= cmd;
+ 386               	.LM39:
+ 387 008c 98B1      		in r25,40-32
+ 388 008e 8295      		swap r24
+ 389 0090 807F      		andi r24,lo8(-16)
+ 390 0092 982B      		or r25,r24
+ 391 0094 98B9      		out 40-32,r25
+ 108:src/BOT_CODE/lcd.h **** 	cbit(lcd_port,RS);
+ 393               	.LM40:
+ 394 0096 4098      		cbi 40-32,0
+ 109:src/BOT_CODE/lcd.h **** 	cbit(lcd_port,RW);
+ 396               	.LM41:
+ 397 0098 4198      		cbi 40-32,1
+ 110:src/BOT_CODE/lcd.h **** 	sbit(lcd_port,EN);
+ 399               	.LM42:
+ 400 009a 429A      		sbi 40-32,2
+ 401               	.LBB240:
+ 402               	.LBB241:
+ 403               	.LBB242:
+ 404               	.LBB243:
+ 406               	.Ltext20:
+ 408               	.LM43:
+ 409 009c C901      		movw r24,r18
+ 410               	/* #APP */
+ 411               	 ;  105 "/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h" 1
+ 412 009e 0197      		1: sbiw r24,1
+ 413 00a0 01F4      		brne 1b
+ 414               	 ;  0 "" 2
+ 415               	/* #NOAPP */
+ 416               	.LBE243:
+ 417               	.LBE242:
+ 418               	.LBE241:
+ 419               	.LBE240:
+ 421               	.Ltext21:
+ 111:src/BOT_CODE/lcd.h **** 	_delay_ms(5);
+ 112:src/BOT_CODE/lcd.h **** 	cbit(lcd_port,EN);
+ 423               	.LM44:
+ 424 00a2 4298      		cbi 40-32,2
+ 425               	/* epilogue start */
+ 113:src/BOT_CODE/lcd.h **** }
+ 427               	.LM45:
+ 428 00a4 0895      		ret
+ 430               	.Lscope2:
+ 432               		.stabd	78,0,0
+ 434               	.global	lcd_init
+ 436               	lcd_init:
+ 437               		.stabd	46,0,0
+  78:src/BOT_CODE/lcd.h **** {
+ 439               	.LM46:
+ 440               	.LFBB3:
+ 441               	/* prologue: function */
+ 442               	/* frame size = 0 */
+ 443               	.LBB244:
+ 444               	.LBB245:
+ 445               	.LBB246:
+ 446               	.LBB247:
+ 448               	.Ltext22:
+ 450               	.LM47:
+ 451 00a6 8CEC      		ldi r24,lo8(2764)
+ 452 00a8 9AE0      		ldi r25,hi8(2764)
+ 453               	/* #APP */
+ 454               	 ;  105 "/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h" 1
+ 455 00aa 0197      		1: sbiw r24,1
+ 456 00ac 01F4      		brne 1b
+ 457               	 ;  0 "" 2
+ 458               	/* #NOAPP */
+ 459               	.LBE247:
+ 460               	.LBE246:
+ 461               	.LBE245:
+ 462               	.LBE244:
+ 464               	.Ltext23:
+  81:src/BOT_CODE/lcd.h **** 	lcd_wr_command(0x28);			//LCD 4-bit mode and 2 lines.
+ 466               	.LM48:
+ 467 00ae 88E2      		ldi r24,lo8(40)
+ 468 00b0 0E94 0000 		call lcd_wr_command
+  82:src/BOT_CODE/lcd.h **** 	lcd_wr_command(0x01);
+ 470               	.LM49:
+ 471 00b4 81E0      		ldi r24,lo8(1)
+ 472 00b6 0E94 0000 		call lcd_wr_command
+  83:src/BOT_CODE/lcd.h **** 	lcd_wr_command(0x06);
+ 474               	.LM50:
+ 475 00ba 86E0      		ldi r24,lo8(6)
+ 476 00bc 0E94 0000 		call lcd_wr_command
+  84:src/BOT_CODE/lcd.h **** 	lcd_wr_command(0x0E);
+ 478               	.LM51:
+ 479 00c0 8EE0      		ldi r24,lo8(14)
+ 480 00c2 0E94 0000 		call lcd_wr_command
+  85:src/BOT_CODE/lcd.h **** 	lcd_wr_command(0x80);
+ 482               	.LM52:
+ 483 00c6 80E8      		ldi r24,lo8(-128)
+ 484 00c8 0E94 0000 		call lcd_wr_command
+ 485               	/* epilogue start */
+  87:src/BOT_CODE/lcd.h **** }
+ 487               	.LM53:
+ 488 00cc 0895      		ret
+ 490               	.Lscope3:
+ 492               		.stabd	78,0,0
+ 495               	.global	lcd_wr_char
+ 497               	lcd_wr_char:
+ 498               		.stabd	46,0,0
+ 114:src/BOT_CODE/lcd.h **** 
+ 115:src/BOT_CODE/lcd.h **** /*****Function to Write Data on LCD*****/
+ 116:src/BOT_CODE/lcd.h **** void lcd_wr_char(char letter)
+ 117:src/BOT_CODE/lcd.h **** {
+ 500               	.LM54:
+ 501               	.LFBB4:
+ 502               	/* prologue: function */
+ 503               	/* frame size = 0 */
+ 118:src/BOT_CODE/lcd.h **** 	char temp;
+ 119:src/BOT_CODE/lcd.h **** 	temp = letter;
+ 120:src/BOT_CODE/lcd.h **** 	temp = (temp & 0xF0);
+ 121:src/BOT_CODE/lcd.h **** 	lcd_port &= 0x0F;
+ 505               	.LM55:
+ 506 00ce 98B1      		in r25,40-32
+ 507 00d0 9F70      		andi r25,lo8(15)
+ 508 00d2 98B9      		out 40-32,r25
+ 122:src/BOT_CODE/lcd.h **** 	lcd_port |= temp;
+ 510               	.LM56:
+ 511 00d4 28B1      		in r18,40-32
+ 512 00d6 982F      		mov r25,r24
+ 513 00d8 907F      		andi r25,lo8(-16)
+ 514 00da 922B      		or r25,r18
+ 515 00dc 98B9      		out 40-32,r25
+ 123:src/BOT_CODE/lcd.h **** 	sbit(lcd_port,RS);
+ 517               	.LM57:
+ 518 00de 409A      		sbi 40-32,0
+ 124:src/BOT_CODE/lcd.h **** 	cbit(lcd_port,RW);
+ 520               	.LM58:
+ 521 00e0 4198      		cbi 40-32,1
+ 125:src/BOT_CODE/lcd.h **** 	sbit(lcd_port,EN);
+ 523               	.LM59:
+ 524 00e2 429A      		sbi 40-32,2
+ 525               	.LBB248:
+ 526               	.LBB249:
+ 527               	.LBB250:
+ 528               	.LBB251:
+ 530               	.Ltext24:
+ 532               	.LM60:
+ 533 00e4 20E0      		ldi r18,lo8(13824)
+ 534 00e6 36E3      		ldi r19,hi8(13824)
+ 535 00e8 F901      		movw r30,r18
+ 536               	/* #APP */
+ 537               	 ;  105 "/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h" 1
+ 538 00ea 3197      		1: sbiw r30,1
+ 539 00ec 01F4      		brne 1b
+ 540               	 ;  0 "" 2
+ 541               	/* #NOAPP */
+ 542               	.LBE251:
+ 543               	.LBE250:
+ 544               	.LBE249:
+ 545               	.LBE248:
+ 547               	.Ltext25:
+ 126:src/BOT_CODE/lcd.h **** 	_delay_ms(5);
+ 127:src/BOT_CODE/lcd.h **** 	cbit(lcd_port,EN);
+ 549               	.LM61:
+ 550 00ee 4298      		cbi 40-32,2
+ 128:src/BOT_CODE/lcd.h **** 
+ 129:src/BOT_CODE/lcd.h **** 	letter = letter & 0x0F;
+ 130:src/BOT_CODE/lcd.h **** 	letter = letter<<4;
+ 131:src/BOT_CODE/lcd.h **** 	lcd_port &= 0x0F;
+ 552               	.LM62:
+ 553 00f0 98B1      		in r25,40-32
+ 554 00f2 9F70      		andi r25,lo8(15)
+ 555 00f4 98B9      		out 40-32,r25
+ 132:src/BOT_CODE/lcd.h **** 	lcd_port |= letter;
+ 557               	.LM63:
+ 558 00f6 98B1      		in r25,40-32
+ 559 00f8 8295      		swap r24
+ 560 00fa 807F      		andi r24,lo8(-16)
+ 561 00fc 982B      		or r25,r24
+ 562 00fe 98B9      		out 40-32,r25
+ 133:src/BOT_CODE/lcd.h **** 	sbit(lcd_port,RS);
+ 564               	.LM64:
+ 565 0100 409A      		sbi 40-32,0
+ 134:src/BOT_CODE/lcd.h **** 	cbit(lcd_port,RW);
+ 567               	.LM65:
+ 568 0102 4198      		cbi 40-32,1
+ 135:src/BOT_CODE/lcd.h **** 	sbit(lcd_port,EN);
+ 570               	.LM66:
+ 571 0104 429A      		sbi 40-32,2
+ 572               	.LBB252:
+ 573               	.LBB253:
+ 574               	.LBB254:
+ 575               	.LBB255:
+ 577               	.Ltext26:
+ 579               	.LM67:
+ 580 0106 C901      		movw r24,r18
+ 581               	/* #APP */
+ 582               	 ;  105 "/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h" 1
+ 583 0108 0197      		1: sbiw r24,1
+ 584 010a 01F4      		brne 1b
+ 585               	 ;  0 "" 2
+ 586               	/* #NOAPP */
+ 587               	.LBE255:
+ 588               	.LBE254:
+ 589               	.LBE253:
+ 590               	.LBE252:
+ 592               	.Ltext27:
+ 136:src/BOT_CODE/lcd.h **** 	_delay_ms(5);
+ 137:src/BOT_CODE/lcd.h **** 	cbit(lcd_port,EN);
+ 594               	.LM68:
+ 595 010c 4298      		cbi 40-32,2
+ 596               	/* epilogue start */
+ 138:src/BOT_CODE/lcd.h **** }
+ 598               	.LM69:
+ 599 010e 0895      		ret
+ 601               	.Lscope4:
+ 603               		.stabd	78,0,0
+ 605               	.global	lcd_home
+ 607               	lcd_home:
+ 608               		.stabd	46,0,0
+ 139:src/BOT_CODE/lcd.h **** 
+ 140:src/BOT_CODE/lcd.h **** 
+ 141:src/BOT_CODE/lcd.h **** void lcd_home()
+ 142:src/BOT_CODE/lcd.h **** {
+ 610               	.LM70:
+ 611               	.LFBB5:
+ 612               	/* prologue: function */
+ 613               	/* frame size = 0 */
+ 143:src/BOT_CODE/lcd.h **** 	lcd_wr_command(0x80);
+ 615               	.LM71:
+ 616 0110 80E8      		ldi r24,lo8(-128)
+ 617 0112 0E94 0000 		call lcd_wr_command
+ 618               	/* epilogue start */
+ 144:src/BOT_CODE/lcd.h **** }
+ 620               	.LM72:
+ 621 0116 0895      		ret
+ 623               	.Lscope5:
+ 625               		.stabd	78,0,0
+ 628               	.global	lcd_string
+ 630               	lcd_string:
+ 631               		.stabd	46,0,0
+ 145:src/BOT_CODE/lcd.h **** 
+ 146:src/BOT_CODE/lcd.h **** 
+ 147:src/BOT_CODE/lcd.h **** /*****Function to Print String on LCD*****/
+ 148:src/BOT_CODE/lcd.h **** void lcd_string(char *str)
+ 149:src/BOT_CODE/lcd.h **** {
+ 633               	.LM73:
+ 634               	.LFBB6:
+ 635 0118 CF93      		push r28
+ 636 011a DF93      		push r29
+ 637               	/* prologue: function */
+ 638               	/* frame size = 0 */
+ 639 011c EC01      		movw r28,r24
+ 640 011e 00C0      		rjmp .L12
+ 641               	.L13:
+ 150:src/BOT_CODE/lcd.h **** 	while(*str != '\0')
+ 151:src/BOT_CODE/lcd.h **** 	{
+ 152:src/BOT_CODE/lcd.h **** 		lcd_wr_char(*str);
+ 643               	.LM74:
+ 644 0120 0E94 0000 		call lcd_wr_char
+ 153:src/BOT_CODE/lcd.h **** 		str++;
+ 646               	.LM75:
+ 647 0124 2196      		adiw r28,1
+ 648               	.L12:
+ 150:src/BOT_CODE/lcd.h **** 	while(*str != '\0')
+ 650               	.LM76:
+ 651 0126 8881      		ld r24,Y
+ 652 0128 8823      		tst r24
+ 653 012a 01F4      		brne .L13
+ 654               	/* epilogue start */
+ 154:src/BOT_CODE/lcd.h **** 	}
+ 155:src/BOT_CODE/lcd.h **** }
+ 656               	.LM77:
+ 657 012c DF91      		pop r29
+ 658 012e CF91      		pop r28
+ 659 0130 0895      		ret
+ 661               	.Lscope6:
+ 663               		.stabd	78,0,0
+ 667               	.global	lcd_cursor
+ 669               	lcd_cursor:
+ 670               		.stabd	46,0,0
+ 156:src/BOT_CODE/lcd.h **** 
+ 157:src/BOT_CODE/lcd.h **** /*** Position the LCD cursor at "row", "column". ***/
+ 158:src/BOT_CODE/lcd.h **** 
+ 159:src/BOT_CODE/lcd.h **** void lcd_cursor (char row, char column)
+ 160:src/BOT_CODE/lcd.h **** {
+ 672               	.LM78:
+ 673               	.LFBB7:
+ 674               	/* prologue: function */
+ 675               	/* frame size = 0 */
+ 161:src/BOT_CODE/lcd.h **** 	switch (row) {
+ 677               	.LM79:
+ 678 0132 8230      		cpi r24,lo8(2)
+ 679 0134 01F0      		breq .L18
+ 680 0136 8330      		cpi r24,lo8(3)
+ 681 0138 00F4      		brsh .L21
+ 682 013a 8130      		cpi r24,lo8(1)
+ 683 013c 01F4      		brne .L22
+ 684 013e 00C0      		rjmp .L24
+ 685               	.L21:
+ 686 0140 8330      		cpi r24,lo8(3)
+ 687 0142 01F0      		breq .L19
+ 688 0144 8430      		cpi r24,lo8(4)
+ 689 0146 01F4      		brne .L22
+ 690 0148 00C0      		rjmp .L25
+ 691               	.L24:
+ 162:src/BOT_CODE/lcd.h **** 		case 1: lcd_wr_command (0x80 + column - 1); break;
+ 693               	.LM80:
+ 694 014a 862F      		mov r24,r22
+ 695 014c 8158      		subi r24,lo8(-(127))
+ 696 014e 00C0      		rjmp .L23
+ 697               	.L18:
+ 163:src/BOT_CODE/lcd.h **** 		case 2: lcd_wr_command (0xc0 + column - 1); break;
+ 699               	.LM81:
+ 700 0150 862F      		mov r24,r22
+ 701 0152 8154      		subi r24,lo8(-(-65))
+ 702 0154 00C0      		rjmp .L23
+ 703               	.L19:
+ 164:src/BOT_CODE/lcd.h **** 		case 3: lcd_wr_command (0x94 + column - 1); break;
+ 705               	.LM82:
+ 706 0156 862F      		mov r24,r22
+ 707 0158 8D56      		subi r24,lo8(-(-109))
+ 708               	.L23:
+ 709 015a 0E94 0000 		call lcd_wr_command
+ 710 015e 0895      		ret
+ 711               	.L25:
+ 165:src/BOT_CODE/lcd.h **** 		case 4: lcd_wr_command (0xd4 + column - 1); break;
+ 713               	.LM83:
+ 714 0160 862F      		mov r24,r22
+ 715 0162 8D52      		subi r24,lo8(-(-45))
+ 716 0164 0E94 0000 		call lcd_wr_command
+ 717               	.L22:
+ 718 0168 0895      		ret
+ 720               	.Lscope7:
+ 722               		.stabd	78,0,0
+ 728               	.global	lcd_print
+ 730               	lcd_print:
+ 731               		.stabd	46,0,0
+ 166:src/BOT_CODE/lcd.h **** 		default: break;
+ 167:src/BOT_CODE/lcd.h **** 	}
+ 168:src/BOT_CODE/lcd.h **** }
+ 169:src/BOT_CODE/lcd.h **** 
+ 170:src/BOT_CODE/lcd.h **** /***** Function To Print Any input value upto the desired digit on LCD *****/
+ 171:src/BOT_CODE/lcd.h **** void lcd_print (char row, char coloumn, unsigned int value, int digits)
+ 172:src/BOT_CODE/lcd.h **** {
+ 733               	.LM84:
+ 734               	.LFBB8:
+ 735 016a 0F93      		push r16
+ 736 016c 1F93      		push r17
+ 737 016e CF93      		push r28
+ 738 0170 DF93      		push r29
+ 739               	/* prologue: function */
+ 740               	/* frame size = 0 */
+ 741 0172 8A01      		movw r16,r20
+ 742 0174 E901      		movw r28,r18
+ 173:src/BOT_CODE/lcd.h **** 	unsigned char flag=0;
+ 174:src/BOT_CODE/lcd.h **** 	if(row==0||coloumn==0)
+ 744               	.LM85:
+ 745 0176 8823      		tst r24
+ 746 0178 01F0      		breq .L27
+ 747 017a 6623      		tst r22
+ 748 017c 01F4      		brne .L28
+ 749               	.L27:
+ 175:src/BOT_CODE/lcd.h **** 	{
+ 176:src/BOT_CODE/lcd.h **** 		lcd_home();
+ 751               	.LM86:
+ 752 017e 0E94 0000 		call lcd_home
+ 753 0182 00C0      		rjmp .L29
+ 754               	.L28:
+ 177:src/BOT_CODE/lcd.h **** 	}
+ 178:src/BOT_CODE/lcd.h **** 	else
+ 179:src/BOT_CODE/lcd.h **** 	{
+ 180:src/BOT_CODE/lcd.h **** 		lcd_cursor(row,coloumn);
+ 756               	.LM87:
+ 757 0184 0E94 0000 		call lcd_cursor
+ 758               	.L29:
+ 181:src/BOT_CODE/lcd.h **** 	}
+ 182:src/BOT_CODE/lcd.h **** 	if(digits==5 || flag==1)
+ 760               	.LM88:
+ 761 0188 C530      		cpi r28,5
+ 762 018a D105      		cpc r29,__zero_reg__
+ 763 018c 01F4      		brne .L30
+ 183:src/BOT_CODE/lcd.h **** 	{
+ 184:src/BOT_CODE/lcd.h **** 		million=value/10000+48;
+ 765               	.LM89:
+ 766 018e C801      		movw r24,r16
+ 767 0190 60E1      		ldi r22,lo8(10000)
+ 768 0192 77E2      		ldi r23,hi8(10000)
+ 769 0194 0E94 0000 		call __udivmodhi4
+ 770 0198 CB01      		movw r24,r22
+ 771 019a C096      		adiw r24,48
+ 772 019c 9093 0000 		sts (million)+1,r25
+ 773 01a0 8093 0000 		sts million,r24
+ 185:src/BOT_CODE/lcd.h **** 		lcd_wr_char(million);
+ 775               	.LM90:
+ 776 01a4 0E94 0000 		call lcd_wr_char
+ 777 01a8 00C0      		rjmp .L31
+ 778               	.L30:
+ 186:src/BOT_CODE/lcd.h **** 		flag=1;
+ 187:src/BOT_CODE/lcd.h **** 	}
+ 188:src/BOT_CODE/lcd.h **** 	if(digits==4 || flag==1)
+ 780               	.LM91:
+ 781 01aa C430      		cpi r28,4
+ 782 01ac D105      		cpc r29,__zero_reg__
+ 783 01ae 01F0      		breq .L31
+ 784 01b0 80E0      		ldi r24,lo8(0)
+ 785 01b2 00C0      		rjmp .L32
+ 786               	.L31:
+ 189:src/BOT_CODE/lcd.h **** 	{
+ 190:src/BOT_CODE/lcd.h **** 		temp = value/1000;
+ 788               	.LM92:
+ 789 01b4 C801      		movw r24,r16
+ 790 01b6 68EE      		ldi r22,lo8(1000)
+ 791 01b8 73E0      		ldi r23,hi8(1000)
+ 792 01ba 0E94 0000 		call __udivmodhi4
+ 793 01be CB01      		movw r24,r22
+ 794 01c0 6093 0000 		sts temp,r22
+ 795 01c4 9093 0000 		sts temp+1,r25
+ 191:src/BOT_CODE/lcd.h **** 		thousand = temp%10 + 48;
+ 797               	.LM93:
+ 798 01c8 6AE0      		ldi r22,lo8(10)
+ 799 01ca 70E0      		ldi r23,hi8(10)
+ 800 01cc 0E94 0000 		call __udivmodhi4
+ 801 01d0 C096      		adiw r24,48
+ 802 01d2 9093 0000 		sts (thousand)+1,r25
+ 803 01d6 8093 0000 		sts thousand,r24
+ 192:src/BOT_CODE/lcd.h **** 		lcd_wr_char(thousand);
+ 805               	.LM94:
+ 806 01da 0E94 0000 		call lcd_wr_char
+ 807 01de 81E0      		ldi r24,lo8(1)
+ 808               	.L32:
+ 193:src/BOT_CODE/lcd.h **** 		flag=1;
+ 194:src/BOT_CODE/lcd.h **** 	}
+ 195:src/BOT_CODE/lcd.h **** 	if(digits==3 || flag==1)
+ 810               	.LM95:
+ 811 01e0 C330      		cpi r28,3
+ 812 01e2 D105      		cpc r29,__zero_reg__
+ 813 01e4 01F0      		breq .L33
+ 814 01e6 8130      		cpi r24,lo8(1)
+ 815 01e8 01F0      		breq .L33
+ 816 01ea 80E0      		ldi r24,lo8(0)
+ 817 01ec 00C0      		rjmp .L34
+ 818               	.L33:
+ 196:src/BOT_CODE/lcd.h **** 	{
+ 197:src/BOT_CODE/lcd.h **** 		temp = value/100;
+ 820               	.LM96:
+ 821 01ee C801      		movw r24,r16
+ 822 01f0 64E6      		ldi r22,lo8(100)
+ 823 01f2 70E0      		ldi r23,hi8(100)
+ 824 01f4 0E94 0000 		call __udivmodhi4
+ 825 01f8 CB01      		movw r24,r22
+ 826 01fa 6093 0000 		sts temp,r22
+ 827 01fe 9093 0000 		sts temp+1,r25
+ 198:src/BOT_CODE/lcd.h **** 		hundred = temp%10 + 48;
+ 829               	.LM97:
+ 830 0202 6AE0      		ldi r22,lo8(10)
+ 831 0204 70E0      		ldi r23,hi8(10)
+ 832 0206 0E94 0000 		call __udivmodhi4
+ 833 020a C096      		adiw r24,48
+ 834 020c 9093 0000 		sts (hundred)+1,r25
+ 835 0210 8093 0000 		sts hundred,r24
+ 199:src/BOT_CODE/lcd.h **** 		lcd_wr_char(hundred);
+ 837               	.LM98:
+ 838 0214 0E94 0000 		call lcd_wr_char
+ 839 0218 81E0      		ldi r24,lo8(1)
+ 840               	.L34:
+ 200:src/BOT_CODE/lcd.h **** 		flag=1;
+ 201:src/BOT_CODE/lcd.h **** 	}
+ 202:src/BOT_CODE/lcd.h **** 	if(digits==2 || flag==1)
+ 842               	.LM99:
+ 843 021a C230      		cpi r28,2
+ 844 021c D105      		cpc r29,__zero_reg__
+ 845 021e 01F0      		breq .L35
+ 846 0220 8130      		cpi r24,lo8(1)
+ 847 0222 01F0      		breq .L35
+ 848 0224 80E0      		ldi r24,lo8(0)
+ 849 0226 00C0      		rjmp .L36
+ 850               	.L35:
+ 203:src/BOT_CODE/lcd.h **** 	{
+ 204:src/BOT_CODE/lcd.h **** 		temp = value/10;
+ 852               	.LM100:
+ 853 0228 C801      		movw r24,r16
+ 854 022a 6AE0      		ldi r22,lo8(10)
+ 855 022c 70E0      		ldi r23,hi8(10)
+ 856 022e 0E94 0000 		call __udivmodhi4
+ 857 0232 CB01      		movw r24,r22
+ 858 0234 6093 0000 		sts temp,r22
+ 859 0238 9093 0000 		sts temp+1,r25
+ 205:src/BOT_CODE/lcd.h **** 		tens = temp%10 + 48;
+ 861               	.LM101:
+ 862 023c 6AE0      		ldi r22,lo8(10)
+ 863 023e 70E0      		ldi r23,hi8(10)
+ 864 0240 0E94 0000 		call __udivmodhi4
+ 865 0244 C096      		adiw r24,48
+ 866 0246 9093 0000 		sts (tens)+1,r25
+ 867 024a 8093 0000 		sts tens,r24
+ 206:src/BOT_CODE/lcd.h **** 		lcd_wr_char(tens);
+ 869               	.LM102:
+ 870 024e 0E94 0000 		call lcd_wr_char
+ 871 0252 81E0      		ldi r24,lo8(1)
+ 872               	.L36:
+ 207:src/BOT_CODE/lcd.h **** 		flag=1;
+ 208:src/BOT_CODE/lcd.h **** 	}
+ 209:src/BOT_CODE/lcd.h **** 	if(digits==1 || flag==1)
+ 874               	.LM103:
+ 875 0254 C130      		cpi r28,1
+ 876 0256 D105      		cpc r29,__zero_reg__
+ 877 0258 01F0      		breq .L37
+ 878 025a 8130      		cpi r24,lo8(1)
+ 879 025c 01F4      		brne .L38
+ 880               	.L37:
+ 210:src/BOT_CODE/lcd.h **** 	{
+ 211:src/BOT_CODE/lcd.h **** 		unit = value%10 + 48;
+ 882               	.LM104:
+ 883 025e C801      		movw r24,r16
+ 884 0260 6AE0      		ldi r22,lo8(10)
+ 885 0262 70E0      		ldi r23,hi8(10)
+ 886 0264 0E94 0000 		call __udivmodhi4
+ 887 0268 C096      		adiw r24,48
+ 888 026a 9093 0000 		sts (unit)+1,r25
+ 889 026e 8093 0000 		sts unit,r24
+ 212:src/BOT_CODE/lcd.h **** 		lcd_wr_char(unit);
+ 891               	.LM105:
+ 892 0272 0E94 0000 		call lcd_wr_char
+ 893               	.L38:
+ 213:src/BOT_CODE/lcd.h **** 	}
+ 214:src/BOT_CODE/lcd.h **** 	if(digits>5)
+ 895               	.LM106:
+ 896 0276 2697      		sbiw r28,6
+ 897 0278 04F0      		brlt .L40
+ 215:src/BOT_CODE/lcd.h **** 	{
+ 216:src/BOT_CODE/lcd.h **** 		lcd_wr_char('E');
+ 899               	.LM107:
+ 900 027a 85E4      		ldi r24,lo8(69)
+ 901 027c 0E94 0000 		call lcd_wr_char
+ 902               	.L40:
+ 903               	/* epilogue start */
+ 217:src/BOT_CODE/lcd.h **** 	}
+ 218:src/BOT_CODE/lcd.h **** 	
+ 219:src/BOT_CODE/lcd.h **** }
+ 905               	.LM108:
+ 906 0280 DF91      		pop r29
+ 907 0282 CF91      		pop r28
+ 908 0284 1F91      		pop r17
+ 909 0286 0F91      		pop r16
+ 910 0288 0895      		ret
+ 915               	.Lscope8:
+ 917               		.stabd	78,0,0
+ 919               	.global	lcd_port_config
+ 921               	lcd_port_config:
+ 922               		.stabd	46,0,0
+ 924               	.Ltext28:
+   1:src/BOT_CODE/bot_motion.h **** /*
+   2:src/BOT_CODE/bot_motion.h ****  * =====================================================================================
+   3:src/BOT_CODE/bot_motion.h ****  *
+   4:src/BOT_CODE/bot_motion.h ****  *       Filename:  bot_motion.h
+   5:src/BOT_CODE/bot_motion.h ****  *
+   6:src/BOT_CODE/bot_motion.h ****  *    Description:  Motion/Line following modules for PSS bot.
+   7:src/BOT_CODE/bot_motion.h ****  *
+   8:src/BOT_CODE/bot_motion.h ****  *        Version:  2.0final
+   9:src/BOT_CODE/bot_motion.h ****  *       Revision:  2.0
+  10:src/BOT_CODE/bot_motion.h ****  *       Compiler:  gcc-avr
+  11:src/BOT_CODE/bot_motion.h ****  *
+  12:src/BOT_CODE/bot_motion.h ****  *        Authors:  Pritish Kamath, pritish.kamath@iitb.ac.in
+  13:src/BOT_CODE/bot_motion.h ****  *						  Rohit Saraf	 , rohitsaraf@iitb.ac.in
+  14:src/BOT_CODE/bot_motion.h ****  *						  Ashish Mathew , ashishmathew@iitb.ac.in
+  15:src/BOT_CODE/bot_motion.h ****  *						  Vivek Madan	 , vivekmadan@iitb.ac.in
+  16:src/BOT_CODE/bot_motion.h ****  *        Company:  IIT Bombay
+  17:src/BOT_CODE/bot_motion.h ****  *
+  18:src/BOT_CODE/bot_motion.h ****  * =====================================================================================
+  19:src/BOT_CODE/bot_motion.h ****  */
+  20:src/BOT_CODE/bot_motion.h **** 
+  21:src/BOT_CODE/bot_motion.h **** #include <avr/io.h>
+  22:src/BOT_CODE/bot_motion.h **** #include <avr/interrupt.h>
+  23:src/BOT_CODE/bot_motion.h **** #include <util/delay.h>
+  24:src/BOT_CODE/bot_motion.h **** 
+  25:src/BOT_CODE/bot_motion.h **** #define SetBit(x,b) ((x)|=(b))
+  26:src/BOT_CODE/bot_motion.h **** #define GetBit(x,b) ((x)&(b))
+  27:src/BOT_CODE/bot_motion.h **** #define ResetBit(x,b) ((x)&=(~(b)))
+  28:src/BOT_CODE/bot_motion.h **** 
+  29:src/BOT_CODE/bot_motion.h **** #include <math.h> //included to support power function
+  30:src/BOT_CODE/bot_motion.h **** #include "lcd.h"
+  31:src/BOT_CODE/bot_motion.h **** 
+  32:src/BOT_CODE/bot_motion.h **** #define FCPU 11059200ul //defined here to make sure that program works properly
+  33:src/BOT_CODE/bot_motion.h **** 
+  34:src/BOT_CODE/bot_motion.h **** #define W_THRESHOLD 0x0f
+  35:src/BOT_CODE/bot_motion.h **** #define W_THRESHOLD_STOP 0x08
+  36:src/BOT_CODE/bot_motion.h **** #define ROTATE_THRESHOLD 0x0f //0x41
+  37:src/BOT_CODE/bot_motion.h **** 
+  38:src/BOT_CODE/bot_motion.h **** #define LEFT_SENSOR 3
+  39:src/BOT_CODE/bot_motion.h **** #define CENTER_SENSOR 2
+  40:src/BOT_CODE/bot_motion.h **** #define RIGHT_SENSOR 1
+  41:src/BOT_CODE/bot_motion.h **** #define FRONT_IR_SENSOR 6
+  42:src/BOT_CODE/bot_motion.h **** 
+  43:src/BOT_CODE/bot_motion.h **** #define CONT_BLACK 5
+  44:src/BOT_CODE/bot_motion.h **** 
+  45:src/BOT_CODE/bot_motion.h **** #define IDLE				1
+  46:src/BOT_CODE/bot_motion.h **** #define PROCESSING		2
+  47:src/BOT_CODE/bot_motion.h **** #define BLOCKED			0
+  48:src/BOT_CODE/bot_motion.h **** 
+  49:src/BOT_CODE/bot_motion.h **** 
+  50:src/BOT_CODE/bot_motion.h **** void port_init();
+  51:src/BOT_CODE/bot_motion.h **** void timer5_init();
+  52:src/BOT_CODE/bot_motion.h **** void velocity(unsigned char, unsigned char);
+  53:src/BOT_CODE/bot_motion.h **** void motors_delay();
+  54:src/BOT_CODE/bot_motion.h **** 
+  55:src/BOT_CODE/bot_motion.h **** static volatile unsigned char ShaftCountLeft = 0;
+  56:src/BOT_CODE/bot_motion.h **** static volatile unsigned char ShaftCountRight = 0;
+  57:src/BOT_CODE/bot_motion.h **** unsigned char ADC_Conversion(unsigned char);
+  58:src/BOT_CODE/bot_motion.h **** unsigned char ADC_Value;
+  59:src/BOT_CODE/bot_motion.h **** unsigned char flag = 0;
+  60:src/BOT_CODE/bot_motion.h **** unsigned char Left_white_line = 0;
+  61:src/BOT_CODE/bot_motion.h **** unsigned char Center_white_line = 0;
+  62:src/BOT_CODE/bot_motion.h **** unsigned char Right_white_line = 0;
+  63:src/BOT_CODE/bot_motion.h **** unsigned char Front_IR_Sensor=0;
+  64:src/BOT_CODE/bot_motion.h **** 
+  65:src/BOT_CODE/bot_motion.h **** static volatile char status = IDLE;
+  66:src/BOT_CODE/bot_motion.h **** 
+  67:src/BOT_CODE/bot_motion.h **** /**
+  68:src/BOT_CODE/bot_motion.h ****  * Function to configure LCD port
+  69:src/BOT_CODE/bot_motion.h ****  *all the LCD pin's direction set as output
+  70:src/BOT_CODE/bot_motion.h ****  *all the LCD pins are set to logic 0 except PORTC 7
+  71:src/BOT_CODE/bot_motion.h ****  */
+  72:src/BOT_CODE/bot_motion.h **** void lcd_port_config (void)
+  73:src/BOT_CODE/bot_motion.h **** {
+ 926               	.LM109:
+ 927               	.LFBB9:
+ 928               	/* prologue: function */
+ 929               	/* frame size = 0 */
+  74:src/BOT_CODE/bot_motion.h ****  DDRC = DDRC | 0xF7; //all the LCD pin's direction set as output
+ 931               	.LM110:
+ 932 028a 87B1      		in r24,39-32
+ 933 028c 876F      		ori r24,lo8(-9)
+ 934 028e 87B9      		out 39-32,r24
+  75:src/BOT_CODE/bot_motion.h ****  PORTC = PORTC & 0x80; // all the LCD pins are set to logic 0 except PORTC 7
+ 936               	.LM111:
+ 937 0290 88B1      		in r24,40-32
+ 938 0292 8078      		andi r24,lo8(-128)
+ 939 0294 88B9      		out 40-32,r24
+ 940               	/* epilogue start */
+  76:src/BOT_CODE/bot_motion.h **** }
+ 942               	.LM112:
+ 943 0296 0895      		ret
+ 945               	.Lscope9:
+ 947               		.stabd	78,0,0
+ 949               	.global	left_position_encoder_interrupt_init
+ 951               	left_position_encoder_interrupt_init:
+ 952               		.stabd	46,0,0
+  77:src/BOT_CODE/bot_motion.h **** 
+  78:src/BOT_CODE/bot_motion.h **** /**
+  79:src/BOT_CODE/bot_motion.h ****  * Left shaft encoder init.
+  80:src/BOT_CODE/bot_motion.h ****  */
+  81:src/BOT_CODE/bot_motion.h **** void left_position_encoder_interrupt_init(void)
+  82:src/BOT_CODE/bot_motion.h **** {
+ 954               	.LM113:
+ 955               	.LFBB10:
+ 956               	/* prologue: function */
+ 957               	/* frame size = 0 */
+  83:src/BOT_CODE/bot_motion.h **** 	cli();
+ 959               	.LM114:
+ 960               	/* #APP */
+ 961               	 ;  83 "src/BOT_CODE/bot_motion.h" 1
+ 962 0298 F894      		cli
+ 963               	 ;  0 "" 2
+  84:src/BOT_CODE/bot_motion.h **** 	SetBit(EICRB,_BV(ISC41)); //The falling edge between two samples of INTn generates an interrupt re
+ 965               	.LM115:
+ 966               	/* #NOAPP */
+ 967 029a EAE6      		ldi r30,lo8(106)
+ 968 029c F0E0      		ldi r31,hi8(106)
+ 969 029e 8081      		ld r24,Z
+ 970 02a0 8260      		ori r24,lo8(2)
+ 971 02a2 8083      		st Z,r24
+  85:src/BOT_CODE/bot_motion.h **** 	SetBit(EIMSK,_BV(INT4)); //INT4 enable
+ 973               	.LM116:
+ 974 02a4 EC9A      		sbi 61-32,4
+  86:src/BOT_CODE/bot_motion.h **** 	sei();
+ 976               	.LM117:
+ 977               	/* #APP */
+ 978               	 ;  86 "src/BOT_CODE/bot_motion.h" 1
+ 979 02a6 7894      		sei
+ 980               	 ;  0 "" 2
+ 981               	/* epilogue start */
+  87:src/BOT_CODE/bot_motion.h **** }
+ 983               	.LM118:
+ 984               	/* #NOAPP */
+ 985 02a8 0895      		ret
+ 987               	.Lscope10:
+ 989               		.stabd	78,0,0
+ 991               	.global	right_position_encoder_interrupt_init
+ 993               	right_position_encoder_interrupt_init:
+ 994               		.stabd	46,0,0
+  88:src/BOT_CODE/bot_motion.h **** 
+  89:src/BOT_CODE/bot_motion.h **** /**
+  90:src/BOT_CODE/bot_motion.h ****  * Right shaft encoder init.
+  91:src/BOT_CODE/bot_motion.h ****  */
+  92:src/BOT_CODE/bot_motion.h **** void right_position_encoder_interrupt_init(void)
+  93:src/BOT_CODE/bot_motion.h **** {
+ 996               	.LM119:
+ 997               	.LFBB11:
+ 998               	/* prologue: function */
+ 999               	/* frame size = 0 */
+  94:src/BOT_CODE/bot_motion.h **** 	cli();
+ 1001               	.LM120:
+ 1002               	/* #APP */
+ 1003               	 ;  94 "src/BOT_CODE/bot_motion.h" 1
+ 1004 02aa F894      		cli
+ 1005               	 ;  0 "" 2
+  95:src/BOT_CODE/bot_motion.h **** 	SetBit(EICRB,_BV(ISC51)); //The falling edge between two samples of INTn generates an interrupt re
+ 1007               	.LM121:
+ 1008               	/* #NOAPP */
+ 1009 02ac EAE6      		ldi r30,lo8(106)
+ 1010 02ae F0E0      		ldi r31,hi8(106)
+ 1011 02b0 8081      		ld r24,Z
+ 1012 02b2 8860      		ori r24,lo8(8)
+ 1013 02b4 8083      		st Z,r24
+  96:src/BOT_CODE/bot_motion.h **** 	SetBit(EIMSK,_BV(INT5)); //INT5 enable
+ 1015               	.LM122:
+ 1016 02b6 ED9A      		sbi 61-32,5
+  97:src/BOT_CODE/bot_motion.h **** 	sei();
+ 1018               	.LM123:
+ 1019               	/* #APP */
+ 1020               	 ;  97 "src/BOT_CODE/bot_motion.h" 1
+ 1021 02b8 7894      		sei
+ 1022               	 ;  0 "" 2
+ 1023               	/* epilogue start */
+  98:src/BOT_CODE/bot_motion.h **** }
+ 1025               	.LM124:
+ 1026               	/* #NOAPP */
+ 1027 02ba 0895      		ret
+ 1029               	.Lscope11:
+ 1031               		.stabd	78,0,0
+ 1033               	.global	__vector_5
+ 1035               	__vector_5:
+ 1036               		.stabd	46,0,0
+  99:src/BOT_CODE/bot_motion.h **** 
+ 100:src/BOT_CODE/bot_motion.h **** 
+ 101:src/BOT_CODE/bot_motion.h **** /**
+ 102:src/BOT_CODE/bot_motion.h ****  * Interrupt handler for left shaft count change.
+ 103:src/BOT_CODE/bot_motion.h ****  */
+ 104:src/BOT_CODE/bot_motion.h **** ISR(INT4_vect)
+ 105:src/BOT_CODE/bot_motion.h **** {
+ 1038               	.LM125:
+ 1039               	.LFBB12:
+ 1040 02bc 1F92      		push __zero_reg__
+ 1041 02be 0F92      		push r0
+ 1042 02c0 0FB6      		in r0,__SREG__
+ 1043 02c2 0F92      		push r0
+ 1044 02c4 1124      		clr __zero_reg__
+ 1045 02c6 8F93      		push r24
+ 1046               	/* prologue: Signal */
+ 1047               	/* frame size = 0 */
+ 106:src/BOT_CODE/bot_motion.h **** 	ShaftCountLeft++;
+ 1049               	.LM126:
+ 1050 02c8 8091 0000 		lds r24,ShaftCountLeft
+ 1051 02cc 8F5F      		subi r24,lo8(-(1))
+ 1052 02ce 8093 0000 		sts ShaftCountLeft,r24
+ 1053               	/* epilogue start */
+ 107:src/BOT_CODE/bot_motion.h **** }
+ 1055               	.LM127:
+ 1056 02d2 8F91      		pop r24
+ 1057 02d4 0F90      		pop r0
+ 1058 02d6 0FBE      		out __SREG__,r0
+ 1059 02d8 0F90      		pop r0
+ 1060 02da 1F90      		pop __zero_reg__
+ 1061 02dc 1895      		reti
+ 1063               	.Lscope12:
+ 1065               		.stabd	78,0,0
+ 1067               	.global	__vector_6
+ 1069               	__vector_6:
+ 1070               		.stabd	46,0,0
+ 108:src/BOT_CODE/bot_motion.h **** 
+ 109:src/BOT_CODE/bot_motion.h **** 
+ 110:src/BOT_CODE/bot_motion.h **** /**
+ 111:src/BOT_CODE/bot_motion.h ****  * Interrupt handler for right shaft count change.
+ 112:src/BOT_CODE/bot_motion.h ****  */
+ 113:src/BOT_CODE/bot_motion.h **** ISR(INT5_vect)
+ 114:src/BOT_CODE/bot_motion.h **** {
+ 1072               	.LM128:
+ 1073               	.LFBB13:
+ 1074 02de 1F92      		push __zero_reg__
+ 1075 02e0 0F92      		push r0
+ 1076 02e2 0FB6      		in r0,__SREG__
+ 1077 02e4 0F92      		push r0
+ 1078 02e6 1124      		clr __zero_reg__
+ 1079 02e8 8F93      		push r24
+ 1080               	/* prologue: Signal */
+ 1081               	/* frame size = 0 */
+ 115:src/BOT_CODE/bot_motion.h **** 	ShaftCountRight++;
+ 1083               	.LM129:
+ 1084 02ea 8091 0000 		lds r24,ShaftCountRight
+ 1085 02ee 8F5F      		subi r24,lo8(-(1))
+ 1086 02f0 8093 0000 		sts ShaftCountRight,r24
+ 1087               	/* epilogue start */
+ 116:src/BOT_CODE/bot_motion.h **** }
+ 1089               	.LM130:
+ 1090 02f4 8F91      		pop r24
+ 1091 02f6 0F90      		pop r0
+ 1092 02f8 0FBE      		out __SREG__,r0
+ 1093 02fa 0F90      		pop r0
+ 1094 02fc 1F90      		pop __zero_reg__
+ 1095 02fe 1895      		reti
+ 1097               	.Lscope13:
+ 1099               		.stabd	78,0,0
+ 1101               	.global	reset_shaft_counters
+ 1103               	reset_shaft_counters:
+ 1104               		.stabd	46,0,0
+ 117:src/BOT_CODE/bot_motion.h **** 
+ 118:src/BOT_CODE/bot_motion.h **** /**
+ 119:src/BOT_CODE/bot_motion.h ****  * Reset shaft counters.
+ 120:src/BOT_CODE/bot_motion.h ****  */
+ 121:src/BOT_CODE/bot_motion.h **** void reset_shaft_counters()
+ 122:src/BOT_CODE/bot_motion.h **** {
+ 1106               	.LM131:
+ 1107               	.LFBB14:
+ 1108               	/* prologue: function */
+ 1109               	/* frame size = 0 */
+ 123:src/BOT_CODE/bot_motion.h **** 	ShaftCountLeft = 0;
+ 1111               	.LM132:
+ 1112 0300 1092 0000 		sts ShaftCountLeft,__zero_reg__
+ 124:src/BOT_CODE/bot_motion.h **** 	ShaftCountRight = 0;
+ 1114               	.LM133:
+ 1115 0304 1092 0000 		sts ShaftCountRight,__zero_reg__
+ 1116               	/* epilogue start */
+ 125:src/BOT_CODE/bot_motion.h **** }
+ 1118               	.LM134:
+ 1119 0308 0895      		ret
+ 1121               	.Lscope14:
+ 1123               		.stabd	78,0,0
+ 1125               	.global	adc_pin_config
+ 1127               	adc_pin_config:
+ 1128               		.stabd	46,0,0
+ 126:src/BOT_CODE/bot_motion.h **** 
+ 127:src/BOT_CODE/bot_motion.h **** 
+ 128:src/BOT_CODE/bot_motion.h **** /**
+ 129:src/BOT_CODE/bot_motion.h ****  * Set ADC pin configuration
+ 130:src/BOT_CODE/bot_motion.h ****  */
+ 131:src/BOT_CODE/bot_motion.h **** void adc_pin_config (void)
+ 132:src/BOT_CODE/bot_motion.h **** {
+ 1130               	.LM135:
+ 1131               	.LFBB15:
+ 1132               	/* prologue: function */
+ 1133               	/* frame size = 0 */
+ 133:src/BOT_CODE/bot_motion.h ****  DDRF = 0x00; 
+ 1135               	.LM136:
+ 1136 030a 10BA      		out 48-32,__zero_reg__
+ 134:src/BOT_CODE/bot_motion.h ****  PORTF = 0x00;
+ 1138               	.LM137:
+ 1139 030c 11BA      		out 49-32,__zero_reg__
+ 135:src/BOT_CODE/bot_motion.h ****  DDRK = 0x00;
+ 1141               	.LM138:
+ 1142 030e 1092 0701 		sts 263,__zero_reg__
+ 136:src/BOT_CODE/bot_motion.h ****  PORTK = 0x00;
+ 1144               	.LM139:
+ 1145 0312 1092 0801 		sts 264,__zero_reg__
+ 1146               	/* epilogue start */
+ 137:src/BOT_CODE/bot_motion.h **** }
+ 1148               	.LM140:
+ 1149 0316 0895      		ret
+ 1151               	.Lscope15:
+ 1153               		.stabd	78,0,0
+ 1155               	.global	motion_pin_config
+ 1157               	motion_pin_config:
+ 1158               		.stabd	46,0,0
+ 138:src/BOT_CODE/bot_motion.h **** 
+ 139:src/BOT_CODE/bot_motion.h **** /**
+ 140:src/BOT_CODE/bot_motion.h ****  * Function to configure ports to enable robot's motion
+ 141:src/BOT_CODE/bot_motion.h ****  */
+ 142:src/BOT_CODE/bot_motion.h **** void motion_pin_config (void) 
+ 143:src/BOT_CODE/bot_motion.h **** {
+ 1160               	.LM141:
+ 1161               	.LFBB16:
+ 1162               	/* prologue: function */
+ 1163               	/* frame size = 0 */
+ 144:src/BOT_CODE/bot_motion.h ****  DDRA = DDRA | 0x0F;
+ 1165               	.LM142:
+ 1166 0318 81B1      		in r24,33-32
+ 1167 031a 8F60      		ori r24,lo8(15)
+ 1168 031c 81B9      		out 33-32,r24
+ 145:src/BOT_CODE/bot_motion.h ****  PORTA = PORTA & 0xF0;
+ 1170               	.LM143:
+ 1171 031e 82B1      		in r24,34-32
+ 1172 0320 807F      		andi r24,lo8(-16)
+ 1173 0322 82B9      		out 34-32,r24
+ 146:src/BOT_CODE/bot_motion.h ****  DDRL = DDRL | 0x18;   //Setting PL3 and PL4 pins as output for PWM generation
+ 1175               	.LM144:
+ 1176 0324 EAE0      		ldi r30,lo8(266)
+ 1177 0326 F1E0      		ldi r31,hi8(266)
+ 1178 0328 8081      		ld r24,Z
+ 1179 032a 8861      		ori r24,lo8(24)
+ 1180 032c 8083      		st Z,r24
+ 147:src/BOT_CODE/bot_motion.h ****  PORTL = PORTL | 0x18; //PL3 and PL4 pins are for velocity control using PWM.
+ 1182               	.LM145:
+ 1183 032e EBE0      		ldi r30,lo8(267)
+ 1184 0330 F1E0      		ldi r31,hi8(267)
+ 1185 0332 8081      		ld r24,Z
+ 1186 0334 8861      		ori r24,lo8(24)
+ 1187 0336 8083      		st Z,r24
+ 1188               	/* epilogue start */
+ 148:src/BOT_CODE/bot_motion.h **** }
+ 1190               	.LM146:
+ 1191 0338 0895      		ret
+ 1193               	.Lscope16:
+ 1195               		.stabd	78,0,0
+ 1197               	.global	port_init
+ 1199               	port_init:
+ 1200               		.stabd	46,0,0
+ 149:src/BOT_CODE/bot_motion.h **** 
+ 150:src/BOT_CODE/bot_motion.h **** /**
+ 151:src/BOT_CODE/bot_motion.h ****  * Function to Initialize PORTS
+ 152:src/BOT_CODE/bot_motion.h ****  */
+ 153:src/BOT_CODE/bot_motion.h **** void port_init()
+ 154:src/BOT_CODE/bot_motion.h **** {
+ 1202               	.LM147:
+ 1203               	.LFBB17:
+ 1204               	/* prologue: function */
+ 1205               	/* frame size = 0 */
+ 1206               	.LBB256:
+ 1207               	.LBB257:
+  74:src/BOT_CODE/bot_motion.h ****  DDRC = DDRC | 0xF7; //all the LCD pin's direction set as output
+ 1209               	.LM148:
+ 1210 033a 87B1      		in r24,39-32
+ 1211 033c 876F      		ori r24,lo8(-9)
+ 1212 033e 87B9      		out 39-32,r24
+  75:src/BOT_CODE/bot_motion.h ****  PORTC = PORTC & 0x80; // all the LCD pins are set to logic 0 except PORTC 7
+ 1214               	.LM149:
+ 1215 0340 88B1      		in r24,40-32
+ 1216 0342 8078      		andi r24,lo8(-128)
+ 1217 0344 88B9      		out 40-32,r24
+ 1218               	.LBE257:
+ 1219               	.LBE256:
+ 1220               	.LBB258:
+ 1221               	.LBB259:
+ 133:src/BOT_CODE/bot_motion.h ****  DDRF = 0x00; 
+ 1223               	.LM150:
+ 1224 0346 10BA      		out 48-32,__zero_reg__
+ 134:src/BOT_CODE/bot_motion.h ****  PORTF = 0x00;
+ 1226               	.LM151:
+ 1227 0348 11BA      		out 49-32,__zero_reg__
+ 135:src/BOT_CODE/bot_motion.h ****  DDRK = 0x00;
+ 1229               	.LM152:
+ 1230 034a 1092 0701 		sts 263,__zero_reg__
+ 136:src/BOT_CODE/bot_motion.h ****  PORTK = 0x00;
+ 1232               	.LM153:
+ 1233 034e 1092 0801 		sts 264,__zero_reg__
+ 1234               	.LBE259:
+ 1235               	.LBE258:
+ 155:src/BOT_CODE/bot_motion.h **** 	lcd_port_config();
+ 156:src/BOT_CODE/bot_motion.h **** 	adc_pin_config();
+ 157:src/BOT_CODE/bot_motion.h **** 	motion_pin_config();	
+ 1237               	.LM154:
+ 1238 0352 0E94 0000 		call motion_pin_config
+ 1239               	/* epilogue start */
+ 158:src/BOT_CODE/bot_motion.h **** }
+ 1241               	.LM155:
+ 1242 0356 0895      		ret
+ 1244               	.Lscope17:
+ 1246               		.stabd	78,0,0
+ 1248               	.global	timer5_init
+ 1250               	timer5_init:
+ 1251               		.stabd	46,0,0
+ 159:src/BOT_CODE/bot_motion.h **** 
+ 160:src/BOT_CODE/bot_motion.h **** /**
+ 161:src/BOT_CODE/bot_motion.h **** * Timer 5 initialised in PWM mode for velocity control
+ 162:src/BOT_CODE/bot_motion.h **** * Prescale:64
+ 163:src/BOT_CODE/bot_motion.h **** * PWM 8bit fast, TOP=0x00FF
+ 164:src/BOT_CODE/bot_motion.h **** * Timer Frequency:674.988Hz
+ 165:src/BOT_CODE/bot_motion.h **** */
+ 166:src/BOT_CODE/bot_motion.h **** void timer5_init()
+ 167:src/BOT_CODE/bot_motion.h **** {
+ 1253               	.LM156:
+ 1254               	.LFBB18:
+ 1255               	/* prologue: function */
+ 1256               	/* frame size = 0 */
+ 168:src/BOT_CODE/bot_motion.h **** 	TCCR5B = 0x00;			//Stop
+ 1258               	.LM157:
+ 1259 0358 E1E2      		ldi r30,lo8(289)
+ 1260 035a F1E0      		ldi r31,hi8(289)
+ 1261 035c 1082      		st Z,__zero_reg__
+ 169:src/BOT_CODE/bot_motion.h **** 	TCNT5H = 0xFF;			//Counter higher 8-bit value to which OCR5xH value is compared with
+ 1263               	.LM158:
+ 1264 035e 9FEF      		ldi r25,lo8(-1)
+ 1265 0360 9093 2501 		sts 293,r25
+ 170:src/BOT_CODE/bot_motion.h **** 	TCNT5L = 0x01;			//Counter lower 8-bit value to which OCR5xH value is compared with
+ 1267               	.LM159:
+ 1268 0364 81E0      		ldi r24,lo8(1)
+ 1269 0366 8093 2401 		sts 292,r24
+ 171:src/BOT_CODE/bot_motion.h **** 	OCR5AH = 0x00;			//Output compare register high value for Left Motor
+ 1271               	.LM160:
+ 1272 036a 1092 2901 		sts 297,__zero_reg__
+ 172:src/BOT_CODE/bot_motion.h **** 	OCR5AL = 0xFF;			//Output compare register low value for Left Motor
+ 1274               	.LM161:
+ 1275 036e 9093 2801 		sts 296,r25
+ 173:src/BOT_CODE/bot_motion.h **** 	OCR5BH = 0x00;			//Output compare register high value for Right Motor
+ 1277               	.LM162:
+ 1278 0372 1092 2B01 		sts 299,__zero_reg__
+ 174:src/BOT_CODE/bot_motion.h **** 	OCR5BL = 0xFF;			//Output compare register low value for Right Motor
+ 1280               	.LM163:
+ 1281 0376 9093 2A01 		sts 298,r25
+ 175:src/BOT_CODE/bot_motion.h **** 	OCR5CH = 0x00;			//Output compare register high value for Motor C1
+ 1283               	.LM164:
+ 1284 037a 1092 2D01 		sts 301,__zero_reg__
+ 176:src/BOT_CODE/bot_motion.h **** 	OCR5CL = 0xFF;			//Output compare register low value for Motor C1
+ 1286               	.LM165:
+ 1287 037e 9093 2C01 		sts 300,r25
+ 177:src/BOT_CODE/bot_motion.h **** 	TCCR5A = 0xA9;			/*{COM5A1=1, COM5A0=0; COM5B1=1, COM5B0=0; COM5C1=1 COM5C0=0}
+ 1289               	.LM166:
+ 1290 0382 89EA      		ldi r24,lo8(-87)
+ 1291 0384 8093 2001 		sts 288,r24
+ 178:src/BOT_CODE/bot_motion.h ****  					  			For Overriding normal port functionalit to OCRnA outputs.
+ 179:src/BOT_CODE/bot_motion.h **** 				  	  			{WGM51=0, WGM50=1} Along With WGM52 in TCCR5B for Selecting FAST PWM 8-bit Mode*/
+ 180:src/BOT_CODE/bot_motion.h **** 	TCCR5B = 0x0B;			//WGM12=1; CS12=0, CS11=1, CS10=1 (Prescaler=64)
+ 1293               	.LM167:
+ 1294 0388 8BE0      		ldi r24,lo8(11)
+ 1295 038a 8083      		st Z,r24
+ 1296               	/* epilogue start */
+ 181:src/BOT_CODE/bot_motion.h **** }
+ 1298               	.LM168:
+ 1299 038c 0895      		ret
+ 1301               	.Lscope18:
+ 1303               		.stabd	78,0,0
+ 1305               	.global	adc_init
+ 1307               	adc_init:
+ 1308               		.stabd	46,0,0
+ 182:src/BOT_CODE/bot_motion.h **** 
+ 183:src/BOT_CODE/bot_motion.h **** /**
+ 184:src/BOT_CODE/bot_motion.h ****  * Initialize the ADC module.
+ 185:src/BOT_CODE/bot_motion.h ****  */
+ 186:src/BOT_CODE/bot_motion.h **** void adc_init()
+ 187:src/BOT_CODE/bot_motion.h **** {
+ 1310               	.LM169:
+ 1311               	.LFBB19:
+ 1312               	/* prologue: function */
+ 1313               	/* frame size = 0 */
+ 188:src/BOT_CODE/bot_motion.h **** 	ADCSRA = 0x00;
+ 1315               	.LM170:
+ 1316 038e EAE7      		ldi r30,lo8(122)
+ 1317 0390 F0E0      		ldi r31,hi8(122)
+ 1318 0392 1082      		st Z,__zero_reg__
+ 189:src/BOT_CODE/bot_motion.h **** 	ADCSRB = 0x00;		//MUX5 = 0
+ 1320               	.LM171:
+ 1321 0394 1092 7B00 		sts 123,__zero_reg__
+ 190:src/BOT_CODE/bot_motion.h **** 	ADMUX = 0x20;		//Vref=5V external --- ADLAR=1 --- MUX4:0 = 0000
+ 1323               	.LM172:
+ 1324 0398 80E2      		ldi r24,lo8(32)
+ 1325 039a 8093 7C00 		sts 124,r24
+ 191:src/BOT_CODE/bot_motion.h **** 	ACSR = 0x80;
+ 1327               	.LM173:
+ 1328 039e 80E8      		ldi r24,lo8(-128)
+ 1329 03a0 80BF      		out 80-32,r24
+ 192:src/BOT_CODE/bot_motion.h **** 	ADCSRA = 0x86;		//ADEN=1 --- ADIE=1 --- ADPS2:0 = 1 1 0
+ 1331               	.LM174:
+ 1332 03a2 86E8      		ldi r24,lo8(-122)
+ 1333 03a4 8083      		st Z,r24
+ 1334               	/* epilogue start */
+ 193:src/BOT_CODE/bot_motion.h **** }
+ 1336               	.LM175:
+ 1337 03a6 0895      		ret
+ 1339               	.Lscope19:
+ 1341               		.stabd	78,0,0
+ 1344               	.global	ADC_Conversion
+ 1346               	ADC_Conversion:
+ 1347               		.stabd	46,0,0
+ 194:src/BOT_CODE/bot_motion.h **** 
+ 195:src/BOT_CODE/bot_motion.h **** /**
+ 196:src/BOT_CODE/bot_motion.h ****  * ADC Conversion
+ 197:src/BOT_CODE/bot_motion.h ****  */
+ 198:src/BOT_CODE/bot_motion.h **** unsigned char ADC_Conversion(unsigned char Ch) 
+ 199:src/BOT_CODE/bot_motion.h **** {
+ 1349               	.LM176:
+ 1350               	.LFBB20:
+ 1351               	/* prologue: function */
+ 1352               	/* frame size = 0 */
+ 1353 03a8 982F      		mov r25,r24
+ 200:src/BOT_CODE/bot_motion.h **** 	unsigned char a;
+ 201:src/BOT_CODE/bot_motion.h **** 	if(Ch>7)
+ 1355               	.LM177:
+ 1356 03aa 8830      		cpi r24,lo8(8)
+ 1357 03ac 00F0      		brlo .L64
+ 202:src/BOT_CODE/bot_motion.h **** 	{
+ 203:src/BOT_CODE/bot_motion.h **** 		ADCSRB = 0x08;
+ 1359               	.LM178:
+ 1360 03ae 88E0      		ldi r24,lo8(8)
+ 1361 03b0 8093 7B00 		sts 123,r24
+ 1362               	.L64:
+ 204:src/BOT_CODE/bot_motion.h **** 	}
+ 205:src/BOT_CODE/bot_motion.h **** 	Ch = Ch & 0x07;  			
+ 206:src/BOT_CODE/bot_motion.h **** 	ADMUX= 0x20| Ch;	   		
+ 1364               	.LM179:
+ 1365 03b4 9770      		andi r25,lo8(7)
+ 1366 03b6 9062      		ori r25,lo8(32)
+ 1367 03b8 9093 7C00 		sts 124,r25
+ 207:src/BOT_CODE/bot_motion.h **** 	ADCSRA = ADCSRA | 0x40;		//Set start conversion bit
+ 1369               	.LM180:
+ 1370 03bc 8091 7A00 		lds r24,122
+ 1371 03c0 8064      		ori r24,lo8(64)
+ 1372 03c2 8093 7A00 		sts 122,r24
+ 1373               	.L65:
+ 208:src/BOT_CODE/bot_motion.h **** 	while((ADCSRA&0x10)==0);	//Wait for conversion to complete
+ 1375               	.LM181:
+ 1376 03c6 8091 7A00 		lds r24,122
+ 1377 03ca 84FF      		sbrs r24,4
+ 1378 03cc 00C0      		rjmp .L65
+ 209:src/BOT_CODE/bot_motion.h **** 	a=ADCH;
+ 1380               	.LM182:
+ 1381 03ce 8091 7900 		lds r24,121
+ 210:src/BOT_CODE/bot_motion.h **** 	ADCSRA = ADCSRA|0x10; //clear ADIF (ADC Interrupt Flag) by writing 1 to it
+ 1383               	.LM183:
+ 1384 03d2 9091 7A00 		lds r25,122
+ 1385 03d6 9061      		ori r25,lo8(16)
+ 1386 03d8 9093 7A00 		sts 122,r25
+ 211:src/BOT_CODE/bot_motion.h **** 	ADCSRB = 0x00;
+ 1388               	.LM184:
+ 1389 03dc 1092 7B00 		sts 123,__zero_reg__
+ 1390               	/* epilogue start */
+ 212:src/BOT_CODE/bot_motion.h **** 	return a;
+ 213:src/BOT_CODE/bot_motion.h **** }
+ 1392               	.LM185:
+ 1393 03e0 0895      		ret
+ 1398               	.Lscope20:
+ 1400               		.stabd	78,0,0
+ 1405               	.global	print_sensor
+ 1407               	print_sensor:
+ 1408               		.stabd	46,0,0
+ 214:src/BOT_CODE/bot_motion.h **** 
+ 215:src/BOT_CODE/bot_motion.h **** /**
+ 216:src/BOT_CODE/bot_motion.h ****  * Print Sensor Values At Desired Row And Coloumn Location on LCD
+ 217:src/BOT_CODE/bot_motion.h ****  */
+ 218:src/BOT_CODE/bot_motion.h **** void print_sensor(char row, char coloumn,unsigned char channel)
+ 219:src/BOT_CODE/bot_motion.h **** {
+ 1410               	.LM186:
+ 1411               	.LFBB21:
+ 1412 03e2 0F93      		push r16
+ 1413 03e4 1F93      		push r17
+ 1414               	/* prologue: function */
+ 1415               	/* frame size = 0 */
+ 1416 03e6 182F      		mov r17,r24
+ 1417 03e8 062F      		mov r16,r22
+ 1418 03ea 842F      		mov r24,r20
+ 220:src/BOT_CODE/bot_motion.h **** 	
+ 221:src/BOT_CODE/bot_motion.h **** 	ADC_Value = ADC_Conversion(channel);
+ 1420               	.LM187:
+ 1421 03ec 0E94 0000 		call ADC_Conversion
+ 1422 03f0 482F      		mov r20,r24
+ 1423 03f2 8093 0000 		sts ADC_Value,r24
+ 222:src/BOT_CODE/bot_motion.h **** 	lcd_print(row, coloumn, ADC_Value, 3);
+ 1425               	.LM188:
+ 1426 03f6 812F      		mov r24,r17
+ 1427 03f8 602F      		mov r22,r16
+ 1428 03fa 50E0      		ldi r21,lo8(0)
+ 1429 03fc 23E0      		ldi r18,lo8(3)
+ 1430 03fe 30E0      		ldi r19,hi8(3)
+ 1431 0400 0E94 0000 		call lcd_print
+ 1432               	/* epilogue start */
+ 223:src/BOT_CODE/bot_motion.h **** }
+ 1434               	.LM189:
+ 1435 0404 1F91      		pop r17
+ 1436 0406 0F91      		pop r16
+ 1437 0408 0895      		ret
+ 1439               	.Lscope21:
+ 1441               		.stabd	78,0,0
+ 1445               	.global	velocity
+ 1447               	velocity:
+ 1448               		.stabd	46,0,0
+ 224:src/BOT_CODE/bot_motion.h **** 
+ 225:src/BOT_CODE/bot_motion.h **** /**
+ 226:src/BOT_CODE/bot_motion.h ****  * Set velocity
+ 227:src/BOT_CODE/bot_motion.h ****  */
+ 228:src/BOT_CODE/bot_motion.h **** void velocity (unsigned char left_motor, unsigned char right_motor)
+ 229:src/BOT_CODE/bot_motion.h **** {
+ 1450               	.LM190:
+ 1451               	.LFBB22:
+ 1452               	/* prologue: function */
+ 1453               	/* frame size = 0 */
+ 230:src/BOT_CODE/bot_motion.h **** 	OCR5AL = (unsigned char)left_motor;
+ 1455               	.LM191:
+ 1456 040a 8093 2801 		sts 296,r24
+ 231:src/BOT_CODE/bot_motion.h **** 	OCR5BL = (unsigned char)right_motor;
+ 1458               	.LM192:
+ 1459 040e 6093 2A01 		sts 298,r22
+ 1460               	/* epilogue start */
+ 232:src/BOT_CODE/bot_motion.h **** }
+ 1462               	.LM193:
+ 1463 0412 0895      		ret
+ 1465               	.Lscope22:
+ 1467               		.stabd	78,0,0
+ 1470               	.global	motion_set
+ 1472               	motion_set:
+ 1473               		.stabd	46,0,0
+ 233:src/BOT_CODE/bot_motion.h **** 
+ 234:src/BOT_CODE/bot_motion.h **** /**
+ 235:src/BOT_CODE/bot_motion.h ****  * Function used for setting motor's direction
+ 236:src/BOT_CODE/bot_motion.h ****  */
+ 237:src/BOT_CODE/bot_motion.h **** void motion_set (unsigned char Direction)
+ 238:src/BOT_CODE/bot_motion.h **** {
+ 1475               	.LM194:
+ 1476               	.LFBB23:
+ 1477               	/* prologue: function */
+ 1478               	/* frame size = 0 */
+ 239:src/BOT_CODE/bot_motion.h ****  unsigned char PortARestore = 0;
+ 240:src/BOT_CODE/bot_motion.h **** 
+ 241:src/BOT_CODE/bot_motion.h ****  Direction &= 0x0F; 					// removing upper nibbel for the protection
+ 242:src/BOT_CODE/bot_motion.h ****  PortARestore = PORTA; 				// reading the PORTA original status
+ 1480               	.LM195:
+ 1481 0414 92B1      		in r25,34-32
+ 243:src/BOT_CODE/bot_motion.h ****  PortARestore &= 0xF0; 				// making lower direction nibbel to 0
+ 1483               	.LM196:
+ 1484 0416 907F      		andi r25,lo8(-16)
+ 244:src/BOT_CODE/bot_motion.h ****  PortARestore |= Direction; 		// adding lower nibbel for forward command and restoring the PORTA st
+ 1486               	.LM197:
+ 1487 0418 8F70      		andi r24,lo8(15)
+ 1488 041a 892B      		or r24,r25
+ 245:src/BOT_CODE/bot_motion.h ****  PORTA = PortARestore; 				// executing the command
+ 1490               	.LM198:
+ 1491 041c 82B9      		out 34-32,r24
+ 1492               	/* epilogue start */
+ 246:src/BOT_CODE/bot_motion.h **** }
+ 1494               	.LM199:
+ 1495 041e 0895      		ret
+ 1500               	.Lscope23:
+ 1502               		.stabd	78,0,0
+ 1504               	.global	forward
+ 1506               	forward:
+ 1507               		.stabd	46,0,0
+ 247:src/BOT_CODE/bot_motion.h **** 
+ 248:src/BOT_CODE/bot_motion.h **** /**
+ 249:src/BOT_CODE/bot_motion.h ****  * Set bot direction forward.
+ 250:src/BOT_CODE/bot_motion.h ****  */
+ 251:src/BOT_CODE/bot_motion.h **** void forward (void) 
+ 252:src/BOT_CODE/bot_motion.h **** {
+ 1509               	.LM200:
+ 1510               	.LFBB24:
+ 1511               	/* prologue: function */
+ 1512               	/* frame size = 0 */
+ 1513               	.LBB260:
+ 1514               	.LBB261:
+ 242:src/BOT_CODE/bot_motion.h ****  PortARestore = PORTA; 				// reading the PORTA original status
+ 1516               	.LM201:
+ 1517 0420 82B1      		in r24,34-32
+ 243:src/BOT_CODE/bot_motion.h ****  PortARestore &= 0xF0; 				// making lower direction nibbel to 0
+ 1519               	.LM202:
+ 1520 0422 807F      		andi r24,lo8(-16)
+ 244:src/BOT_CODE/bot_motion.h ****  PortARestore |= Direction; 		// adding lower nibbel for forward command and restoring the PORTA st
+ 1522               	.LM203:
+ 1523 0424 8660      		ori r24,lo8(6)
+ 245:src/BOT_CODE/bot_motion.h ****  PORTA = PortARestore; 				// executing the command
+ 1525               	.LM204:
+ 1526 0426 82B9      		out 34-32,r24
+ 1527               	/* epilogue start */
+ 1528               	.LBE261:
+ 1529               	.LBE260:
+ 253:src/BOT_CODE/bot_motion.h ****   motion_set (0x06);
+ 254:src/BOT_CODE/bot_motion.h **** }
+ 1531               	.LM205:
+ 1532 0428 0895      		ret
+ 1534               	.Lscope24:
+ 1536               		.stabd	78,0,0
+ 1538               	.global	stop
+ 1540               	stop:
+ 1541               		.stabd	46,0,0
+ 255:src/BOT_CODE/bot_motion.h **** 
+ 256:src/BOT_CODE/bot_motion.h **** /**
+ 257:src/BOT_CODE/bot_motion.h ****  * Stop the bot
+ 258:src/BOT_CODE/bot_motion.h ****  */
+ 259:src/BOT_CODE/bot_motion.h **** void stop (void)
+ 260:src/BOT_CODE/bot_motion.h **** {
+ 1543               	.LM206:
+ 1544               	.LFBB25:
+ 1545               	/* prologue: function */
+ 1546               	/* frame size = 0 */
+ 1547               	.LBB262:
+ 1548               	.LBB263:
+ 242:src/BOT_CODE/bot_motion.h ****  PortARestore = PORTA; 				// reading the PORTA original status
+ 1550               	.LM207:
+ 1551 042a 82B1      		in r24,34-32
+ 243:src/BOT_CODE/bot_motion.h ****  PortARestore &= 0xF0; 				// making lower direction nibbel to 0
+ 1553               	.LM208:
+ 1554 042c 807F      		andi r24,lo8(-16)
+ 245:src/BOT_CODE/bot_motion.h ****  PORTA = PortARestore; 				// executing the command
+ 1556               	.LM209:
+ 1557 042e 82B9      		out 34-32,r24
+ 1558               	/* epilogue start */
+ 1559               	.LBE263:
+ 1560               	.LBE262:
+ 261:src/BOT_CODE/bot_motion.h ****   motion_set (0x00);
+ 262:src/BOT_CODE/bot_motion.h **** }
+ 1562               	.LM210:
+ 1563 0430 0895      		ret
+ 1565               	.Lscope25:
+ 1567               		.stabd	78,0,0
+ 1569               	.global	init_devices
+ 1571               	init_devices:
+ 1572               		.stabd	46,0,0
+ 263:src/BOT_CODE/bot_motion.h **** 
+ 264:src/BOT_CODE/bot_motion.h **** /**
+ 265:src/BOT_CODE/bot_motion.h ****  * Calls the init methods for all required devices.
+ 266:src/BOT_CODE/bot_motion.h ****  */
+ 267:src/BOT_CODE/bot_motion.h **** void init_devices (void)
+ 268:src/BOT_CODE/bot_motion.h **** {
+ 1574               	.LM211:
+ 1575               	.LFBB26:
+ 1576               	/* prologue: function */
+ 1577               	/* frame size = 0 */
+ 269:src/BOT_CODE/bot_motion.h ****  	cli(); 
+ 1579               	.LM212:
+ 1580               	/* #APP */
+ 1581               	 ;  269 "src/BOT_CODE/bot_motion.h" 1
+ 1582 0432 F894      		cli
+ 1583               	 ;  0 "" 2
+ 270:src/BOT_CODE/bot_motion.h **** 	port_init();
+ 1585               	.LM213:
+ 1586               	/* #NOAPP */
+ 1587 0434 0E94 0000 		call port_init
+ 1588               	.LBB264:
+ 1589               	.LBB265:
+ 188:src/BOT_CODE/bot_motion.h **** 	ADCSRA = 0x00;
+ 1591               	.LM214:
+ 1592 0438 EAE7      		ldi r30,lo8(122)
+ 1593 043a F0E0      		ldi r31,hi8(122)
+ 1594 043c 1082      		st Z,__zero_reg__
+ 189:src/BOT_CODE/bot_motion.h **** 	ADCSRB = 0x00;		//MUX5 = 0
+ 1596               	.LM215:
+ 1597 043e 1092 7B00 		sts 123,__zero_reg__
+ 190:src/BOT_CODE/bot_motion.h **** 	ADMUX = 0x20;		//Vref=5V external --- ADLAR=1 --- MUX4:0 = 0000
+ 1599               	.LM216:
+ 1600 0442 80E2      		ldi r24,lo8(32)
+ 1601 0444 8093 7C00 		sts 124,r24
+ 191:src/BOT_CODE/bot_motion.h **** 	ACSR = 0x80;
+ 1603               	.LM217:
+ 1604 0448 80E8      		ldi r24,lo8(-128)
+ 1605 044a 80BF      		out 80-32,r24
+ 192:src/BOT_CODE/bot_motion.h **** 	ADCSRA = 0x86;		//ADEN=1 --- ADIE=1 --- ADPS2:0 = 1 1 0
+ 1607               	.LM218:
+ 1608 044c 86E8      		ldi r24,lo8(-122)
+ 1609 044e 8083      		st Z,r24
+ 1610               	.LBE265:
+ 1611               	.LBE264:
+ 271:src/BOT_CODE/bot_motion.h **** 	adc_init();
+ 272:src/BOT_CODE/bot_motion.h **** 	timer5_init();
+ 1613               	.LM219:
+ 1614 0450 0E94 0000 		call timer5_init
+ 273:src/BOT_CODE/bot_motion.h **** 	sei();   
+ 1616               	.LM220:
+ 1617               	/* #APP */
+ 1618               	 ;  273 "src/BOT_CODE/bot_motion.h" 1
+ 1619 0454 7894      		sei
+ 1620               	 ;  0 "" 2
+ 1621               	/* epilogue start */
+ 274:src/BOT_CODE/bot_motion.h **** }
+ 1623               	.LM221:
+ 1624               	/* #NOAPP */
+ 1625 0456 0895      		ret
+ 1627               	.Lscope26:
+ 1629               		.stabd	78,0,0
+ 1631               	.global	print_sensor_data
+ 1633               	print_sensor_data:
+ 1634               		.stabd	46,0,0
+ 275:src/BOT_CODE/bot_motion.h **** 
+ 276:src/BOT_CODE/bot_motion.h **** /**
+ 277:src/BOT_CODE/bot_motion.h ****   Prints White line sensor values on the screen
+ 278:src/BOT_CODE/bot_motion.h **** */
+ 279:src/BOT_CODE/bot_motion.h **** void print_sensor_data()
+ 280:src/BOT_CODE/bot_motion.h **** {
+ 1636               	.LM222:
+ 1637               	.LFBB27:
+ 1638               	/* prologue: function */
+ 1639               	/* frame size = 0 */
+ 281:src/BOT_CODE/bot_motion.h **** 		print_sensor(1,1,3);	//Prints value of White Line Sensor1
+ 1641               	.LM223:
+ 1642 0458 81E0      		ldi r24,lo8(1)
+ 1643 045a 61E0      		ldi r22,lo8(1)
+ 1644 045c 43E0      		ldi r20,lo8(3)
+ 1645 045e 0E94 0000 		call print_sensor
+ 282:src/BOT_CODE/bot_motion.h **** 		print_sensor(1,5,2);	//Prints Value of White Line Sensor2
+ 1647               	.LM224:
+ 1648 0462 81E0      		ldi r24,lo8(1)
+ 1649 0464 65E0      		ldi r22,lo8(5)
+ 1650 0466 42E0      		ldi r20,lo8(2)
+ 1651 0468 0E94 0000 		call print_sensor
+ 283:src/BOT_CODE/bot_motion.h **** 		print_sensor(1,9,1);	//Prints Value of White Line Sensor3
+ 1653               	.LM225:
+ 1654 046c 81E0      		ldi r24,lo8(1)
+ 1655 046e 69E0      		ldi r22,lo8(9)
+ 1656 0470 41E0      		ldi r20,lo8(1)
+ 1657 0472 0E94 0000 		call print_sensor
+ 1658               	/* epilogue start */
+ 284:src/BOT_CODE/bot_motion.h **** }
+ 1660               	.LM226:
+ 1661 0476 0895      		ret
+ 1663               	.Lscope27:
+ 1665               		.stabd	78,0,0
+ 1667               	.global	read_sensors
+ 1669               	read_sensors:
+ 1670               		.stabd	46,0,0
+ 285:src/BOT_CODE/bot_motion.h **** 
+ 286:src/BOT_CODE/bot_motion.h **** /**
+ 287:src/BOT_CODE/bot_motion.h ****   Reads all relevant sensor values and stores it in appropriate global variables.
+ 288:src/BOT_CODE/bot_motion.h **** */
+ 289:src/BOT_CODE/bot_motion.h **** void read_sensors()
+ 290:src/BOT_CODE/bot_motion.h **** {
+ 1672               	.LM227:
+ 1673               	.LFBB28:
+ 1674               	/* prologue: function */
+ 1675               	/* frame size = 0 */
+ 291:src/BOT_CODE/bot_motion.h **** 	Left_white_line = ADC_Conversion(LEFT_SENSOR);	
+ 1677               	.LM228:
+ 1678 0478 83E0      		ldi r24,lo8(3)
+ 1679 047a 0E94 0000 		call ADC_Conversion
+ 1680 047e 8093 0000 		sts Left_white_line,r24
+ 292:src/BOT_CODE/bot_motion.h **** 	Center_white_line = ADC_Conversion(CENTER_SENSOR);	
+ 1682               	.LM229:
+ 1683 0482 82E0      		ldi r24,lo8(2)
+ 1684 0484 0E94 0000 		call ADC_Conversion
+ 1685 0488 8093 0000 		sts Center_white_line,r24
+ 293:src/BOT_CODE/bot_motion.h **** 	Right_white_line = ADC_Conversion(RIGHT_SENSOR);	
+ 1687               	.LM230:
+ 1688 048c 81E0      		ldi r24,lo8(1)
+ 1689 048e 0E94 0000 		call ADC_Conversion
+ 1690 0492 8093 0000 		sts Right_white_line,r24
+ 294:src/BOT_CODE/bot_motion.h **** 	Front_IR_Sensor = ADC_Conversion(FRONT_IR_SENSOR);
+ 1692               	.LM231:
+ 1693 0496 86E0      		ldi r24,lo8(6)
+ 1694 0498 0E94 0000 		call ADC_Conversion
+ 1695 049c 8093 0000 		sts Front_IR_Sensor,r24
+ 1696               	/* epilogue start */
+ 295:src/BOT_CODE/bot_motion.h **** }
+ 1698               	.LM232:
+ 1699 04a0 0895      		ret
+ 1701               	.Lscope28:
+ 1703               		.stabd	78,0,0
+ 1705               	.global	buzzer_on
+ 1707               	buzzer_on:
+ 1708               		.stabd	46,0,0
+ 296:src/BOT_CODE/bot_motion.h **** 
+ 297:src/BOT_CODE/bot_motion.h **** /**
+ 298:src/BOT_CODE/bot_motion.h ****   Switches the buzzer on, to signal a block on the path.
+ 299:src/BOT_CODE/bot_motion.h ****   Changes status of the bot to BLOCKED, which is sent to the server (which in turn sends an SMS to 
+ 300:src/BOT_CODE/bot_motion.h **** */
+ 301:src/BOT_CODE/bot_motion.h **** void buzzer_on (void)
+ 302:src/BOT_CODE/bot_motion.h **** {
+ 1710               	.LM233:
+ 1711               	.LFBB29:
+ 1712               	/* prologue: function */
+ 1713               	/* frame size = 0 */
+ 303:src/BOT_CODE/bot_motion.h ****  unsigned char port_restore = 0;
+ 304:src/BOT_CODE/bot_motion.h ****  port_restore = PINC;
+ 1715               	.LM234:
+ 1716 04a2 86B1      		in r24,38-32
+ 305:src/BOT_CODE/bot_motion.h ****  port_restore = port_restore | 0x08;
+ 1718               	.LM235:
+ 1719 04a4 8860      		ori r24,lo8(8)
+ 306:src/BOT_CODE/bot_motion.h ****  PORTC = port_restore;
+ 1721               	.LM236:
+ 1722 04a6 88B9      		out 40-32,r24
+ 307:src/BOT_CODE/bot_motion.h ****  status = BLOCKED;
+ 1724               	.LM237:
+ 1725 04a8 1092 0000 		sts status,__zero_reg__
+ 1726               	/* epilogue start */
+ 308:src/BOT_CODE/bot_motion.h **** }
+ 1728               	.LM238:
+ 1729 04ac 0895      		ret
+ 1734               	.Lscope29:
+ 1736               		.stabd	78,0,0
+ 1738               	.global	buzzer_off
+ 1740               	buzzer_off:
+ 1741               		.stabd	46,0,0
+ 309:src/BOT_CODE/bot_motion.h **** 
+ 310:src/BOT_CODE/bot_motion.h **** /**
+ 311:src/BOT_CODE/bot_motion.h ****   Switches the buzzer off.
+ 312:src/BOT_CODE/bot_motion.h **** */
+ 313:src/BOT_CODE/bot_motion.h **** void buzzer_off (void)
+ 314:src/BOT_CODE/bot_motion.h **** {
+ 1743               	.LM239:
+ 1744               	.LFBB30:
+ 1745               	/* prologue: function */
+ 1746               	/* frame size = 0 */
+ 315:src/BOT_CODE/bot_motion.h ****  unsigned char port_restore = 0;
+ 316:src/BOT_CODE/bot_motion.h ****  port_restore = PINC;
+ 1748               	.LM240:
+ 1749 04ae 86B1      		in r24,38-32
+ 317:src/BOT_CODE/bot_motion.h ****  port_restore = port_restore & 0xF7;
+ 1751               	.LM241:
+ 1752 04b0 877F      		andi r24,lo8(-9)
+ 318:src/BOT_CODE/bot_motion.h ****  PORTC = port_restore;
+ 1754               	.LM242:
+ 1755 04b2 88B9      		out 40-32,r24
+ 319:src/BOT_CODE/bot_motion.h ****  status = BLOCKED;
+ 1757               	.LM243:
+ 1758 04b4 1092 0000 		sts status,__zero_reg__
+ 1759               	/* epilogue start */
+ 320:src/BOT_CODE/bot_motion.h **** }
+ 1761               	.LM244:
+ 1762 04b8 0895      		ret
+ 1767               	.Lscope30:
+ 1769               		.stabd	78,0,0
+ 1771               	.global	turn_right
+ 1773               	turn_right:
+ 1774               		.stabd	46,0,0
+ 321:src/BOT_CODE/bot_motion.h **** 
+ 322:src/BOT_CODE/bot_motion.h **** /**
+ 323:src/BOT_CODE/bot_motion.h ****   Turn right at an intersection.
+ 324:src/BOT_CODE/bot_motion.h **** */
+ 325:src/BOT_CODE/bot_motion.h **** void turn_right(){
+ 1776               	.LM245:
+ 1777               	.LFBB31:
+ 1778               	/* prologue: function */
+ 1779               	/* frame size = 0 */
+ 1780               	.LBB266:
+ 1781               	.LBB267:
+ 316:src/BOT_CODE/bot_motion.h ****  port_restore = PINC;
+ 1783               	.LM246:
+ 1784 04ba 86B1      		in r24,38-32
+ 317:src/BOT_CODE/bot_motion.h ****  port_restore = port_restore & 0xF7;
+ 1786               	.LM247:
+ 1787 04bc 877F      		andi r24,lo8(-9)
+ 318:src/BOT_CODE/bot_motion.h ****  PORTC = port_restore;
+ 1789               	.LM248:
+ 1790 04be 88B9      		out 40-32,r24
+ 319:src/BOT_CODE/bot_motion.h ****  status = BLOCKED;
+ 1792               	.LM249:
+ 1793 04c0 1092 0000 		sts status,__zero_reg__
+ 1794               	.LBE267:
+ 1795               	.LBE266:
+ 1796               	.LBB268:
+ 1797               	.LBB269:
+ 242:src/BOT_CODE/bot_motion.h ****  PortARestore = PORTA; 				// reading the PORTA original status
+ 1799               	.LM250:
+ 1800 04c4 82B1      		in r24,34-32
+ 243:src/BOT_CODE/bot_motion.h ****  PortARestore &= 0xF0; 				// making lower direction nibbel to 0
+ 1802               	.LM251:
+ 1803 04c6 807F      		andi r24,lo8(-16)
+ 244:src/BOT_CODE/bot_motion.h ****  PortARestore |= Direction; 		// adding lower nibbel for forward command and restoring the PORTA st
+ 1805               	.LM252:
+ 1806 04c8 8A60      		ori r24,lo8(10)
+ 245:src/BOT_CODE/bot_motion.h ****  PORTA = PortARestore; 				// executing the command
+ 1808               	.LM253:
+ 1809 04ca 82B9      		out 34-32,r24
+ 1810               	.LBE269:
+ 1811               	.LBE268:
+ 1812               	.LBB270:
+ 1813               	.LBB271:
+ 230:src/BOT_CODE/bot_motion.h **** 	OCR5AL = (unsigned char)left_motor;
+ 1815               	.LM254:
+ 1816 04cc 84E6      		ldi r24,lo8(100)
+ 1817 04ce 8093 2801 		sts 296,r24
+ 231:src/BOT_CODE/bot_motion.h **** 	OCR5BL = (unsigned char)right_motor;
+ 1819               	.LM255:
+ 1820 04d2 8093 2A01 		sts 298,r24
+ 1821 04d6 80E1      		ldi r24,lo8(10000)
+ 1822 04d8 97E2      		ldi r25,hi8(10000)
+ 1823               	.LBE271:
+ 1824               	.LBE270:
+ 1825               	.LBB272:
+ 1826               	.LBB273:
+ 1827               	.LBB274:
+ 1828               	.LBB275:
+ 1830               	.Ltext29:
+ 1832               	.LM256:
+ 1833 04da 24E1      		ldi r18,lo8(276)
+ 1834 04dc 31E0      		ldi r19,hi8(276)
+ 1835               	.L89:
+ 1836 04de F901      		movw r30,r18
+ 1837               	/* #APP */
+ 1838               	 ;  105 "/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h" 1
+ 1839 04e0 3197      		1: sbiw r30,1
+ 1840 04e2 01F4      		brne 1b
+ 1841               	 ;  0 "" 2
+ 1842               	/* #NOAPP */
+ 1843               	.LBE275:
+ 1844               	.LBE274:
+ 1846               	.Ltext30:
+   1:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h **** /* Copyright (c) 2002, Marek Michalkiewicz
+   2:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h ****    Copyright (c) 2004,2005,2007 Joerg Wunsch
+   3:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h ****    Copyright (c) 2007  Florin-Viorel Petrov
+   4:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h ****    All rights reserved.
+   5:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h **** 
+   6:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h ****    Redistribution and use in source and binary forms, with or without
+   7:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h ****    modification, are permitted provided that the following conditions are met:
+   8:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h **** 
+   9:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h ****    * Redistributions of source code must retain the above copyright
+  10:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h ****      notice, this list of conditions and the following disclaimer.
+  11:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h **** 
+  12:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h ****    * Redistributions in binary form must reproduce the above copyright
+  13:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h ****      notice, this list of conditions and the following disclaimer in
+  14:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h ****      the documentation and/or other materials provided with the
+  15:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h ****      distribution.
+  16:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h **** 
+  17:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h ****    * Neither the name of the copyright holders nor the names of
+  18:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h ****      contributors may be used to endorse or promote products derived
+  19:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h ****      from this software without specific prior written permission.
+  20:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h **** 
+  21:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h ****   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+  22:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h ****   AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+  23:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h ****   IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+  24:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h ****   ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+  25:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h ****   LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+  26:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h ****   CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+  27:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h ****   SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+  28:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h ****   INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+  29:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h ****   CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+  30:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h ****   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+  31:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h ****   POSSIBILITY OF SUCH DAMAGE. */
+  32:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h **** 
+  33:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h **** /* $Id: delay.h,v 1.5.2.1 2009/02/25 10:14:03 joerg_wunsch Exp $ */
+  34:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h **** 
+  35:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h **** #ifndef _UTIL_DELAY_H_
+  36:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h **** #define _UTIL_DELAY_H_ 1
+  37:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h **** 
+  38:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h **** #include <inttypes.h>
+  39:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h **** #include <util/delay_basic.h>
+  40:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h **** 
+  41:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h **** /** \file */
+  42:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h **** /** \defgroup util_delay <util/delay.h>: Convenience functions for busy-wait delay loops
+  43:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h ****     \code
+  44:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h ****     #define F_CPU 1000000UL  // 1 MHz
+  45:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h ****     //#define F_CPU 14.7456E6
+  46:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h ****     #include <util/delay.h>
+  47:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h ****     \endcode
+  48:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h **** 
+  49:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h ****     \note As an alternative method, it is possible to pass the
+  50:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h ****     F_CPU macro down to the compiler from the Makefile.
+  51:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h ****     Obviously, in that case, no \c \#define statement should be
+  52:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h ****     used.
+  53:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h **** 
+  54:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h ****     The functions in this header file are wrappers around the basic
+  55:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h ****     busy-wait functions from <util/delay_basic.h>.  They are meant as
+  56:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h ****     convenience functions where actual time values can be specified
+  57:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h ****     rather than a number of cycles to wait for.  The idea behind is
+  58:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h ****     that compile-time constant expressions will be eliminated by
+  59:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h ****     compiler optimization so floating-point expressions can be used
+  60:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h ****     to calculate the number of delay cycles needed based on the CPU
+  61:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h ****     frequency passed by the macro F_CPU.
+  62:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h **** 
+  63:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h ****     \note In order for these functions to work as intended, compiler
+  64:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h ****     optimizations <em>must</em> be enabled, and the delay time
+  65:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h ****     <em>must</em> be an expression that is a known constant at
+  66:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h ****     compile-time.  If these requirements are not met, the resulting
+  67:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h ****     delay will be much longer (and basically unpredictable), and
+  68:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h ****     applications that otherwise do not use floating-point calculations
+  69:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h ****     will experience severe code bloat by the floating-point library
+  70:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h ****     routines linked into the application.
+  71:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h **** 
+  72:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h ****     The functions available allow the specification of microsecond, and
+  73:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h ****     millisecond delays directly, using the application-supplied macro
+  74:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h ****     F_CPU as the CPU clock frequency (in Hertz).
+  75:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h **** 
+  76:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h **** */
+  77:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h **** 
+  78:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h **** #if !defined(__DOXYGEN__)
+  79:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h **** static inline void _delay_us(double __us) __attribute__((always_inline));
+  80:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h **** static inline void _delay_ms(double __ms) __attribute__((always_inline));
+  81:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h **** #endif
+  82:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h **** 
+  83:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h **** #ifndef F_CPU
+  84:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h **** /* prevent compiler error by supplying a default */
+  85:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h **** # warning "F_CPU not defined for <util/delay.h>"
+  86:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h **** # define F_CPU 1000000UL
+  87:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h **** #endif
+  88:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h **** 
+  89:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h **** #ifndef __OPTIMIZE__
+  90:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h **** # warning "Compiler optimizations disabled; functions from <util/delay.h> won't work as designed"
+  91:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h **** #endif
+  92:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h **** 
+  93:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h **** /**
+  94:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h ****    \ingroup util_delay
+  95:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h **** 
+  96:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h ****    Perform a delay of \c __ms milliseconds, using _delay_loop_2().
+  97:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h **** 
+  98:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h ****    The macro F_CPU is supposed to be defined to a
+  99:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h ****    constant defining the CPU clock frequency (in Hertz).
+ 100:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h **** 
+ 101:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h ****    The maximal possible delay is 262.14 ms / F_CPU in MHz.
+ 102:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h **** 
+ 103:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h ****    When the user request delay which exceed the maximum possible one,
+ 104:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h ****    _delay_ms() provides a decreased resolution functionality. In this
+ 105:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h ****    mode _delay_ms() will work with a resolution of 1/10 ms, providing
+ 106:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h ****    delays up to 6.5535 seconds (independent from CPU frequency).  The
+ 107:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h ****    user will not be informed about decreased resolution.
+ 108:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h ****  */
+ 109:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h **** void
+ 110:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h **** _delay_ms(double __ms)
+ 111:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h **** {
+ 112:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h **** 	uint16_t __ticks;
+ 113:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h **** 	double __tmp = ((F_CPU) / 4e3) * __ms;
+ 114:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h **** 	if (__tmp < 1.0)
+ 115:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h **** 		__ticks = 1;
+ 116:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h **** 	else if (__tmp > 65535)
+ 117:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h **** 	{
+ 118:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h **** 		//	__ticks = requested delay in 1/10 ms
+ 119:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h **** 		__ticks = (uint16_t) (__ms * 10.0);
+ 120:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h **** 		while(__ticks)
+ 121:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h **** 		{
+ 122:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h **** 			// wait 1/10 ms
+ 123:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h **** 			_delay_loop_2(((F_CPU) / 4e3) / 10);
+ 124:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h **** 			__ticks --;
+ 1848               	.LM257:
+ 1849 04e4 0197      		sbiw r24,1
+ 120:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h **** 		while(__ticks)
+ 1851               	.LM258:
+ 1852 04e6 01F4      		brne .L89
+ 1853               	.L92:
+ 1854               	.LBE273:
+ 1855               	.LBE272:
+ 1857               	.Ltext31:
+ 326:src/BOT_CODE/bot_motion.h **** 	buzzer_off();
+ 327:src/BOT_CODE/bot_motion.h **** 	motion_set(0x0A);
+ 328:src/BOT_CODE/bot_motion.h **** 	velocity(100,100);
+ 329:src/BOT_CODE/bot_motion.h **** 	_delay_ms(1000);
+ 330:src/BOT_CODE/bot_motion.h **** 	while(1){
+ 331:src/BOT_CODE/bot_motion.h **** 		print_sensor_data();
+ 1859               	.LM259:
+ 1860 04e8 0E94 0000 		call print_sensor_data
+ 332:src/BOT_CODE/bot_motion.h **** 		read_sensors();
+ 1862               	.LM260:
+ 1863 04ec 0E94 0000 		call read_sensors
+ 333:src/BOT_CODE/bot_motion.h **** 		if(Center_white_line < W_THRESHOLD) break;
+ 1865               	.LM261:
+ 1866 04f0 8091 0000 		lds r24,Center_white_line
+ 1867 04f4 8F30      		cpi r24,lo8(15)
+ 1868 04f6 00F4      		brsh .L92
+ 1869               	.LBB276:
+ 1870               	.LBB277:
+ 230:src/BOT_CODE/bot_motion.h **** 	OCR5AL = (unsigned char)left_motor;
+ 1872               	.LM262:
+ 1873 04f8 1092 2801 		sts 296,__zero_reg__
+ 231:src/BOT_CODE/bot_motion.h **** 	OCR5BL = (unsigned char)right_motor;
+ 1875               	.LM263:
+ 1876 04fc 1092 2A01 		sts 298,__zero_reg__
+ 1877               	/* epilogue start */
+ 1878               	.LBE277:
+ 1879               	.LBE276:
+ 334:src/BOT_CODE/bot_motion.h **** 	}
+ 335:src/BOT_CODE/bot_motion.h **** 	velocity(0,0);
+ 336:src/BOT_CODE/bot_motion.h **** }
+ 1881               	.LM264:
+ 1882 0500 0895      		ret
+ 1896               	.Lscope31:
+ 1898               		.stabd	78,0,0
+ 1900               	.global	turn_left
+ 1902               	turn_left:
+ 1903               		.stabd	46,0,0
+ 337:src/BOT_CODE/bot_motion.h **** 
+ 338:src/BOT_CODE/bot_motion.h **** /**
+ 339:src/BOT_CODE/bot_motion.h ****   Turn left at an intersection.
+ 340:src/BOT_CODE/bot_motion.h **** */
+ 341:src/BOT_CODE/bot_motion.h **** void turn_left(){
+ 1905               	.LM265:
+ 1906               	.LFBB32:
+ 1907               	/* prologue: function */
+ 1908               	/* frame size = 0 */
+ 1909               	.LBB278:
+ 1910               	.LBB279:
+ 316:src/BOT_CODE/bot_motion.h ****  port_restore = PINC;
+ 1912               	.LM266:
+ 1913 0502 86B1      		in r24,38-32
+ 317:src/BOT_CODE/bot_motion.h ****  port_restore = port_restore & 0xF7;
+ 1915               	.LM267:
+ 1916 0504 877F      		andi r24,lo8(-9)
+ 318:src/BOT_CODE/bot_motion.h ****  PORTC = port_restore;
+ 1918               	.LM268:
+ 1919 0506 88B9      		out 40-32,r24
+ 319:src/BOT_CODE/bot_motion.h ****  status = BLOCKED;
+ 1921               	.LM269:
+ 1922 0508 1092 0000 		sts status,__zero_reg__
+ 1923               	.LBE279:
+ 1924               	.LBE278:
+ 1925               	.LBB280:
+ 1926               	.LBB281:
+ 242:src/BOT_CODE/bot_motion.h ****  PortARestore = PORTA; 				// reading the PORTA original status
+ 1928               	.LM270:
+ 1929 050c 82B1      		in r24,34-32
+ 243:src/BOT_CODE/bot_motion.h ****  PortARestore &= 0xF0; 				// making lower direction nibbel to 0
+ 1931               	.LM271:
+ 1932 050e 807F      		andi r24,lo8(-16)
+ 244:src/BOT_CODE/bot_motion.h ****  PortARestore |= Direction; 		// adding lower nibbel for forward command and restoring the PORTA st
+ 1934               	.LM272:
+ 1935 0510 8560      		ori r24,lo8(5)
+ 245:src/BOT_CODE/bot_motion.h ****  PORTA = PortARestore; 				// executing the command
+ 1937               	.LM273:
+ 1938 0512 82B9      		out 34-32,r24
+ 1939               	.LBE281:
+ 1940               	.LBE280:
+ 1941               	.LBB282:
+ 1942               	.LBB283:
+ 230:src/BOT_CODE/bot_motion.h **** 	OCR5AL = (unsigned char)left_motor;
+ 1944               	.LM274:
+ 1945 0514 84E6      		ldi r24,lo8(100)
+ 1946 0516 8093 2801 		sts 296,r24
+ 231:src/BOT_CODE/bot_motion.h **** 	OCR5BL = (unsigned char)right_motor;
+ 1948               	.LM275:
+ 1949 051a 8093 2A01 		sts 298,r24
+ 1950 051e 80E1      		ldi r24,lo8(10000)
+ 1951 0520 97E2      		ldi r25,hi8(10000)
+ 1952               	.LBE283:
+ 1953               	.LBE282:
+ 1954               	.LBB284:
+ 1955               	.LBB285:
+ 1956               	.LBB286:
+ 1957               	.LBB287:
+ 1959               	.Ltext32:
+ 1961               	.LM276:
+ 1962 0522 24E1      		ldi r18,lo8(276)
+ 1963 0524 31E0      		ldi r19,hi8(276)
+ 1964               	.L96:
+ 1965 0526 F901      		movw r30,r18
+ 1966               	/* #APP */
+ 1967               	 ;  105 "/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h" 1
+ 1968 0528 3197      		1: sbiw r30,1
+ 1969 052a 01F4      		brne 1b
+ 1970               	 ;  0 "" 2
+ 1971               	/* #NOAPP */
+ 1972               	.LBE287:
+ 1973               	.LBE286:
+ 1975               	.Ltext33:
+ 1977               	.LM277:
+ 1978 052c 0197      		sbiw r24,1
+ 120:/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay.h **** 		while(__ticks)
+ 1980               	.LM278:
+ 1981 052e 01F4      		brne .L96
+ 1982               	.L99:
+ 1983               	.LBE285:
+ 1984               	.LBE284:
+ 1986               	.Ltext34:
+ 342:src/BOT_CODE/bot_motion.h **** 	buzzer_off();
+ 343:src/BOT_CODE/bot_motion.h **** 	motion_set(0x05);
+ 344:src/BOT_CODE/bot_motion.h **** 	velocity(100,100);
+ 345:src/BOT_CODE/bot_motion.h **** 	_delay_ms(1000);
+ 346:src/BOT_CODE/bot_motion.h **** 	while(1){
+ 347:src/BOT_CODE/bot_motion.h **** 		print_sensor_data();
+ 1988               	.LM279:
+ 1989 0530 0E94 0000 		call print_sensor_data
+ 348:src/BOT_CODE/bot_motion.h **** 		read_sensors();
+ 1991               	.LM280:
+ 1992 0534 0E94 0000 		call read_sensors
+ 349:src/BOT_CODE/bot_motion.h **** 		if(Center_white_line < W_THRESHOLD) break;
+ 1994               	.LM281:
+ 1995 0538 8091 0000 		lds r24,Center_white_line
+ 1996 053c 8F30      		cpi r24,lo8(15)
+ 1997 053e 00F4      		brsh .L99
+ 1998               	.LBB288:
+ 1999               	.LBB289:
+ 230:src/BOT_CODE/bot_motion.h **** 	OCR5AL = (unsigned char)left_motor;
+ 2001               	.LM282:
+ 2002 0540 1092 2801 		sts 296,__zero_reg__
+ 231:src/BOT_CODE/bot_motion.h **** 	OCR5BL = (unsigned char)right_motor;
+ 2004               	.LM283:
+ 2005 0544 1092 2A01 		sts 298,__zero_reg__
+ 2006               	/* epilogue start */
+ 2007               	.LBE289:
+ 2008               	.LBE288:
+ 350:src/BOT_CODE/bot_motion.h **** 	}
+ 351:src/BOT_CODE/bot_motion.h **** 	velocity(0,0);
+ 352:src/BOT_CODE/bot_motion.h **** }
+ 2010               	.LM284:
+ 2011 0548 0895      		ret
+ 2025               	.Lscope32:
+ 2027               		.stabd	78,0,0
+ 2030               	.global	go_distance
+ 2032               	go_distance:
+ 2033               		.stabd	46,0,0
+ 353:src/BOT_CODE/bot_motion.h **** 
+ 354:src/BOT_CODE/bot_motion.h **** /**
+ 355:src/BOT_CODE/bot_motion.h ****   Go forward by a certain specified number of steps.
+ 356:src/BOT_CODE/bot_motion.h **** */
+ 357:src/BOT_CODE/bot_motion.h **** void go_distance(unsigned char x)
+ 358:src/BOT_CODE/bot_motion.h **** {
+ 2035               	.LM285:
+ 2036               	.LFBB33:
+ 2037 054a CF93      		push r28
+ 2038 054c DF93      		push r29
+ 2039               	/* prologue: function */
+ 2040               	/* frame size = 0 */
+ 2041               	.LBB290:
+ 2042               	.LBB291:
+ 123:src/BOT_CODE/bot_motion.h **** 	ShaftCountLeft = 0;
+ 2044               	.LM286:
+ 2045 054e 1092 0000 		sts ShaftCountLeft,__zero_reg__
+ 124:src/BOT_CODE/bot_motion.h **** 	ShaftCountRight = 0;
+ 2047               	.LM287:
+ 2048 0552 1092 0000 		sts ShaftCountRight,__zero_reg__
+ 2049               	.LBE291:
+ 2050               	.LBE290:
+ 2051               	.LBB292:
+ 2052               	.LBB293:
+ 2053               	.LBB294:
+ 2054               	.LBB295:
+ 242:src/BOT_CODE/bot_motion.h ****  PortARestore = PORTA; 				// reading the PORTA original status
+ 2056               	.LM288:
+ 2057 0556 92B1      		in r25,34-32
+ 243:src/BOT_CODE/bot_motion.h ****  PortARestore &= 0xF0; 				// making lower direction nibbel to 0
+ 2059               	.LM289:
+ 2060 0558 907F      		andi r25,lo8(-16)
+ 244:src/BOT_CODE/bot_motion.h ****  PortARestore |= Direction; 		// adding lower nibbel for forward command and restoring the PORTA st
+ 2062               	.LM290:
+ 2063 055a 9660      		ori r25,lo8(6)
+ 245:src/BOT_CODE/bot_motion.h ****  PORTA = PortARestore; 				// executing the command
+ 2065               	.LM291:
+ 2066 055c 92B9      		out 34-32,r25
+ 2067               	.LBE295:
+ 2068               	.LBE294:
+ 2069               	.LBE293:
+ 2070               	.LBE292:
+ 2071               	.LBB296:
+ 2072               	.LBB297:
+ 230:src/BOT_CODE/bot_motion.h **** 	OCR5AL = (unsigned char)left_motor;
+ 2074               	.LM292:
+ 2075 055e 94E6      		ldi r25,lo8(100)
+ 2076 0560 9093 2801 		sts 296,r25
+ 231:src/BOT_CODE/bot_motion.h **** 	OCR5BL = (unsigned char)right_motor;
+ 2078               	.LM293:
+ 2079 0564 9093 2A01 		sts 298,r25
+ 2080               	.LBE297:
+ 2081               	.LBE296:
+ 359:src/BOT_CODE/bot_motion.h **** 	reset_shaft_counters();
+ 360:src/BOT_CODE/bot_motion.h ****    forward();
+ 361:src/BOT_CODE/bot_motion.h **** 	velocity(100,100);
+ 362:src/BOT_CODE/bot_motion.h **** 	PORTJ = 0x00;
+ 2083               	.LM294:
+ 2084 0568 1092 0501 		sts 261,__zero_reg__
+ 363:src/BOT_CODE/bot_motion.h **** 	while(1){
+ 364:src/BOT_CODE/bot_motion.h **** 		read_sensors();
+ 365:src/BOT_CODE/bot_motion.h **** 		print_sensor_data();
+ 366:src/BOT_CODE/bot_motion.h **** 		if( Front_IR_Sensor<0xF0)
+ 367:src/BOT_CODE/bot_motion.h **** 		{
+ 368:src/BOT_CODE/bot_motion.h **** 			stop();
+ 369:src/BOT_CODE/bot_motion.h **** 			buzzer_on();
+ 370:src/BOT_CODE/bot_motion.h **** 		}
+ 371:src/BOT_CODE/bot_motion.h **** 		else
+ 372:src/BOT_CODE/bot_motion.h **** 		{
+ 373:src/BOT_CODE/bot_motion.h **** 			forward();
+ 374:src/BOT_CODE/bot_motion.h **** 			buzzer_off();
+ 375:src/BOT_CODE/bot_motion.h **** 		}
+ 376:src/BOT_CODE/bot_motion.h **** 		if((ShaftCountLeft + ShaftCountRight)*5 > x*10)
+ 2086               	.LM295:
+ 2087 056c 9AE0      		ldi r25,lo8(10)
+ 2088 056e 899F      		mul r24,r25
+ 2089 0570 E001      		movw r28,r0
+ 2090 0572 1124      		clr r1
+ 2091               	.L105:
+ 364:src/BOT_CODE/bot_motion.h **** 		read_sensors();
+ 2093               	.LM296:
+ 2094 0574 0E94 0000 		call read_sensors
+ 365:src/BOT_CODE/bot_motion.h **** 		print_sensor_data();
+ 2096               	.LM297:
+ 2097 0578 0E94 0000 		call print_sensor_data
+ 366:src/BOT_CODE/bot_motion.h **** 		if( Front_IR_Sensor<0xF0)
+ 2099               	.LM298:
+ 2100 057c 8091 0000 		lds r24,Front_IR_Sensor
+ 2101 0580 803F      		cpi r24,lo8(-16)
+ 2102 0582 00F4      		brsh .L103
+ 2103               	.LBB298:
+ 2104               	.LBB299:
+ 2105               	.LBB300:
+ 2106               	.LBB301:
+ 242:src/BOT_CODE/bot_motion.h ****  PortARestore = PORTA; 				// reading the PORTA original status
+ 2108               	.LM299:
+ 2109 0584 82B1      		in r24,34-32
+ 243:src/BOT_CODE/bot_motion.h ****  PortARestore &= 0xF0; 				// making lower direction nibbel to 0
+ 2111               	.LM300:
+ 2112 0586 807F      		andi r24,lo8(-16)
+ 245:src/BOT_CODE/bot_motion.h ****  PORTA = PortARestore; 				// executing the command
+ 2114               	.LM301:
+ 2115 0588 82B9      		out 34-32,r24
+ 2116               	.LBE301:
+ 2117               	.LBE300:
+ 2118               	.LBE299:
+ 2119               	.LBE298:
+ 2120               	.LBB302:
+ 2121               	.LBB303:
+ 304:src/BOT_CODE/bot_motion.h ****  port_restore = PINC;
+ 2123               	.LM302:
+ 2124 058a 86B1      		in r24,38-32
+ 305:src/BOT_CODE/bot_motion.h ****  port_restore = port_restore | 0x08;
+ 2126               	.LM303:
+ 2127 058c 8860      		ori r24,lo8(8)
+ 2128 058e 00C0      		rjmp .L108
+ 2129               	.L103:
+ 2130               	.LBE303:
+ 2131               	.LBE302:
+ 2132               	.LBB304:
+ 2133               	.LBB305:
+ 2134               	.LBB306:
+ 2135               	.LBB307:
+ 242:src/BOT_CODE/bot_motion.h ****  PortARestore = PORTA; 				// reading the PORTA original status
+ 2137               	.LM304:
+ 2138 0590 82B1      		in r24,34-32
+ 243:src/BOT_CODE/bot_motion.h ****  PortARestore &= 0xF0; 				// making lower direction nibbel to 0
+ 2140               	.LM305:
+ 2141 0592 807F      		andi r24,lo8(-16)
+ 244:src/BOT_CODE/bot_motion.h ****  PortARestore |= Direction; 		// adding lower nibbel for forward command and restoring the PORTA st
+ 2143               	.LM306:
+ 2144 0594 8660      		ori r24,lo8(6)
+ 245:src/BOT_CODE/bot_motion.h ****  PORTA = PortARestore; 				// executing the command
+ 2146               	.LM307:
+ 2147 0596 82B9      		out 34-32,r24
+ 2148               	.LBE307:
+ 2149               	.LBE306:
+ 2150               	.LBE305:
+ 2151               	.LBE304:
+ 2152               	.LBB308:
+ 2153               	.LBB309:
+ 316:src/BOT_CODE/bot_motion.h ****  port_restore = PINC;
+ 2155               	.LM308:
+ 2156 0598 86B1      		in r24,38-32
+ 317:src/BOT_CODE/bot_motion.h ****  port_restore = port_restore & 0xF7;
+ 2158               	.LM309:
+ 2159 059a 877F      		andi r24,lo8(-9)
+ 2160               	.L108:
+ 318:src/BOT_CODE/bot_motion.h ****  PORTC = port_restore;
+ 2162               	.LM310:
+ 2163 059c 88B9      		out 40-32,r24
+ 319:src/BOT_CODE/bot_motion.h ****  status = BLOCKED;
+ 2165               	.LM311:
+ 2166 059e 1092 0000 		sts status,__zero_reg__
+ 2167               	.LBE309:
+ 2168               	.LBE308:
+ 2170               	.LM312:
+ 2171 05a2 8091 0000 		lds r24,ShaftCountLeft
+ 2172 05a6 2091 0000 		lds r18,ShaftCountRight
+ 2173 05aa 90E0      		ldi r25,lo8(0)
+ 2174 05ac 820F      		add r24,r18
+ 2175 05ae 911D      		adc r25,__zero_reg__
+ 2176 05b0 9C01      		movw r18,r24
+ 2177 05b2 220F      		lsl r18
+ 2178 05b4 331F      		rol r19
+ 2179 05b6 220F      		lsl r18
+ 2180 05b8 331F      		rol r19
+ 2181 05ba 280F      		add r18,r24
+ 2182 05bc 391F      		adc r19,r25
+ 2183 05be C217      		cp r28,r18
+ 2184 05c0 D307      		cpc r29,r19
+ 2185 05c2 04F4      		brge .L105
+ 2186               	.LBB310:
+ 2187               	.LBB311:
+ 230:src/BOT_CODE/bot_motion.h **** 	OCR5AL = (unsigned char)left_motor;
+ 2189               	.LM313:
+ 2190 05c4 1092 2801 		sts 296,__zero_reg__
+ 231:src/BOT_CODE/bot_motion.h **** 	OCR5BL = (unsigned char)right_motor;
+ 2192               	.LM314:
+ 2193 05c8 1092 2A01 		sts 298,__zero_reg__
+ 2194               	/* epilogue start */
+ 2195               	.LBE311:
+ 2196               	.LBE310:
+ 377:src/BOT_CODE/bot_motion.h **** 			break;
+ 378:src/BOT_CODE/bot_motion.h **** 	}
+ 379:src/BOT_CODE/bot_motion.h **** 	velocity(0,0);
+ 380:src/BOT_CODE/bot_motion.h **** }
+ 2198               	.LM315:
+ 2199 05cc DF91      		pop r29
+ 2200 05ce CF91      		pop r28
+ 2201 05d0 0895      		ret
+ 2209               	.Lscope33:
+ 2211               		.stabd	78,0,0
+ 2213               	.global	go_upto_next_cross
+ 2215               	go_upto_next_cross:
+ 2216               		.stabd	46,0,0
+ 381:src/BOT_CODE/bot_motion.h **** 
+ 382:src/BOT_CODE/bot_motion.h **** /**
+ 383:src/BOT_CODE/bot_motion.h ****   Go forward upto the next intersection, while following a white line.
+ 384:src/BOT_CODE/bot_motion.h ****   Uses 7-fold scheme :
+ 385:src/BOT_CODE/bot_motion.h ****   (left, center, right) - Action
+ 386:src/BOT_CODE/bot_motion.h **** 			(0,1,0)			- Go Forward.
+ 387:src/BOT_CODE/bot_motion.h **** 			(1,1,0)			- Turn right (slightly)
+ 388:src/BOT_CODE/bot_motion.h **** 			(1,0,0)			- Turn right (hard)
+ 389:src/BOT_CODE/bot_motion.h **** 			(0,1,1)			- Turn left (slightly)
+ 390:src/BOT_CODE/bot_motion.h **** 			(0,0,1)			- Turn left (hard)
+ 391:src/BOT_CODE/bot_motion.h **** 			(1,1,1)			- Reached the intersection
+ 392:src/BOT_CODE/bot_motion.h **** 			(0,0,0)			- Recovery mode. Move in the direction of the last sensor that was on white line
+ 393:src/BOT_CODE/bot_motion.h **** */
+ 394:src/BOT_CODE/bot_motion.h **** void go_upto_next_cross(){
+ 2218               	.LM316:
+ 2219               	.LFBB34:
+ 2220 05d2 8F92      		push r8
+ 2221 05d4 9F92      		push r9
+ 2222 05d6 AF92      		push r10
+ 2223 05d8 BF92      		push r11
+ 2224 05da CF92      		push r12
+ 2225 05dc DF92      		push r13
+ 2226 05de EF92      		push r14
+ 2227 05e0 FF92      		push r15
+ 2228 05e2 0F93      		push r16
+ 2229 05e4 1F93      		push r17
+ 2230               	/* prologue: function */
+ 2231               	/* frame size = 0 */
+ 2233               	.LM317:
+ 2234 05e6 03E0      		ldi r16,lo8(3)
+ 2235 05e8 10E0      		ldi r17,lo8(0)
+ 395:src/BOT_CODE/bot_motion.h **** 	char last_on = LEFT_SENSOR;
+ 396:src/BOT_CODE/bot_motion.h **** 	char black_flag = 0;
+ 397:src/BOT_CODE/bot_motion.h **** 	while(1)
+ 398:src/BOT_CODE/bot_motion.h **** 	{
+ 399:src/BOT_CODE/bot_motion.h **** 		PORTJ = PORTJ+1;
+ 400:src/BOT_CODE/bot_motion.h **** 		if(Center_white_line<W_THRESHOLD_STOP && Left_white_line<W_THRESHOLD_STOP && Right_white_line<W_T
+ 401:src/BOT_CODE/bot_motion.h **** 			PORTJ = 0xAA;
+ 402:src/BOT_CODE/bot_motion.h **** 		 	break;
+ 403:src/BOT_CODE/bot_motion.h **** 		}
+ 404:src/BOT_CODE/bot_motion.h **** 
+ 405:src/BOT_CODE/bot_motion.h **** 		read_sensors();
+ 406:src/BOT_CODE/bot_motion.h **** 
+ 407:src/BOT_CODE/bot_motion.h **** 		flag=0;
+ 408:src/BOT_CODE/bot_motion.h **** 		print_sensor_data();
+ 409:src/BOT_CODE/bot_motion.h **** 		
+ 410:src/BOT_CODE/bot_motion.h **** 		if( Front_IR_Sensor<0xF0)
+ 411:src/BOT_CODE/bot_motion.h **** 		{
+ 412:src/BOT_CODE/bot_motion.h **** 			stop();
+ 413:src/BOT_CODE/bot_motion.h **** 			buzzer_on();
+ 414:src/BOT_CODE/bot_motion.h **** 		}
+ 415:src/BOT_CODE/bot_motion.h **** 		//Sensor config : 010
+ 416:src/BOT_CODE/bot_motion.h **** 		else if(Left_white_line > W_THRESHOLD && Center_white_line < W_THRESHOLD && Right_white_line > W_
+ 417:src/BOT_CODE/bot_motion.h **** 		{
+ 418:src/BOT_CODE/bot_motion.h **** 			forward();
+ 419:src/BOT_CODE/bot_motion.h **** 			velocity(150,150);
+ 420:src/BOT_CODE/bot_motion.h **** 			black_flag = 0;
+ 421:src/BOT_CODE/bot_motion.h **** 			buzzer_off();
+ 422:src/BOT_CODE/bot_motion.h **** 		}
+ 423:src/BOT_CODE/bot_motion.h **** 
+ 424:src/BOT_CODE/bot_motion.h **** 		//Sensor config : 110
+ 425:src/BOT_CODE/bot_motion.h **** 		else if(Left_white_line < W_THRESHOLD && Center_white_line < W_THRESHOLD && Right_white_line > W_
+ 426:src/BOT_CODE/bot_motion.h **** 		{
+ 427:src/BOT_CODE/bot_motion.h **** 			forward();
+ 428:src/BOT_CODE/bot_motion.h **** 			velocity(120,150);
+ 429:src/BOT_CODE/bot_motion.h **** 			black_flag = 0;
+ 430:src/BOT_CODE/bot_motion.h **** 			buzzer_off();
+ 431:src/BOT_CODE/bot_motion.h **** 		}
+ 432:src/BOT_CODE/bot_motion.h **** 		
+ 433:src/BOT_CODE/bot_motion.h **** 		//Sensor config : 100
+ 434:src/BOT_CODE/bot_motion.h **** 		else if(Left_white_line < W_THRESHOLD && Center_white_line > W_THRESHOLD && Right_white_line > W_
+ 435:src/BOT_CODE/bot_motion.h **** 		{
+ 436:src/BOT_CODE/bot_motion.h **** 			PORTA = 0x05;
+ 437:src/BOT_CODE/bot_motion.h **** 			velocity(50,130);
+ 438:src/BOT_CODE/bot_motion.h **** 			last_on = LEFT_SENSOR;
+ 439:src/BOT_CODE/bot_motion.h **** 			black_flag = 0;
+ 440:src/BOT_CODE/bot_motion.h **** 			buzzer_off();
+ 441:src/BOT_CODE/bot_motion.h **** 		}
+ 442:src/BOT_CODE/bot_motion.h **** 
+ 443:src/BOT_CODE/bot_motion.h **** 		//Sensor config : 011
+ 444:src/BOT_CODE/bot_motion.h **** 		else if(Left_white_line > W_THRESHOLD && Center_white_line < W_THRESHOLD && Right_white_line < W_
+ 445:src/BOT_CODE/bot_motion.h **** 		{
+ 446:src/BOT_CODE/bot_motion.h **** 			forward();
+ 447:src/BOT_CODE/bot_motion.h **** 			velocity(150,120);
+ 448:src/BOT_CODE/bot_motion.h **** 			black_flag = 0;
+ 449:src/BOT_CODE/bot_motion.h **** 			buzzer_off();
+ 450:src/BOT_CODE/bot_motion.h **** 		}
+ 451:src/BOT_CODE/bot_motion.h **** 
+ 452:src/BOT_CODE/bot_motion.h **** 		//Sensor config : 001
+ 453:src/BOT_CODE/bot_motion.h **** 		else if(Left_white_line > W_THRESHOLD && Center_white_line > W_THRESHOLD && Right_white_line < W_
+ 454:src/BOT_CODE/bot_motion.h **** 		{
+ 455:src/BOT_CODE/bot_motion.h **** 			PORTA = 0x0A;
+ 456:src/BOT_CODE/bot_motion.h **** 			velocity(130,50);
+ 457:src/BOT_CODE/bot_motion.h **** 			last_on = RIGHT_SENSOR;
+ 458:src/BOT_CODE/bot_motion.h **** 			black_flag = 0;
+ 459:src/BOT_CODE/bot_motion.h **** 			buzzer_off();
+ 460:src/BOT_CODE/bot_motion.h **** 		}
+ 461:src/BOT_CODE/bot_motion.h **** 		//Sensor config : 000
+ 462:src/BOT_CODE/bot_motion.h **** 		else
+ 463:src/BOT_CODE/bot_motion.h **** 		{
+ 464:src/BOT_CODE/bot_motion.h **** 			buzzer_off();
+ 465:src/BOT_CODE/bot_motion.h **** 			if(black_flag >= CONT_BLACK)  {
+ 466:src/BOT_CODE/bot_motion.h **** 				if(last_on == LEFT_SENSOR)
+ 467:src/BOT_CODE/bot_motion.h **** 					motion_set(0x05);
+ 468:src/BOT_CODE/bot_motion.h **** 				else if(last_on == RIGHT_SENSOR)
+ 469:src/BOT_CODE/bot_motion.h **** 					motion_set(0x0A);
+ 470:src/BOT_CODE/bot_motion.h **** 				velocity(100,100);
+ 471:src/BOT_CODE/bot_motion.h **** 				while(1){
+ 472:src/BOT_CODE/bot_motion.h **** 					print_sensor_data();
+ 473:src/BOT_CODE/bot_motion.h **** 					read_sensors();
+ 474:src/BOT_CODE/bot_motion.h **** 					if(Center_white_line < W_THRESHOLD) break;
+ 475:src/BOT_CODE/bot_motion.h **** 				}
+ 476:src/BOT_CODE/bot_motion.h **** 			}
+ 477:src/BOT_CODE/bot_motion.h **** 			black_flag = (black_flag < CONT_BLACK)?black_flag+1:CONT_BLACK;
+ 478:src/BOT_CODE/bot_motion.h **** 			forward();
+ 479:src/BOT_CODE/bot_motion.h **** 			velocity(0,0);
+ 480:src/BOT_CODE/bot_motion.h **** 			PORTJ = 0x99;
+ 2237               	.LM318:
+ 2238 05ea 89E9      		ldi r24,lo8(-103)
+ 2239 05ec 882E      		mov r8,r24
+ 2240               	.LBB312:
+ 2241               	.LBB313:
+ 230:src/BOT_CODE/bot_motion.h **** 	OCR5AL = (unsigned char)left_motor;
+ 2243               	.LM319:
+ 2244 05ee B4E6      		ldi r27,lo8(100)
+ 2245 05f0 BB2E      		mov r11,r27
+ 2246               	.LBE313:
+ 2247               	.LBE312:
+ 474:src/BOT_CODE/bot_motion.h **** 					if(Center_white_line < W_THRESHOLD) break;
+ 2249               	.LM320:
+ 2250 05f2 A5E0      		ldi r26,lo8(5)
+ 2251 05f4 AA2E      		mov r10,r26
+ 455:src/BOT_CODE/bot_motion.h **** 			PORTA = 0x0A;
+ 2253               	.LM321:
+ 2254 05f6 FAE0      		ldi r31,lo8(10)
+ 2255 05f8 9F2E      		mov r9,r31
+ 2256               	.LBB315:
+ 2257               	.LBB316:
+ 230:src/BOT_CODE/bot_motion.h **** 	OCR5AL = (unsigned char)left_motor;
+ 2259               	.LM322:
+ 2260 05fa E2E8      		ldi r30,lo8(-126)
+ 2261 05fc CE2E      		mov r12,r30
+ 231:src/BOT_CODE/bot_motion.h **** 	OCR5BL = (unsigned char)right_motor;
+ 2263               	.LM323:
+ 2264 05fe 72E3      		ldi r23,lo8(50)
+ 2265 0600 D72E      		mov r13,r23
+ 2266               	.LBE316:
+ 2267               	.LBE315:
+ 2268               	.LBB318:
+ 2269               	.LBB319:
+ 230:src/BOT_CODE/bot_motion.h **** 	OCR5AL = (unsigned char)left_motor;
+ 2271               	.LM324:
+ 2272 0602 66E9      		ldi r22,lo8(-106)
+ 2273 0604 F62E      		mov r15,r22
+ 231:src/BOT_CODE/bot_motion.h **** 	OCR5BL = (unsigned char)right_motor;
+ 2275               	.LM325:
+ 2276 0606 58E7      		ldi r21,lo8(120)
+ 2277 0608 E52E      		mov r14,r21
+ 2278               	.L125:
+ 2279               	.LBE319:
+ 2280               	.LBE318:
+ 399:src/BOT_CODE/bot_motion.h **** 		PORTJ = PORTJ+1;
+ 2282               	.LM326:
+ 2283 060a 8091 0501 		lds r24,261
+ 2284 060e 8F5F      		subi r24,lo8(-(1))
+ 2285 0610 8093 0501 		sts 261,r24
+ 400:src/BOT_CODE/bot_motion.h **** 		if(Center_white_line<W_THRESHOLD_STOP && Left_white_line<W_THRESHOLD_STOP && Right_white_line<W_T
+ 2287               	.LM327:
+ 2288 0614 8091 0000 		lds r24,Center_white_line
+ 2289 0618 8830      		cpi r24,lo8(8)
+ 2290 061a 00F4      		brsh .L110
+ 2291 061c 8091 0000 		lds r24,Left_white_line
+ 2292 0620 8830      		cpi r24,lo8(8)
+ 2293 0622 00F4      		brsh .L110
+ 2294 0624 8091 0000 		lds r24,Right_white_line
+ 2295 0628 8830      		cpi r24,lo8(8)
+ 2296 062a 00F4      		brsh .L110
+ 401:src/BOT_CODE/bot_motion.h **** 			PORTJ = 0xAA;
+ 2298               	.LM328:
+ 2299 062c 8AEA      		ldi r24,lo8(-86)
+ 2300 062e 8093 0501 		sts 261,r24
+ 2301               	.LBB321:
+ 2302               	.LBB322:
+ 230:src/BOT_CODE/bot_motion.h **** 	OCR5AL = (unsigned char)left_motor;
+ 2304               	.LM329:
+ 2305 0632 1092 2801 		sts 296,__zero_reg__
+ 231:src/BOT_CODE/bot_motion.h **** 	OCR5BL = (unsigned char)right_motor;
+ 2307               	.LM330:
+ 2308 0636 1092 2A01 		sts 298,__zero_reg__
+ 2309               	.LBE322:
+ 2310               	.LBE321:
+ 481:src/BOT_CODE/bot_motion.h **** 		}
+ 482:src/BOT_CODE/bot_motion.h **** 	}
+ 483:src/BOT_CODE/bot_motion.h **** 	velocity(0,0);	
+ 484:src/BOT_CODE/bot_motion.h **** 	go_distance(8);
+ 2312               	.LM331:
+ 2313 063a 88E0      		ldi r24,lo8(8)
+ 2314 063c 0E94 0000 		call go_distance
+ 2315               	/* epilogue start */
+ 485:src/BOT_CODE/bot_motion.h **** }
+ 2317               	.LM332:
+ 2318 0640 1F91      		pop r17
+ 2319 0642 0F91      		pop r16
+ 2320 0644 FF90      		pop r15
+ 2321 0646 EF90      		pop r14
+ 2322 0648 DF90      		pop r13
+ 2323 064a CF90      		pop r12
+ 2324 064c BF90      		pop r11
+ 2325 064e AF90      		pop r10
+ 2326 0650 9F90      		pop r9
+ 2327 0652 8F90      		pop r8
+ 2328 0654 0895      		ret
+ 2329               	.L110:
+ 405:src/BOT_CODE/bot_motion.h **** 		read_sensors();
+ 2331               	.LM333:
+ 2332 0656 0E94 0000 		call read_sensors
+ 407:src/BOT_CODE/bot_motion.h **** 		flag=0;
+ 2334               	.LM334:
+ 2335 065a 1092 0000 		sts flag,__zero_reg__
+ 408:src/BOT_CODE/bot_motion.h **** 		print_sensor_data();
+ 2337               	.LM335:
+ 2338 065e 0E94 0000 		call print_sensor_data
+ 410:src/BOT_CODE/bot_motion.h **** 		if( Front_IR_Sensor<0xF0)
+ 2340               	.LM336:
+ 2341 0662 8091 0000 		lds r24,Front_IR_Sensor
+ 2342 0666 803F      		cpi r24,lo8(-16)
+ 2343 0668 00F4      		brsh .L111
+ 2344               	.LBB323:
+ 2345               	.LBB324:
+ 2346               	.LBB325:
+ 2347               	.LBB326:
+ 242:src/BOT_CODE/bot_motion.h ****  PortARestore = PORTA; 				// reading the PORTA original status
+ 2349               	.LM337:
+ 2350 066a 82B1      		in r24,34-32
+ 243:src/BOT_CODE/bot_motion.h ****  PortARestore &= 0xF0; 				// making lower direction nibbel to 0
+ 2352               	.LM338:
+ 2353 066c 807F      		andi r24,lo8(-16)
+ 245:src/BOT_CODE/bot_motion.h ****  PORTA = PortARestore; 				// executing the command
+ 2355               	.LM339:
+ 2356 066e 82B9      		out 34-32,r24
+ 2357               	.LBE326:
+ 2358               	.LBE325:
+ 2359               	.LBE324:
+ 2360               	.LBE323:
+ 2361               	.LBB327:
+ 2362               	.LBB328:
+ 304:src/BOT_CODE/bot_motion.h ****  port_restore = PINC;
+ 2364               	.LM340:
+ 2365 0670 86B1      		in r24,38-32
+ 305:src/BOT_CODE/bot_motion.h ****  port_restore = port_restore | 0x08;
+ 2367               	.LM341:
+ 2368 0672 8860      		ori r24,lo8(8)
+ 306:src/BOT_CODE/bot_motion.h ****  PORTC = port_restore;
+ 2370               	.LM342:
+ 2371 0674 88B9      		out 40-32,r24
+ 307:src/BOT_CODE/bot_motion.h ****  status = BLOCKED;
+ 2373               	.LM343:
+ 2374 0676 1092 0000 		sts status,__zero_reg__
+ 2375 067a 00C0      		rjmp .L125
+ 2376               	.L111:
+ 2377               	.LBE328:
+ 2378               	.LBE327:
+ 416:src/BOT_CODE/bot_motion.h **** 		else if(Left_white_line > W_THRESHOLD && Center_white_line < W_THRESHOLD && Right_white_line > W_
+ 2380               	.LM344:
+ 2381 067c 2091 0000 		lds r18,Left_white_line
+ 2382 0680 2031      		cpi r18,lo8(16)
+ 2383 0682 00F0      		brlo .L113
+ 2384 0684 8091 0000 		lds r24,Center_white_line
+ 2385 0688 8F30      		cpi r24,lo8(15)
+ 2386 068a 00F4      		brsh .L113
+ 2387 068c 8091 0000 		lds r24,Right_white_line
+ 2388 0690 8031      		cpi r24,lo8(16)
+ 2389 0692 00F0      		brlo .L113
+ 2390               	.LBB329:
+ 2391               	.LBB330:
+ 2392               	.LBB331:
+ 2393               	.LBB332:
+ 242:src/BOT_CODE/bot_motion.h ****  PortARestore = PORTA; 				// reading the PORTA original status
+ 2395               	.LM345:
+ 2396 0694 82B1      		in r24,34-32
+ 243:src/BOT_CODE/bot_motion.h ****  PortARestore &= 0xF0; 				// making lower direction nibbel to 0
+ 2398               	.LM346:
+ 2399 0696 807F      		andi r24,lo8(-16)
+ 244:src/BOT_CODE/bot_motion.h ****  PortARestore |= Direction; 		// adding lower nibbel for forward command and restoring the PORTA st
+ 2401               	.LM347:
+ 2402 0698 8660      		ori r24,lo8(6)
+ 245:src/BOT_CODE/bot_motion.h ****  PORTA = PortARestore; 				// executing the command
+ 2404               	.LM348:
+ 2405 069a 82B9      		out 34-32,r24
+ 2406               	.LBE332:
+ 2407               	.LBE331:
+ 2408               	.LBE330:
+ 2409               	.LBE329:
+ 2410               	.LBB333:
+ 2411               	.LBB334:
+ 230:src/BOT_CODE/bot_motion.h **** 	OCR5AL = (unsigned char)left_motor;
+ 2413               	.LM349:
+ 2414 069c F092 2801 		sts 296,r15
+ 2415 06a0 00C0      		rjmp .L129
+ 2416               	.L113:
+ 2417               	.LBE334:
+ 2418               	.LBE333:
+ 425:src/BOT_CODE/bot_motion.h **** 		else if(Left_white_line < W_THRESHOLD && Center_white_line < W_THRESHOLD && Right_white_line > W_
+ 2420               	.LM350:
+ 2421 06a2 2F30      		cpi r18,lo8(15)
+ 2422 06a4 00F4      		brsh .L114
+ 2423 06a6 9091 0000 		lds r25,Center_white_line
+ 2424 06aa 9F30      		cpi r25,lo8(15)
+ 2425 06ac 00F4      		brsh .L115
+ 2426 06ae 8091 0000 		lds r24,Right_white_line
+ 2427 06b2 8031      		cpi r24,lo8(16)
+ 2428 06b4 00F0      		brlo .L115
+ 2429               	.LBB335:
+ 2430               	.LBB336:
+ 2431               	.LBB337:
+ 2432               	.LBB338:
+ 242:src/BOT_CODE/bot_motion.h ****  PortARestore = PORTA; 				// reading the PORTA original status
+ 2434               	.LM351:
+ 2435 06b6 82B1      		in r24,34-32
+ 243:src/BOT_CODE/bot_motion.h ****  PortARestore &= 0xF0; 				// making lower direction nibbel to 0
+ 2437               	.LM352:
+ 2438 06b8 807F      		andi r24,lo8(-16)
+ 244:src/BOT_CODE/bot_motion.h ****  PortARestore |= Direction; 		// adding lower nibbel for forward command and restoring the PORTA st
+ 2440               	.LM353:
+ 2441 06ba 8660      		ori r24,lo8(6)
+ 245:src/BOT_CODE/bot_motion.h ****  PORTA = PortARestore; 				// executing the command
+ 2443               	.LM354:
+ 2444 06bc 82B9      		out 34-32,r24
+ 2445               	.LBE338:
+ 2446               	.LBE337:
+ 2447               	.LBE336:
+ 2448               	.LBE335:
+ 2449               	.LBB339:
+ 2450               	.LBB340:
+ 230:src/BOT_CODE/bot_motion.h **** 	OCR5AL = (unsigned char)left_motor;
+ 2452               	.LM355:
+ 2453 06be E092 2801 		sts 296,r14
+ 2454               	.L129:
+ 231:src/BOT_CODE/bot_motion.h **** 	OCR5BL = (unsigned char)right_motor;
+ 2456               	.LM356:
+ 2457 06c2 F092 2A01 		sts 298,r15
+ 2458 06c6 00C0      		rjmp .L127
+ 2459               	.L115:
+ 2460               	.LBE340:
+ 2461               	.LBE339:
+ 434:src/BOT_CODE/bot_motion.h **** 		else if(Left_white_line < W_THRESHOLD && Center_white_line > W_THRESHOLD && Right_white_line > W_
+ 2463               	.LM357:
+ 2464 06c8 9031      		cpi r25,lo8(16)
+ 2465 06ca 00F0      		brlo .L114
+ 2466 06cc 8091 0000 		lds r24,Right_white_line
+ 2467 06d0 8031      		cpi r24,lo8(16)
+ 2468 06d2 00F0      		brlo .L114
+ 436:src/BOT_CODE/bot_motion.h **** 			PORTA = 0x05;
+ 2470               	.LM358:
+ 2471 06d4 A2B8      		out 34-32,r10
+ 2472               	.LBB341:
+ 2473               	.LBB342:
+ 230:src/BOT_CODE/bot_motion.h **** 	OCR5AL = (unsigned char)left_motor;
+ 2475               	.LM359:
+ 2476 06d6 D092 2801 		sts 296,r13
+ 231:src/BOT_CODE/bot_motion.h **** 	OCR5BL = (unsigned char)right_motor;
+ 2478               	.LM360:
+ 2479 06da C092 2A01 		sts 298,r12
+ 2480               	.LBE342:
+ 2481               	.LBE341:
+ 2482               	.LBB343:
+ 2483               	.LBB344:
+ 316:src/BOT_CODE/bot_motion.h ****  port_restore = PINC;
+ 2485               	.LM361:
+ 2486 06de 86B1      		in r24,38-32
+ 317:src/BOT_CODE/bot_motion.h ****  port_restore = port_restore & 0xF7;
+ 2488               	.LM362:
+ 2489 06e0 877F      		andi r24,lo8(-9)
+ 318:src/BOT_CODE/bot_motion.h ****  PORTC = port_restore;
+ 2491               	.LM363:
+ 2492 06e2 88B9      		out 40-32,r24
+ 319:src/BOT_CODE/bot_motion.h ****  status = BLOCKED;
+ 2494               	.LM364:
+ 2495 06e4 1092 0000 		sts status,__zero_reg__
+ 2496 06e8 03E0      		ldi r16,lo8(3)
+ 2497 06ea 00C0      		rjmp .L126
+ 2498               	.L114:
+ 2499               	.LBE344:
+ 2500               	.LBE343:
+ 444:src/BOT_CODE/bot_motion.h **** 		else if(Left_white_line > W_THRESHOLD && Center_white_line < W_THRESHOLD && Right_white_line < W_
+ 2502               	.LM365:
+ 2503 06ec 2031      		cpi r18,lo8(16)
+ 2504 06ee 00F0      		brlo .L116
+ 2505 06f0 9091 0000 		lds r25,Center_white_line
+ 2506 06f4 9F30      		cpi r25,lo8(15)
+ 2507 06f6 00F4      		brsh .L117
+ 2508 06f8 8091 0000 		lds r24,Right_white_line
+ 2509 06fc 8F30      		cpi r24,lo8(15)
+ 2510 06fe 00F4      		brsh .L117
+ 2511               	.LBB345:
+ 2512               	.LBB346:
+ 2513               	.LBB347:
+ 2514               	.LBB348:
+ 242:src/BOT_CODE/bot_motion.h ****  PortARestore = PORTA; 				// reading the PORTA original status
+ 2516               	.LM366:
+ 2517 0700 82B1      		in r24,34-32
+ 243:src/BOT_CODE/bot_motion.h ****  PortARestore &= 0xF0; 				// making lower direction nibbel to 0
+ 2519               	.LM367:
+ 2520 0702 807F      		andi r24,lo8(-16)
+ 244:src/BOT_CODE/bot_motion.h ****  PortARestore |= Direction; 		// adding lower nibbel for forward command and restoring the PORTA st
+ 2522               	.LM368:
+ 2523 0704 8660      		ori r24,lo8(6)
+ 245:src/BOT_CODE/bot_motion.h ****  PORTA = PortARestore; 				// executing the command
+ 2525               	.LM369:
+ 2526 0706 82B9      		out 34-32,r24
+ 2527               	.LBE348:
+ 2528               	.LBE347:
+ 2529               	.LBE346:
+ 2530               	.LBE345:
+ 2531               	.LBB349:
+ 2532               	.LBB320:
+ 230:src/BOT_CODE/bot_motion.h **** 	OCR5AL = (unsigned char)left_motor;
+ 2534               	.LM370:
+ 2535 0708 F092 2801 		sts 296,r15
+ 231:src/BOT_CODE/bot_motion.h **** 	OCR5BL = (unsigned char)right_motor;
+ 2537               	.LM371:
+ 2538 070c E092 2A01 		sts 298,r14
+ 2539               	.L127:
+ 2540               	.LBE320:
+ 2541               	.LBE349:
+ 2542               	.LBB350:
+ 2543               	.LBB351:
+ 316:src/BOT_CODE/bot_motion.h ****  port_restore = PINC;
+ 2545               	.LM372:
+ 2546 0710 86B1      		in r24,38-32
+ 317:src/BOT_CODE/bot_motion.h ****  port_restore = port_restore & 0xF7;
+ 2548               	.LM373:
+ 2549 0712 877F      		andi r24,lo8(-9)
+ 318:src/BOT_CODE/bot_motion.h ****  PORTC = port_restore;
+ 2551               	.LM374:
+ 2552 0714 88B9      		out 40-32,r24
+ 319:src/BOT_CODE/bot_motion.h ****  status = BLOCKED;
+ 2554               	.LM375:
+ 2555 0716 1092 0000 		sts status,__zero_reg__
+ 2556 071a 00C0      		rjmp .L126
+ 2557               	.L117:
+ 2558               	.LBE351:
+ 2559               	.LBE350:
+ 453:src/BOT_CODE/bot_motion.h **** 		else if(Left_white_line > W_THRESHOLD && Center_white_line > W_THRESHOLD && Right_white_line < W_
+ 2561               	.LM376:
+ 2562 071c 9031      		cpi r25,lo8(16)
+ 2563 071e 00F0      		brlo .L116
+ 2564 0720 8091 0000 		lds r24,Right_white_line
+ 2565 0724 8F30      		cpi r24,lo8(15)
+ 2566 0726 00F4      		brsh .L116
+ 455:src/BOT_CODE/bot_motion.h **** 			PORTA = 0x0A;
+ 2568               	.LM377:
+ 2569 0728 92B8      		out 34-32,r9
+ 2570               	.LBB352:
+ 2571               	.LBB317:
+ 230:src/BOT_CODE/bot_motion.h **** 	OCR5AL = (unsigned char)left_motor;
+ 2573               	.LM378:
+ 2574 072a C092 2801 		sts 296,r12
+ 231:src/BOT_CODE/bot_motion.h **** 	OCR5BL = (unsigned char)right_motor;
+ 2576               	.LM379:
+ 2577 072e D092 2A01 		sts 298,r13
+ 2578               	.LBE317:
+ 2579               	.LBE352:
+ 2580               	.LBB353:
+ 2581               	.LBB354:
+ 316:src/BOT_CODE/bot_motion.h ****  port_restore = PINC;
+ 2583               	.LM380:
+ 2584 0732 86B1      		in r24,38-32
+ 317:src/BOT_CODE/bot_motion.h ****  port_restore = port_restore & 0xF7;
+ 2586               	.LM381:
+ 2587 0734 877F      		andi r24,lo8(-9)
+ 318:src/BOT_CODE/bot_motion.h ****  PORTC = port_restore;
+ 2589               	.LM382:
+ 2590 0736 88B9      		out 40-32,r24
+ 319:src/BOT_CODE/bot_motion.h ****  status = BLOCKED;
+ 2592               	.LM383:
+ 2593 0738 1092 0000 		sts status,__zero_reg__
+ 2594 073c 01E0      		ldi r16,lo8(1)
+ 2595               	.L126:
+ 2596 073e 10E0      		ldi r17,lo8(0)
+ 2597 0740 00C0      		rjmp .L125
+ 2598               	.L116:
+ 2599               	.LBE354:
+ 2600               	.LBE353:
+ 2601               	.LBB355:
+ 2602               	.LBB356:
+ 316:src/BOT_CODE/bot_motion.h ****  port_restore = PINC;
+ 2604               	.LM384:
+ 2605 0742 86B1      		in r24,38-32
+ 317:src/BOT_CODE/bot_motion.h ****  port_restore = port_restore & 0xF7;
+ 2607               	.LM385:
+ 2608 0744 877F      		andi r24,lo8(-9)
+ 318:src/BOT_CODE/bot_motion.h ****  PORTC = port_restore;
+ 2610               	.LM386:
+ 2611 0746 88B9      		out 40-32,r24
+ 319:src/BOT_CODE/bot_motion.h ****  status = BLOCKED;
+ 2613               	.LM387:
+ 2614 0748 1092 0000 		sts status,__zero_reg__
+ 2615               	.LBE356:
+ 2616               	.LBE355:
+ 465:src/BOT_CODE/bot_motion.h **** 			if(black_flag >= CONT_BLACK)  {
+ 2618               	.LM388:
+ 2619 074c 1530      		cpi r17,lo8(5)
+ 2620 074e 00F0      		brlo .L118
+ 466:src/BOT_CODE/bot_motion.h **** 				if(last_on == LEFT_SENSOR)
+ 2622               	.LM389:
+ 2623 0750 0330      		cpi r16,lo8(3)
+ 2624 0752 01F4      		brne .L119
+ 2625               	.LBB357:
+ 2626               	.LBB358:
+ 242:src/BOT_CODE/bot_motion.h ****  PortARestore = PORTA; 				// reading the PORTA original status
+ 2628               	.LM390:
+ 2629 0754 82B1      		in r24,34-32
+ 243:src/BOT_CODE/bot_motion.h ****  PortARestore &= 0xF0; 				// making lower direction nibbel to 0
+ 2631               	.LM391:
+ 2632 0756 807F      		andi r24,lo8(-16)
+ 244:src/BOT_CODE/bot_motion.h ****  PortARestore |= Direction; 		// adding lower nibbel for forward command and restoring the PORTA st
+ 2634               	.LM392:
+ 2635 0758 8560      		ori r24,lo8(5)
+ 2636 075a 00C0      		rjmp .L128
+ 2637               	.L119:
+ 2638               	.LBE358:
+ 2639               	.LBE357:
+ 468:src/BOT_CODE/bot_motion.h **** 				else if(last_on == RIGHT_SENSOR)
+ 2641               	.LM393:
+ 2642 075c 0130      		cpi r16,lo8(1)
+ 2643 075e 01F4      		brne .L120
+ 2644               	.LBB359:
+ 2645               	.LBB360:
+ 242:src/BOT_CODE/bot_motion.h ****  PortARestore = PORTA; 				// reading the PORTA original status
+ 2647               	.LM394:
+ 2648 0760 82B1      		in r24,34-32
+ 243:src/BOT_CODE/bot_motion.h ****  PortARestore &= 0xF0; 				// making lower direction nibbel to 0
+ 2650               	.LM395:
+ 2651 0762 807F      		andi r24,lo8(-16)
+ 244:src/BOT_CODE/bot_motion.h ****  PortARestore |= Direction; 		// adding lower nibbel for forward command and restoring the PORTA st
+ 2653               	.LM396:
+ 2654 0764 8A60      		ori r24,lo8(10)
+ 2655               	.L128:
+ 245:src/BOT_CODE/bot_motion.h ****  PORTA = PortARestore; 				// executing the command
+ 2657               	.LM397:
+ 2658 0766 82B9      		out 34-32,r24
+ 2659               	.L120:
+ 2660               	.LBE360:
+ 2661               	.LBE359:
+ 2662               	.LBB361:
+ 2663               	.LBB314:
+ 230:src/BOT_CODE/bot_motion.h **** 	OCR5AL = (unsigned char)left_motor;
+ 2665               	.LM398:
+ 2666 0768 B092 2801 		sts 296,r11
+ 231:src/BOT_CODE/bot_motion.h **** 	OCR5BL = (unsigned char)right_motor;
+ 2668               	.LM399:
+ 2669 076c B092 2A01 		sts 298,r11
+ 2670               	.L121:
+ 2671               	.LBE314:
+ 2672               	.LBE361:
+ 472:src/BOT_CODE/bot_motion.h **** 					print_sensor_data();
+ 2674               	.LM400:
+ 2675 0770 0E94 0000 		call print_sensor_data
+ 473:src/BOT_CODE/bot_motion.h **** 					read_sensors();
+ 2677               	.LM401:
+ 2678 0774 0E94 0000 		call read_sensors
+ 474:src/BOT_CODE/bot_motion.h **** 					if(Center_white_line < W_THRESHOLD) break;
+ 2680               	.LM402:
+ 2681 0778 8091 0000 		lds r24,Center_white_line
+ 2682 077c 8F30      		cpi r24,lo8(15)
+ 2683 077e 00F4      		brsh .L121
+ 2684 0780 15E0      		ldi r17,lo8(5)
+ 2685 0782 00C0      		rjmp .L122
+ 2686               	.L118:
+ 477:src/BOT_CODE/bot_motion.h **** 			black_flag = (black_flag < CONT_BLACK)?black_flag+1:CONT_BLACK;
+ 2688               	.LM403:
+ 2689 0784 1F5F      		subi r17,lo8(-(1))
+ 2690               	.L122:
+ 2691               	.LBB362:
+ 2692               	.LBB363:
+ 2693               	.LBB364:
+ 2694               	.LBB365:
+ 242:src/BOT_CODE/bot_motion.h ****  PortARestore = PORTA; 				// reading the PORTA original status
+ 2696               	.LM404:
+ 2697 0786 82B1      		in r24,34-32
+ 243:src/BOT_CODE/bot_motion.h ****  PortARestore &= 0xF0; 				// making lower direction nibbel to 0
+ 2699               	.LM405:
+ 2700 0788 807F      		andi r24,lo8(-16)
+ 244:src/BOT_CODE/bot_motion.h ****  PortARestore |= Direction; 		// adding lower nibbel for forward command and restoring the PORTA st
+ 2702               	.LM406:
+ 2703 078a 8660      		ori r24,lo8(6)
+ 245:src/BOT_CODE/bot_motion.h ****  PORTA = PortARestore; 				// executing the command
+ 2705               	.LM407:
+ 2706 078c 82B9      		out 34-32,r24
+ 2707               	.LBE365:
+ 2708               	.LBE364:
+ 2709               	.LBE363:
+ 2710               	.LBE362:
+ 2711               	.LBB366:
+ 2712               	.LBB367:
+ 230:src/BOT_CODE/bot_motion.h **** 	OCR5AL = (unsigned char)left_motor;
+ 2714               	.LM408:
+ 2715 078e 1092 2801 		sts 296,__zero_reg__
+ 231:src/BOT_CODE/bot_motion.h **** 	OCR5BL = (unsigned char)right_motor;
+ 2717               	.LM409:
+ 2718 0792 1092 2A01 		sts 298,__zero_reg__
+ 2719               	.LBE367:
+ 2720               	.LBE366:
+ 480:src/BOT_CODE/bot_motion.h **** 			PORTJ = 0x99;
+ 2722               	.LM410:
+ 2723 0796 8092 0501 		sts 261,r8
+ 2724 079a 00C0      		rjmp .L125
+ 2751               	.Lscope34:
+ 2753               		.stabd	78,0,0
+ 2755               	.global	USART_Init
+ 2757               	USART_Init:
+ 2758               		.stabd	46,0,0
+ 2760               	.Ltext35:
+   1:src/BOT_CODE/bot.c **** /*
+   2:src/BOT_CODE/bot.c ****  * =====================================================================================
+   3:src/BOT_CODE/bot.c ****  *
+   4:src/BOT_CODE/bot.c ****  *       Filename:  bot.c
+   5:src/BOT_CODE/bot.c ****  *
+   6:src/BOT_CODE/bot.c ****  *    Description:  Main PSS serice bot code !
+   7:src/BOT_CODE/bot.c ****  *
+   8:src/BOT_CODE/bot.c ****  *        Version:  2.0final
+   9:src/BOT_CODE/bot.c ****  *       Revision:  2.0
+  10:src/BOT_CODE/bot.c ****  *       Compiler:  gcc-avr
+  11:src/BOT_CODE/bot.c ****  *
+  12:src/BOT_CODE/bot.c ****  *        Authors:  Pritish Kamath, pritish.kamath@iitb.ac.in
+  13:src/BOT_CODE/bot.c ****  *						  Rohit Saraf	 , rohitsaraf@iitb.ac.in
+  14:src/BOT_CODE/bot.c ****  *						  Ashish Mathew , ashishmathew@iitb.ac.in
+  15:src/BOT_CODE/bot.c ****  *						  Vivek Madan	 , vivekmadan@iitb.ac.in
+  16:src/BOT_CODE/bot.c ****  *        Company:  IIT Bombay
+  17:src/BOT_CODE/bot.c ****  *
+  18:src/BOT_CODE/bot.c ****  * =====================================================================================
+  19:src/BOT_CODE/bot.c ****  */
+  20:src/BOT_CODE/bot.c **** 
+  21:src/BOT_CODE/bot.c **** #include <avr/io.h>
+  22:src/BOT_CODE/bot.c **** #include <avr/interrupt.h>
+  23:src/BOT_CODE/bot.c **** #include <util/delay.h>
+  24:src/BOT_CODE/bot.c **** #include "bot_motion.h"
+  25:src/BOT_CODE/bot.c **** 
+  26:src/BOT_CODE/bot.c **** #ifndef BIT_MACROS
+  27:src/BOT_CODE/bot.c **** #define BIT_MACROS
+  28:src/BOT_CODE/bot.c **** #define SetBit(x,b) ((x)|=(b))
+  29:src/BOT_CODE/bot.c **** #define GetBit(x,b) ((x)&(b))
+  30:src/BOT_CODE/bot.c **** #define ResetBit(x,b) ((x)&=(~(b)))
+  31:src/BOT_CODE/bot.c **** #endif
+  32:src/BOT_CODE/bot.c **** 
+  33:src/BOT_CODE/bot.c **** #define NOTHING			10
+  34:src/BOT_CODE/bot.c **** #define GO_UPTO_CROSS	2
+  35:src/BOT_CODE/bot.c **** #define TURN_RIGHT		0
+  36:src/BOT_CODE/bot.c **** #define TURN_LEFT			1
+  37:src/BOT_CODE/bot.c **** #define TURN_AROUND		3
+  38:src/BOT_CODE/bot.c **** #define POLLING			5
+  39:src/BOT_CODE/bot.c **** 
+  40:src/BOT_CODE/bot.c **** #define ID_MASK			0xE0
+  41:src/BOT_CODE/bot.c **** #define INST_MASK			0x1F 
+  42:src/BOT_CODE/bot.c **** 
+  43:src/BOT_CODE/bot.c **** #define MY_ID				0x00  //Specific for each bot.
+  44:src/BOT_CODE/bot.c **** 
+  45:src/BOT_CODE/bot.c **** static volatile char data = 0;
+  46:src/BOT_CODE/bot.c **** static volatile char instruction = 0;
+  47:src/BOT_CODE/bot.c **** 
+  48:src/BOT_CODE/bot.c **** static volatile ACTION = NOTHING;
+  49:src/BOT_CODE/bot.c **** 
+  50:src/BOT_CODE/bot.c **** /**
+  51:src/BOT_CODE/bot.c ****  USART0 initialization for Zigbee communication.
+  52:src/BOT_CODE/bot.c ****  desired baud rate:9600
+  53:src/BOT_CODE/bot.c ****  actual baud rate:9600 (0.0%)
+  54:src/BOT_CODE/bot.c ****  char size: 8 bit
+  55:src/BOT_CODE/bot.c ****  parity: Disabled
+  56:src/BOT_CODE/bot.c **** */
+  57:src/BOT_CODE/bot.c **** 
+  58:src/BOT_CODE/bot.c **** void USART_Init(void)
+  59:src/BOT_CODE/bot.c **** {
+ 2762               	.LM411:
+ 2763               	.LFBB35:
+ 2764               	/* prologue: function */
+ 2765               	/* frame size = 0 */
+  60:src/BOT_CODE/bot.c ****   UCSR0B = 0x00; 
+ 2767               	.LM412:
+ 2768 079c E1EC      		ldi r30,lo8(193)
+ 2769 079e F0E0      		ldi r31,hi8(193)
+ 2770 07a0 1082      		st Z,__zero_reg__
+  61:src/BOT_CODE/bot.c ****   UCSR0A = 0x00;
+ 2772               	.LM413:
+ 2773 07a2 1092 C000 		sts 192,__zero_reg__
+  62:src/BOT_CODE/bot.c ****   UCSR0C = 0x06;
+ 2775               	.LM414:
+ 2776 07a6 86E0      		ldi r24,lo8(6)
+ 2777 07a8 8093 C200 		sts 194,r24
+  63:src/BOT_CODE/bot.c ****   UBRR0L = 0x47; 
+ 2779               	.LM415:
+ 2780 07ac 87E4      		ldi r24,lo8(71)
+ 2781 07ae 8093 C400 		sts 196,r24
+  64:src/BOT_CODE/bot.c ****   UBRR0H = 0x00; 
+ 2783               	.LM416:
+ 2784 07b2 1092 C500 		sts 197,__zero_reg__
+  65:src/BOT_CODE/bot.c ****   UCSR0B = 0x98;
+ 2786               	.LM417:
+ 2787 07b6 88E9      		ldi r24,lo8(-104)
+ 2788 07b8 8083      		st Z,r24
+ 2789               	/* epilogue start */
+  66:src/BOT_CODE/bot.c **** }
+ 2791               	.LM418:
+ 2792 07ba 0895      		ret
+ 2794               	.Lscope35:
+ 2796               		.stabd	78,0,0
+ 2798               	.global	__vector_25
+ 2800               	__vector_25:
+ 2801               		.stabd	46,0,0
+  67:src/BOT_CODE/bot.c **** 
+  68:src/BOT_CODE/bot.c **** /**
+  69:src/BOT_CODE/bot.c ****  ISR for receive complete interrupt
+  70:src/BOT_CODE/bot.c ****  Replies back to the polling/server instruction
+  71:src/BOT_CODE/bot.c **** */
+  72:src/BOT_CODE/bot.c **** SIGNAL(SIG_USART0_RECV)
+  73:src/BOT_CODE/bot.c **** {
+ 2803               	.LM419:
+ 2804               	.LFBB36:
+ 2805 07bc 1F92      		push __zero_reg__
+ 2806 07be 0F92      		push r0
+ 2807 07c0 0FB6      		in r0,__SREG__
+ 2808 07c2 0F92      		push r0
+ 2809 07c4 1124      		clr __zero_reg__
+ 2810 07c6 8F93      		push r24
+ 2811 07c8 9F93      		push r25
+ 2812               	/* prologue: Signal */
+ 2813               	/* frame size = 0 */
+  74:src/BOT_CODE/bot.c **** 	data = UDR0;
+ 2815               	.LM420:
+ 2816 07ca 8091 C600 		lds r24,198
+ 2817 07ce 8093 0000 		sts data,r24
+ 2818               	.LBB368:
+ 2819               	.LBB369:
+ 2820               	.LBB370:
+ 2821               	.LBB371:
+ 2823               	.Ltext36:
+ 2825               	.LM421:
+ 2826 07d2 80E0      		ldi r24,lo8(27648)
+ 2827 07d4 9CE6      		ldi r25,hi8(27648)
+ 2828               	/* #APP */
+ 2829               	 ;  105 "/usr/lib/gcc/avr/4.3.5/../../../avr/include/util/delay_basic.h" 1
+ 2830 07d6 0197      		1: sbiw r24,1
+ 2831 07d8 01F4      		brne 1b
+ 2832               	 ;  0 "" 2
+ 2833               	/* #NOAPP */
+ 2834               	.LBE371:
+ 2835               	.LBE370:
+ 2836               	.LBE369:
+ 2837               	.LBE368:
+ 2839               	.Ltext37:
+  75:src/BOT_CODE/bot.c **** 	_delay_ms(10);
+  76:src/BOT_CODE/bot.c **** 	if(GetBit(data,ID_MASK) == MY_ID)
+ 2841               	.LM422:
+ 2842 07da 8091 0000 		lds r24,data
+ 2843 07de 807E      		andi r24,lo8(-32)
+ 2844 07e0 01F0      		breq .+2
+ 2845 07e2 00C0      		rjmp .L138
+  77:src/BOT_CODE/bot.c **** 	{	
+  78:src/BOT_CODE/bot.c **** 		PORTJ = 0xff;	
+ 2847               	.LM423:
+ 2848 07e4 8FEF      		ldi r24,lo8(-1)
+ 2849 07e6 8093 0501 		sts 261,r24
+  79:src/BOT_CODE/bot.c **** 		instruction = GetBit(data,INST_MASK);
+ 2851               	.LM424:
+ 2852 07ea 8091 0000 		lds r24,data
+ 2853 07ee 8F71      		andi r24,lo8(31)
+ 2854 07f0 8093 0000 		sts instruction,r24
+  80:src/BOT_CODE/bot.c **** 		if(instruction == POLLING){
+ 2856               	.LM425:
+ 2857 07f4 8091 0000 		lds r24,instruction
+ 2858 07f8 8530      		cpi r24,lo8(5)
+ 2859 07fa 01F4      		brne .L134
+  81:src/BOT_CODE/bot.c **** 			PORTJ = 5;	
+ 2861               	.LM426:
+ 2862 07fc 8093 0501 		sts 261,r24
+  82:src/BOT_CODE/bot.c **** 			UDR0 = (MY_ID | status);
+ 2864               	.LM427:
+ 2865 0800 8091 0000 		lds r24,status
+ 2866 0804 8093 C600 		sts 198,r24
+ 2867 0808 00C0      		rjmp .L138
+ 2868               	.L134:
+  83:src/BOT_CODE/bot.c **** 		}
+  84:src/BOT_CODE/bot.c **** 		else if(instruction==GO_UPTO_CROSS)
+ 2870               	.LM428:
+ 2871 080a 9091 0000 		lds r25,instruction
+ 2872 080e 9230      		cpi r25,lo8(2)
+ 2873 0810 01F4      		brne .L135
+  85:src/BOT_CODE/bot.c **** 		{
+  86:src/BOT_CODE/bot.c **** 			PORTJ = 1;	
+ 2875               	.LM429:
+ 2876 0812 81E0      		ldi r24,lo8(1)
+ 2877 0814 8093 0501 		sts 261,r24
+  87:src/BOT_CODE/bot.c **** 			status = PROCESSING;
+ 2879               	.LM430:
+ 2880 0818 9093 0000 		sts status,r25
+  88:src/BOT_CODE/bot.c **** 			ACTION = GO_UPTO_CROSS;
+ 2882               	.LM431:
+ 2883 081c 82E0      		ldi r24,lo8(2)
+ 2884 081e 90E0      		ldi r25,hi8(2)
+ 2885 0820 00C0      		rjmp .L139
+ 2886               	.L135:
+  89:src/BOT_CODE/bot.c **** 		}
+  90:src/BOT_CODE/bot.c **** 		else if(instruction==TURN_RIGHT)
+ 2888               	.LM432:
+ 2889 0822 8091 0000 		lds r24,instruction
+ 2890 0826 8823      		tst r24
+ 2891 0828 01F4      		brne .L136
+  91:src/BOT_CODE/bot.c **** 		{
+  92:src/BOT_CODE/bot.c **** 			PORTJ = 2;	
+ 2893               	.LM433:
+ 2894 082a 82E0      		ldi r24,lo8(2)
+ 2895 082c 8093 0501 		sts 261,r24
+  93:src/BOT_CODE/bot.c **** 			status = PROCESSING;
+ 2897               	.LM434:
+ 2898 0830 8093 0000 		sts status,r24
+  94:src/BOT_CODE/bot.c **** 			ACTION = TURN_RIGHT;
+ 2900               	.LM435:
+ 2901 0834 1092 0000 		sts (ACTION)+1,__zero_reg__
+ 2902 0838 1092 0000 		sts ACTION,__zero_reg__
+ 2903 083c 00C0      		rjmp .L138
+ 2904               	.L136:
+  95:src/BOT_CODE/bot.c **** 		}
+  96:src/BOT_CODE/bot.c **** 		else if(instruction==TURN_LEFT)
+ 2906               	.LM436:
+ 2907 083e 8091 0000 		lds r24,instruction
+ 2908 0842 8130      		cpi r24,lo8(1)
+ 2909 0844 01F4      		brne .L137
+  97:src/BOT_CODE/bot.c **** 		{
+  98:src/BOT_CODE/bot.c **** 			PORTJ = 3;	
+ 2911               	.LM437:
+ 2912 0846 83E0      		ldi r24,lo8(3)
+ 2913 0848 8093 0501 		sts 261,r24
+  99:src/BOT_CODE/bot.c **** 			status = PROCESSING;
+ 2915               	.LM438:
+ 2916 084c 82E0      		ldi r24,lo8(2)
+ 2917 084e 8093 0000 		sts status,r24
+ 100:src/BOT_CODE/bot.c **** 			ACTION = TURN_LEFT;
+ 2919               	.LM439:
+ 2920 0852 81E0      		ldi r24,lo8(1)
+ 2921 0854 90E0      		ldi r25,hi8(1)
+ 2922 0856 00C0      		rjmp .L139
+ 2923               	.L137:
+ 101:src/BOT_CODE/bot.c **** 		}
+ 102:src/BOT_CODE/bot.c **** 		else if(instruction==TURN_AROUND)
+ 2925               	.LM440:
+ 2926 0858 8091 0000 		lds r24,instruction
+ 2927 085c 8330      		cpi r24,lo8(3)
+ 2928 085e 01F4      		brne .L138
+ 103:src/BOT_CODE/bot.c **** 		{
+ 104:src/BOT_CODE/bot.c **** 			PORTJ = 4;
+ 2930               	.LM441:
+ 2931 0860 84E0      		ldi r24,lo8(4)
+ 2932 0862 8093 0501 		sts 261,r24
+ 105:src/BOT_CODE/bot.c **** 			status = PROCESSING;
+ 2934               	.LM442:
+ 2935 0866 82E0      		ldi r24,lo8(2)
+ 2936 0868 8093 0000 		sts status,r24
+ 106:src/BOT_CODE/bot.c **** 			ACTION = TURN_AROUND;
+ 2938               	.LM443:
+ 2939 086c 83E0      		ldi r24,lo8(3)
+ 2940 086e 90E0      		ldi r25,hi8(3)
+ 2941               	.L139:
+ 2942 0870 9093 0000 		sts (ACTION)+1,r25
+ 2943 0874 8093 0000 		sts ACTION,r24
+ 2944               	.L138:
+ 2945               	/* epilogue start */
+ 107:src/BOT_CODE/bot.c **** 		}
+ 108:src/BOT_CODE/bot.c **** 	}
+ 109:src/BOT_CODE/bot.c **** }
+ 2947               	.LM444:
+ 2948 0878 9F91      		pop r25
+ 2949 087a 8F91      		pop r24
+ 2950 087c 0F90      		pop r0
+ 2951 087e 0FBE      		out __SREG__,r0
+ 2952 0880 0F90      		pop r0
+ 2953 0882 1F90      		pop __zero_reg__
+ 2954 0884 1895      		reti
+ 2956               	.Lscope36:
+ 2958               		.stabd	78,0,0
+ 2960               	.global	init_devices_1
+ 2962               	init_devices_1:
+ 2963               		.stabd	46,0,0
+ 110:src/BOT_CODE/bot.c **** 
+ 111:src/BOT_CODE/bot.c **** /**
+ 112:src/BOT_CODE/bot.c **** 	Inits the Zigbee module
+ 113:src/BOT_CODE/bot.c **** */
+ 114:src/BOT_CODE/bot.c **** void init_devices_1(){
+ 2965               	.LM445:
+ 2966               	.LFBB37:
+ 2967               	/* prologue: function */
+ 2968               	/* frame size = 0 */
+ 115:src/BOT_CODE/bot.c **** 	cli();
+ 2970               	.LM446:
+ 2971               	/* #APP */
+ 2972               	 ;  115 "src/BOT_CODE/bot.c" 1
+ 2973 0886 F894      		cli
+ 2974               	 ;  0 "" 2
+ 116:src/BOT_CODE/bot.c **** 	USART_Init();
+ 2976               	.LM447:
+ 2977               	/* #NOAPP */
+ 2978 0888 0E94 0000 		call USART_Init
+ 117:src/BOT_CODE/bot.c **** 	sei();
+ 2980               	.LM448:
+ 2981               	/* #APP */
+ 2982               	 ;  117 "src/BOT_CODE/bot.c" 1
+ 2983 088c 7894      		sei
+ 2984               	 ;  0 "" 2
+ 2985               	/* epilogue start */
+ 118:src/BOT_CODE/bot.c **** }
+ 2987               	.LM449:
+ 2988               	/* #NOAPP */
+ 2989 088e 0895      		ret
+ 2991               	.Lscope37:
+ 2993               		.stabd	78,0,0
+ 2995               	.global	main
+ 2997               	main:
+ 2998               		.stabd	46,0,0
+ 119:src/BOT_CODE/bot.c **** 
+ 120:src/BOT_CODE/bot.c **** /**
+ 121:src/BOT_CODE/bot.c **** 	Processes the requests given by the server in an infinite loop.
+ 122:src/BOT_CODE/bot.c ****    Sets the status at appropriate times (which are later sent back to the server during polling).
+ 123:src/BOT_CODE/bot.c **** */
+ 124:src/BOT_CODE/bot.c **** int main()
+ 125:src/BOT_CODE/bot.c **** {
+ 3000               	.LM450:
+ 3001               	.LFBB38:
+ 3002 0890 0F93      		push r16
+ 3003 0892 1F93      		push r17
+ 3004 0894 CF93      		push r28
+ 3005 0896 DF93      		push r29
+ 3006               	/* prologue: function */
+ 3007               	/* frame size = 0 */
+ 126:src/BOT_CODE/bot.c **** 	init_devices_1();
+ 3009               	.LM451:
+ 3010 0898 0E94 0000 		call init_devices_1
+ 127:src/BOT_CODE/bot.c **** 	init_devices();
+ 3012               	.LM452:
+ 3013 089c 0E94 0000 		call init_devices
+ 128:src/BOT_CODE/bot.c **** 	
+ 129:src/BOT_CODE/bot.c **** 	lcd_set_4bit();
+ 3015               	.LM453:
+ 3016 08a0 0E94 0000 		call lcd_set_4bit
+ 130:src/BOT_CODE/bot.c **** 	lcd_init();
+ 3018               	.LM454:
+ 3019 08a4 0E94 0000 		call lcd_init
+ 131:src/BOT_CODE/bot.c **** 	DDRJ = 0xff;
+ 3021               	.LM455:
+ 3022 08a8 8FEF      		ldi r24,lo8(-1)
+ 3023 08aa 8093 0401 		sts 260,r24
+ 132:src/BOT_CODE/bot.c **** 	PORTJ = 0xf0;	
+ 3025               	.LM456:
+ 3026 08ae 80EF      		ldi r24,lo8(-16)
+ 3027 08b0 8093 0501 		sts 261,r24
+ 133:src/BOT_CODE/bot.c **** 
+ 134:src/BOT_CODE/bot.c **** 	left_position_encoder_interrupt_init();
+ 3029               	.LM457:
+ 3030 08b4 0E94 0000 		call left_position_encoder_interrupt_init
+ 135:src/BOT_CODE/bot.c **** 	right_position_encoder_interrupt_init();
+ 3032               	.LM458:
+ 3033 08b8 0E94 0000 		call right_position_encoder_interrupt_init
+ 3034 08bc 10E0      		ldi r17,lo8(0)
+ 3035               	.L143:
+ 136:src/BOT_CODE/bot.c **** 
+ 137:src/BOT_CODE/bot.c **** 	unsigned char q = 0;
+ 138:src/BOT_CODE/bot.c **** 	for(q = 0;q<10;q++){
+ 139:src/BOT_CODE/bot.c **** 		Left_white_line = ADC_Conversion(3);	//Getting data of Left WL Sensor
+ 3037               	.LM459:
+ 3038 08be 83E0      		ldi r24,lo8(3)
+ 3039 08c0 0E94 0000 		call ADC_Conversion
+ 3040 08c4 8093 0000 		sts Left_white_line,r24
+ 140:src/BOT_CODE/bot.c **** 		Center_white_line = ADC_Conversion(2);	//Getting data of Center WL Sensor
+ 3042               	.LM460:
+ 3043 08c8 82E0      		ldi r24,lo8(2)
+ 3044 08ca 0E94 0000 		call ADC_Conversion
+ 3045 08ce 8093 0000 		sts Center_white_line,r24
+ 141:src/BOT_CODE/bot.c **** 		Right_white_line = ADC_Conversion(1);	//Getting data of Right WL Sensor
+ 3047               	.LM461:
+ 3048 08d2 81E0      		ldi r24,lo8(1)
+ 3049 08d4 0E94 0000 		call ADC_Conversion
+ 3050 08d8 8093 0000 		sts Right_white_line,r24
+ 138:src/BOT_CODE/bot.c **** 	for(q = 0;q<10;q++){
+ 3052               	.LM462:
+ 3053 08dc 1F5F      		subi r17,lo8(-(1))
+ 3054 08de 1A30      		cpi r17,lo8(10)
+ 3055 08e0 01F4      		brne .L143
+ 142:src/BOT_CODE/bot.c **** 	}
+ 143:src/BOT_CODE/bot.c **** 
+ 144:src/BOT_CODE/bot.c **** 	while(1)
+ 145:src/BOT_CODE/bot.c **** 	{
+ 146:src/BOT_CODE/bot.c **** 		if(ACTION == GO_UPTO_CROSS)
+ 147:src/BOT_CODE/bot.c **** 		{
+ 148:src/BOT_CODE/bot.c **** 			status = PROCESSING;
+ 149:src/BOT_CODE/bot.c **** 			go_upto_next_cross();
+ 150:src/BOT_CODE/bot.c **** 			instruction = 0;
+ 151:src/BOT_CODE/bot.c **** 			status = IDLE;
+ 152:src/BOT_CODE/bot.c **** 			ACTION = NOTHING;
+ 153:src/BOT_CODE/bot.c **** 		}
+ 154:src/BOT_CODE/bot.c **** 		else if(ACTION == TURN_RIGHT)
+ 155:src/BOT_CODE/bot.c **** 		{
+ 156:src/BOT_CODE/bot.c **** 			status = PROCESSING;
+ 157:src/BOT_CODE/bot.c **** 			turn_right();
+ 158:src/BOT_CODE/bot.c **** 			instruction = 0;
+ 159:src/BOT_CODE/bot.c **** 			status = IDLE;
+ 160:src/BOT_CODE/bot.c **** 			ACTION = NOTHING;
+ 161:src/BOT_CODE/bot.c **** 		}
+ 162:src/BOT_CODE/bot.c **** 		else if(ACTION == TURN_LEFT)
+ 163:src/BOT_CODE/bot.c **** 		{
+ 164:src/BOT_CODE/bot.c **** 			status = PROCESSING;
+ 165:src/BOT_CODE/bot.c **** 			turn_left();
+ 166:src/BOT_CODE/bot.c **** 			instruction = 0;
+ 167:src/BOT_CODE/bot.c **** 			status = IDLE;
+ 168:src/BOT_CODE/bot.c **** 			ACTION = NOTHING;
+ 169:src/BOT_CODE/bot.c **** 		}
+ 170:src/BOT_CODE/bot.c **** 		else if(ACTION == TURN_AROUND)
+ 171:src/BOT_CODE/bot.c **** 		{
+ 172:src/BOT_CODE/bot.c **** 			status = PROCESSING;
+ 3057               	.LM463:
+ 3058 08e2 02E0      		ldi r16,lo8(2)
+ 173:src/BOT_CODE/bot.c **** 			turn_left();
+ 174:src/BOT_CODE/bot.c **** 			instruction = 0;
+ 175:src/BOT_CODE/bot.c **** 			status = IDLE;
+ 3060               	.LM464:
+ 3061 08e4 11E0      		ldi r17,lo8(1)
+ 176:src/BOT_CODE/bot.c **** 			ACTION = NOTHING;
+ 3063               	.LM465:
+ 3064 08e6 CAE0      		ldi r28,lo8(10)
+ 3065 08e8 D0E0      		ldi r29,hi8(10)
+ 3066               	.L152:
+ 146:src/BOT_CODE/bot.c **** 		if(ACTION == GO_UPTO_CROSS)
+ 3068               	.LM466:
+ 3069 08ea 8091 0000 		lds r24,ACTION
+ 3070 08ee 9091 0000 		lds r25,(ACTION)+1
+ 3071 08f2 0297      		sbiw r24,2
+ 3072 08f4 01F4      		brne .L144
+ 148:src/BOT_CODE/bot.c **** 			status = PROCESSING;
+ 3074               	.LM467:
+ 3075 08f6 0093 0000 		sts status,r16
+ 149:src/BOT_CODE/bot.c **** 			go_upto_next_cross();
+ 3077               	.LM468:
+ 3078 08fa 0E94 0000 		call go_upto_next_cross
+ 3079 08fe 00C0      		rjmp .L154
+ 3080               	.L144:
+ 154:src/BOT_CODE/bot.c **** 		else if(ACTION == TURN_RIGHT)
+ 3082               	.LM469:
+ 3083 0900 8091 0000 		lds r24,ACTION
+ 3084 0904 9091 0000 		lds r25,(ACTION)+1
+ 3085 0908 892B      		or r24,r25
+ 3086 090a 01F4      		brne .L146
+ 156:src/BOT_CODE/bot.c **** 			status = PROCESSING;
+ 3088               	.LM470:
+ 3089 090c 0093 0000 		sts status,r16
+ 157:src/BOT_CODE/bot.c **** 			turn_right();
+ 3091               	.LM471:
+ 3092 0910 0E94 0000 		call turn_right
+ 3093 0914 00C0      		rjmp .L154
+ 3094               	.L146:
+ 162:src/BOT_CODE/bot.c **** 		else if(ACTION == TURN_LEFT)
+ 3096               	.LM472:
+ 3097 0916 8091 0000 		lds r24,ACTION
+ 3098 091a 9091 0000 		lds r25,(ACTION)+1
+ 3099 091e 0197      		sbiw r24,1
+ 3100 0920 01F0      		breq .L153
+ 3101               	.L147:
+ 170:src/BOT_CODE/bot.c **** 		else if(ACTION == TURN_AROUND)
+ 3103               	.LM473:
+ 3104 0922 8091 0000 		lds r24,ACTION
+ 3105 0926 9091 0000 		lds r25,(ACTION)+1
+ 3106 092a 0397      		sbiw r24,3
+ 3107 092c 01F4      		brne .L152
+ 3108               	.L153:
+ 172:src/BOT_CODE/bot.c **** 			status = PROCESSING;
+ 3110               	.LM474:
+ 3111 092e 0093 0000 		sts status,r16
+ 173:src/BOT_CODE/bot.c **** 			turn_left();
+ 3113               	.LM475:
+ 3114 0932 0E94 0000 		call turn_left
+ 3115               	.L154:
+ 174:src/BOT_CODE/bot.c **** 			instruction = 0;
+ 3117               	.LM476:
+ 3118 0936 1092 0000 		sts instruction,__zero_reg__
+ 175:src/BOT_CODE/bot.c **** 			status = IDLE;
+ 3120               	.LM477:
+ 3121 093a 1093 0000 		sts status,r17
+ 3123               	.LM478:
+ 3124 093e D093 0000 		sts (ACTION)+1,r29
+ 3125 0942 C093 0000 		sts ACTION,r28
+ 3126 0946 00C0      		rjmp .L152
+ 3131               	.Lscope38:
+ 3133               		.stabd	78,0,0
+ 3134               	.global	flag
+ 3135               	.global	flag
+ 3136               		.section .bss
+ 3139               	flag:
+ 3140 0000 00        		.skip 1,0
+ 3141               	.global	Left_white_line
+ 3142               	.global	Left_white_line
+ 3145               	Left_white_line:
+ 3146 0001 00        		.skip 1,0
+ 3147               	.global	Center_white_line
+ 3148               	.global	Center_white_line
+ 3151               	Center_white_line:
+ 3152 0002 00        		.skip 1,0
+ 3153               	.global	Right_white_line
+ 3154               	.global	Right_white_line
+ 3157               	Right_white_line:
+ 3158 0003 00        		.skip 1,0
+ 3159               	.global	Front_IR_Sensor
+ 3160               	.global	Front_IR_Sensor
+ 3163               	Front_IR_Sensor:
+ 3164 0004 00        		.skip 1,0
+ 3165               		.data
+ 3168               	ACTION:
+ 3169 0000 0A00      		.word	10
+ 3172               	status:
+ 3173 0002 01        		.byte	1
+ 3174               		.lcomm instruction,1
+ 3175               		.lcomm data,1
+ 3176               		.lcomm ShaftCountLeft,1
+ 3177               		.lcomm ShaftCountRight,1
+ 3178               		.comm temp,2,1
+ 3179               		.comm unit,2,1
+ 3180               		.comm tens,2,1
+ 3181               		.comm hundred,2,1
+ 3182               		.comm thousand,2,1
+ 3183               		.comm million,2,1
+ 3184               		.comm i,2,1
+ 3185               		.comm ADC_Value,1,1
+ 3205               		.text
+ 3207               	.Letext0:
+ 3208               	.global __do_copy_data
+ 3209               	.global __do_clear_bss
+DEFINED SYMBOLS
+                            *ABS*:00000000 bot.c
+     /tmp/cc0TMBIc.s:2      *ABS*:0000003f __SREG__
+     /tmp/cc0TMBIc.s:3      *ABS*:0000003e __SP_H__
+     /tmp/cc0TMBIc.s:4      *ABS*:0000003d __SP_L__
+     /tmp/cc0TMBIc.s:5      *ABS*:00000034 __CCP__
+     /tmp/cc0TMBIc.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/cc0TMBIc.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/cc0TMBIc.s:72     .text:00000000 lcd_set_4bit
+     /tmp/cc0TMBIc.s:326    .text:00000064 lcd_wr_command
+     /tmp/cc0TMBIc.s:436    .text:000000a6 lcd_init
+     /tmp/cc0TMBIc.s:497    .text:000000ce lcd_wr_char
+     /tmp/cc0TMBIc.s:607    .text:00000110 lcd_home
+     /tmp/cc0TMBIc.s:630    .text:00000118 lcd_string
+     /tmp/cc0TMBIc.s:669    .text:00000132 lcd_cursor
+     /tmp/cc0TMBIc.s:730    .text:0000016a lcd_print
+                            *COM*:00000002 million
+                            *COM*:00000002 temp
+                            *COM*:00000002 thousand
+                            *COM*:00000002 hundred
+                            *COM*:00000002 tens
+                            *COM*:00000002 unit
+     /tmp/cc0TMBIc.s:921    .text:0000028a lcd_port_config
+     /tmp/cc0TMBIc.s:951    .text:00000298 left_position_encoder_interrupt_init
+     /tmp/cc0TMBIc.s:993    .text:000002aa right_position_encoder_interrupt_init
+     /tmp/cc0TMBIc.s:1035   .text:000002bc __vector_5
+     /tmp/cc0TMBIc.s:3175   .bss:00000007 ShaftCountLeft
+     /tmp/cc0TMBIc.s:1069   .text:000002de __vector_6
+     /tmp/cc0TMBIc.s:3176   .bss:00000008 ShaftCountRight
+     /tmp/cc0TMBIc.s:1103   .text:00000300 reset_shaft_counters
+     /tmp/cc0TMBIc.s:1127   .text:0000030a adc_pin_config
+     /tmp/cc0TMBIc.s:1157   .text:00000318 motion_pin_config
+     /tmp/cc0TMBIc.s:1199   .text:0000033a port_init
+     /tmp/cc0TMBIc.s:1250   .text:00000358 timer5_init
+     /tmp/cc0TMBIc.s:1307   .text:0000038e adc_init
+     /tmp/cc0TMBIc.s:1346   .text:000003a8 ADC_Conversion
+     /tmp/cc0TMBIc.s:1407   .text:000003e2 print_sensor
+                            *COM*:00000001 ADC_Value
+     /tmp/cc0TMBIc.s:1447   .text:0000040a velocity
+     /tmp/cc0TMBIc.s:1472   .text:00000414 motion_set
+     /tmp/cc0TMBIc.s:1506   .text:00000420 forward
+     /tmp/cc0TMBIc.s:1540   .text:0000042a stop
+     /tmp/cc0TMBIc.s:1571   .text:00000432 init_devices
+     /tmp/cc0TMBIc.s:1633   .text:00000458 print_sensor_data
+     /tmp/cc0TMBIc.s:1669   .text:00000478 read_sensors
+     /tmp/cc0TMBIc.s:3145   .bss:00000001 Left_white_line
+     /tmp/cc0TMBIc.s:3151   .bss:00000002 Center_white_line
+     /tmp/cc0TMBIc.s:3157   .bss:00000003 Right_white_line
+     /tmp/cc0TMBIc.s:3163   .bss:00000004 Front_IR_Sensor
+     /tmp/cc0TMBIc.s:1707   .text:000004a2 buzzer_on
+     /tmp/cc0TMBIc.s:3172   .data:00000002 status
+     /tmp/cc0TMBIc.s:1740   .text:000004ae buzzer_off
+     /tmp/cc0TMBIc.s:1773   .text:000004ba turn_right
+     /tmp/cc0TMBIc.s:1902   .text:00000502 turn_left
+     /tmp/cc0TMBIc.s:2032   .text:0000054a go_distance
+     /tmp/cc0TMBIc.s:2215   .text:000005d2 go_upto_next_cross
+     /tmp/cc0TMBIc.s:3139   .bss:00000000 flag
+     /tmp/cc0TMBIc.s:2757   .text:0000079c USART_Init
+     /tmp/cc0TMBIc.s:2800   .text:000007bc __vector_25
+     /tmp/cc0TMBIc.s:3174   .bss:00000006 data
+                             .bss:00000005 instruction
+     /tmp/cc0TMBIc.s:3168   .data:00000000 ACTION
+     /tmp/cc0TMBIc.s:2962   .text:00000886 init_devices_1
+     /tmp/cc0TMBIc.s:2997   .text:00000890 main
+                            *COM*:00000002 i
+
+UNDEFINED SYMBOLS
+__udivmodhi4
+__do_copy_data
+__do_clear_bss
